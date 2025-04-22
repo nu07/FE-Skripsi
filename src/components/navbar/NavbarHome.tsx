@@ -52,7 +52,7 @@ const solutions = [
 
 function NavbarHome() {
   return (
-    <div className="bg-white">
+    <div className="bg-white sticky top-0 z-50 shadow">
       <header>
         <Popover className="relative bg-white">
           <div className="flex justify-between items-center max-w-7xl mx-auto px-4 py-6 sm:px-6 md:justify-start md:space-x-10 lg:px-8">
