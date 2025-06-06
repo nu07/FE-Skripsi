@@ -7,6 +7,7 @@ import {
 import "@/App.css";
 import DefaultTemplate from "@/layout/DefaultTemplate";
 import Index from "@/pages/index";
+import About from "./pages/about";
 // import authStore from "@/store/loginStore";
 import LspPart2 from "./pages/lsp/lsppart2";
 import Pelanggan from "./pages/lsp/pelanggan";
@@ -47,6 +48,14 @@ const App: React.FC = () => {
           element={
             <DefaultTemplate>
               <Index />
+            </DefaultTemplate>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <DefaultTemplate>
+              <About />
             </DefaultTemplate>
           }
         />

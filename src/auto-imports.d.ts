@@ -7,6 +7,7 @@
 export {}
 declare global {
   const AnnotationIcon: typeof import('@heroicons/react/solid')['AnnotationIcon']
+  const ArrowRightIcon: typeof import('@heroicons/react/solid')['ArrowRightIcon']
   const BellIcon: typeof import('@heroicons/react/solid')['BellIcon']
   const CalculatorIcon: typeof import('@heroicons/react/solid')['CalculatorIcon']
   const CashIcon: typeof import('@heroicons/react/solid')['CashIcon']
@@ -26,6 +27,7 @@ declare global {
   const MailIcon: typeof import('@heroicons/react/solid')['MailIcon']
   const Menu: typeof import('@headlessui/react')['Menu']
   const MenuIcon: typeof import('@heroicons/react/solid')['MenuIcon']
+  const NewspaperIcon: typeof import('@heroicons/react/solid')['NewspaperIcon']
   const PencilAltIcon: typeof import('@heroicons/react/solid')['PencilAltIcon']
   const PhoneIcon: typeof import('@heroicons/react/solid')['PhoneIcon']
   const Popover: typeof import('@headlessui/react')['Popover']

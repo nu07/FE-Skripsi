@@ -1,4 +1,5 @@
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { NewspaperIcon } from "@heroicons/react/solid";
 
 const features = [
   {
@@ -78,7 +79,54 @@ const metrics = [
   },
 ];
 
-function index() {
+const featuredNews = {
+  date: "21, April 2025",
+  title:
+    "Kulit Buah Naga Jadi Camilan Sehat, Kolaborasi Unpak dan Filipina di Kebun Merdesa",
+  excerpt:
+    "Dosen dan mahasiswa FMIPA Universitas Pakuan (Unpak) dalam program Pengabdian kepada Masyarakat (PKM) Internasional yang berlangsung di Kebun Merdesa, Bogor.",
+  image:
+    "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1080&auto=format&fit=crop",
+};
+
+const recentNews = [
+  {
+    id: 1,
+    title:
+      "Universitas Pakuan Gelar Halal bi Halal, Rektor: Satukan Hati, Kuatkan Ukhuwah",
+    image:
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1080&auto=format&fit=crop",
+  },
+  {
+    id: 2,
+    title:
+      "Konferensi Kepemimpinan Mahasiswa Unpak: Membangun Gerakan Bersatu untuk Perubahan",
+    image:
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1080&auto=format&fit=crop",
+  },
+  {
+    id: 3,
+    title:
+      "Transformasi Digital UMKM Desa: Tingkatkan Daya Saing dengan SEO dan Marketing",
+    image:
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1080&auto=format&fit=crop",
+  },
+  {
+    id: 4,
+    title:
+      "Inovasi SAVERIS: Solusi QR Code untuk Distribusi Bantuan Sosial di Desa Sukamakmur",
+    image:
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1080&auto=format&fit=crop",
+  },
+];
+
+function Index() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 5; // Ganti dengan jumlah halaman total yang sesuai
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <main>
       {/* Hero section */}
@@ -171,123 +219,102 @@ function index() {
 
       {/* Alternating Feature Sections */}
       <div className="relative pt-16 pb-32 overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-gray-100"
-        />
-        <div className="relative">
-          <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24">
-            <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-16 lg:max-w-none lg:mx-0 lg:px-0">
-              <div>
-                <div>
-                  <span className="h-12 w-12 rounded-md flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600">
-                    <InboxIcon
-                      className="h-6 w-6 text-white"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </div>
-                <div className="mt-6">
-                  <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
-                    Stay on top of customer support
-                  </h2>
-                  <p className="mt-4 text-lg text-gray-500">
-                    Semper curabitur ullamcorper posuere nunc sed. Ornare
-                    iaculis bibendum malesuada faucibus lacinia porttitor.
-                    Pulvinar laoreet sagittis viverra duis. In venenatis sem
-                    arcu pretium pharetra at. Lectus viverra dui tellus ornare
-                    pharetra.
-                  </p>
-                  <div className="mt-6">
-                    <a
-                      href="#"
-                      className="inline-flex bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white hover:from-purple-700 hover:to-indigo-700"
-                    >
-                      Get started
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-8 border-t border-gray-200 pt-6">
-                <blockquote>
-                  <div>
-                    <p className="text-base text-gray-500">
-                      &ldquo;Cras velit quis eros eget rhoncus lacus ultrices
-                      sed diam. Sit orci risus aenean curabitur donec aliquet.
-                      Mi venenatis in euismod ut.&rdquo;
-                    </p>
-                  </div>
-                  <footer className="mt-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="flex-shrink-0">
-                        <img
-                          className="h-6 w-6 rounded-full"
-                          src="https://images.unsplash.com/photo-1736635929162-afc982d54a32?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                          alt=""
-                        />
-                      </div>
-                      <div className="text-base font-medium text-gray-700">
-                        Marcia Hill, Digital Marketing Manager
-                      </div>
-                    </div>
-                  </footer>
-                </blockquote>
-              </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="flex items-center mb-10">
+            <NewspaperIcon
+              className="h-8 w-8 text-blue-500 mr-3"
+              aria-hidden="true"
+            />
+            <h2 className="text-3xl font-bold text-gray-900">Rilis Berita</h2>
+          </div>
+
+          {/* Featured News */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 border rounded-xl overflow-hidden shadow-lg">
+            <div className="relative h-[400px] lg:h-auto">
+              <img
+                className="absolute inset-0 h-full w-full object-cover"
+                src={featuredNews.image || "/placeholder.svg"}
+                alt={featuredNews.title}
+              />
             </div>
-            <div className="mt-12 sm:mt-16 lg:mt-0">
-              <div className="pl-4 -mr-48 sm:pl-6 md:-mr-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
-                <img
-                  className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
-                  src="https://images.unsplash.com/photo-1736635929162-afc982d54a32?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="Inbox user interface"
-                />
-              </div>
+            <div className="p-6 flex flex-col justify-center">
+              <p className="text-sm font-medium text-gray-500 mb-2">
+                {featuredNews.date}
+              </p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                {featuredNews.title}
+              </h3>
+              <p className="text-gray-600 mb-6">{featuredNews.excerpt}</p>
+              <Link
+                to="#"
+                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 w-fit"
+              >
+                Baca Selengkapnya
+              </Link>
             </div>
           </div>
-        </div>
-        <div className="mt-24">
-          <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24">
-            <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-32 lg:max-w-none lg:mx-0 lg:px-0 lg:col-start-2">
-              <div>
-                <div>
-                  <span className="h-12 w-12 rounded-md flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600">
-                    <SparklesIcon
-                      className="h-6 w-6 text-white"
-                      aria-hidden="true"
-                    />
-                  </span>
+
+          {/* Recent News Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            {recentNews.map((news) => (
+              <a
+                key={news.id}
+                className="border rounded-lg overflow-hidden hover:cursor-pointer hover:shadow-lg transition-shadow duration-300"
+              >
+                <div className="h-48 relative">
+                  <img
+                    className="absolute inset-0 h-full w-full object-cover"
+                    src={news.image || "/placeholder.svg"}
+                    alt={news.title}
+                  />
                 </div>
-                <div className="mt-6">
-                  <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
-                    Better understand your customers
-                  </h2>
-                  <p className="mt-4 text-lg text-gray-500">
-                    Semper curabitur ullamcorper posuere nunc sed. Ornare
-                    iaculis bibendum malesuada faucibus lacinia porttitor.
-                    Pulvinar laoreet sagittis viverra duis. In venenatis sem
-                    arcu pretium pharetra at. Lectus viverra dui tellus ornare
-                    pharetra.
-                  </p>
-                  <div className="mt-6">
-                    <a
-                      href="#"
-                      className="inline-flex bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white hover:from-purple-700 hover:to-indigo-700"
-                    >
-                      Get started
-                    </a>
-                  </div>
+                <div className="p-4">
+                  <h3 className="font-medium text-gray-900 mb-2 line-clamp-3">
+                    {news.title}
+                  </h3>
                 </div>
-              </div>
-            </div>
-            <div className="mt-12 sm:mt-16 lg:mt-0 lg:col-start-1">
-              <div className="pr-4 -ml-48 sm:pr-6 md:-ml-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
-                <img
-                  className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none"
-                  src="https://images.unsplash.com/photo-1736635929162-afc982d54a32?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="Customer profile user interface"
-                />
-              </div>
-            </div>
+              </a>
+            ))}
+          </div>
+
+          {/* News Index Button */}
+          <div className="mt-8 flex justify-center items-center space-x-2">
+            <button
+              className={`px-4 py-2 rounded-md ${
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              &larr; Sebelumnya
+            </button>
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index}
+                className={`px-4 py-2 rounded-md ${
+                  currentPage === index + 1
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button
+              className={`px-4 py-2 rounded-md ${
+                currentPage === totalPages
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Selanjutnya &rarr;
+            </button>
           </div>
         </div>
       </div>
@@ -410,4 +437,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;
