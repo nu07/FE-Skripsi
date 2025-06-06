@@ -52,26 +52,47 @@ const solutions = [
 
 function NavbarHome() {
   return (
-    <div className="bg-white">
+    <div className="bg-white sticky top-0 z-50 shadow">
       <header>
         <Popover className="relative bg-white">
           <div className="flex justify-between items-center max-w-7xl mx-auto px-4 py-6 sm:px-6 md:justify-start md:space-x-10 lg:px-8">
             <div className="flex justify-start lg:w-0 lg:flex-1">
-              <a href="#">
-                <span className="sr-only">Workflow</span>
+              <Link to="/" className="flex items-center gap-3">
                 <img
                   className="h-8 w-auto sm:h-10"
                   src="/images/logo.png"
                   alt=""
                 />
+                <div className="flex flex-col text-sm font-semibold text-gray-900">
+                  <span className="uppercase text-xl font-medium text-purple-500">
+                    universitas pakuan
+                  </span>
+                  <span className="text-xs capitalize font-medium text-green-500">
+                    unggul, mandiri & berkarakter
+                  </span>
+                </div>
+              </Link>
+            </div>
+            <div className="hidden md:flex space-x-10">
+              <Link
+                to="/"
+                className="text-base font-medium text-gray-500 hover:text-gray-900"
+              >
+                Home
+              </Link>
+              <Link
+                to="/about"
+                className="text-base font-medium text-gray-500 hover:text-gray-900"
+              >
+                About
+              </Link>
+              <a
+                href="#news"
+                className="text-base font-medium text-gray-500 hover:text-gray-900"
+              >
+                News
               </a>
             </div>
-            <Link
-              to="/"
-              className="text-base font-medium text-gray-500 hover:text-gray-900"
-            >
-              Home
-            </Link>
 
             <div className="-mr-2 -my-2 md:hidden">
               <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -79,7 +100,7 @@ function NavbarHome() {
                 <MenuIcon className="h-6 w-6" aria-hidden="true" />
               </Popover.Button>
             </div>
-            <Popover.Group as="nav" className="hidden md:flex space-x-10">
+            {/* <Popover.Group as="nav" className="hidden md:flex space-x-10">
               <Popover className="relative">
                 {({ open }) => (
                   <>
@@ -147,7 +168,7 @@ function NavbarHome() {
               >
                 LSP part 2
               </Link>
-            </Popover.Group>
+            </Popover.Group> */}
             {/* <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
               <a
                 href="#"
