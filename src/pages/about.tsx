@@ -1,6 +1,6 @@
 function About() {
   return (
-    <div id="about" className="relative bg-white ">
+    <div id="about" className="relative bg-white mt-5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-rows-2  lg:items-center">
           {/* Gambar About */}
