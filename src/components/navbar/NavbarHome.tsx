@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(" ");
-}
+// function classNames(...classes: any[]) {
+//   return classes.filter(Boolean).join(" ");
+// }
 
 const solutions = [
   {
