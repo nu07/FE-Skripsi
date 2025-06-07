@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@headlessui/react": "^2.2.0",
+    "@headlessui/react": "^2.2.4",
     "@heroicons/react": "v1",
     "@mui/x-date-pickers": "^7.23.0",
     "@redux-devtools/extension": "^3.3.0",
