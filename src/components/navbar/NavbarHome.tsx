@@ -52,28 +52,28 @@ const solutions = [
 
 function NavbarHome() {
   return (
-    <div className="bg-white sticky top-0 z-50 shadow">
+    <div className="sticky top-0 z-50 bg-white shadow">
       <header>
         <Popover className="relative bg-white">
-          <div className="flex justify-between items-center max-w-7xl mx-auto px-4 py-6 sm:px-6 md:justify-start md:space-x-10 lg:px-8">
+          <div className="flex items-center justify-between px-4 py-6 mx-auto max-w-7xl sm:px-6 md:justify-start md:space-x-10 lg:px-8">
             <div className="flex justify-start lg:w-0 lg:flex-1">
               <Link to="/" className="flex items-center gap-3">
                 <img
-                  className="h-8 w-auto sm:h-10"
+                  className="w-auto h-8 sm:h-10"
                   src="/images/logo.png"
                   alt=""
                 />
                 <div className="flex flex-col text-sm font-semibold text-gray-900">
-                  <span className="uppercase text-xl font-medium text-purple-500">
+                  <span className="text-xl font-medium text-purple-500 uppercase">
                     universitas pakuan
                   </span>
-                  <span className="text-xs capitalize font-medium text-green-500">
+                  <span className="text-xs font-medium text-green-500 capitalize">
                     unggul, mandiri & berkarakter
                   </span>
                 </div>
               </Link>
             </div>
-            <div className="hidden md:flex space-x-10">
+            <div className="hidden space-x-10 md:flex">
               <Link
                 to="/"
                 className="text-base font-medium text-gray-500 hover:text-gray-900"
@@ -86,21 +86,21 @@ function NavbarHome() {
               >
                 About
               </Link>
-              <a
-                href="#news"
+              <Link
+                to="/news"
                 className="text-base font-medium text-gray-500 hover:text-gray-900"
               >
                 News
-              </a>
+              </Link>
             </div>
 
-            <div className="-mr-2 -my-2 md:hidden">
-              <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+            <div className="-my-2 -mr-2 md:hidden">
+              <Popover.Button className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                 <span className="sr-only">Open menu</span>
-                <MenuIcon className="h-6 w-6" aria-hidden="true" />
+                <MenuIcon className="w-6 h-6" aria-hidden="true" />
               </Popover.Button>
             </div>
-            {/* <Popover.Group as="nav" className="hidden md:flex space-x-10">
+            {/* <Popover.Group as="nav" className="hidden space-x-10 md:flex">
               <Popover className="relative">
                 {({ open }) => (
                   <>
@@ -129,18 +129,18 @@ function NavbarHome() {
                       leaveFrom="opacity-100 translate-y-0"
                       leaveTo="opacity-0 translate-y-1"
                     >
-                      <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform w-screen max-w-md lg:max-w-2xl lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
-                        <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                          <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 lg:grid-cols-2">
+                      <Popover.Panel className="absolute z-10 w-screen max-w-md mt-3 -ml-4 transform lg:max-w-2xl lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
+                        <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                          <div className="relative grid gap-6 px-5 py-6 bg-white sm:gap-8 sm:p-8 lg:grid-cols-2">
                             {solutions.map((item) => (
                               <Link
                                 key={item.name}
                                 to={item.href}
-                                className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
+                                className="flex items-start p-3 -m-3 rounded-lg hover:bg-gray-50"
                               >
-                                <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 text-white sm:h-12 sm:w-12">
+                                <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 sm:h-12 sm:w-12">
                                   <item.icon
-                                    className="h-6 w-6"
+                                    className="w-6 h-6"
                                     aria-hidden="true"
                                   />
                                 </div>
@@ -169,16 +169,16 @@ function NavbarHome() {
                 LSP part 2
               </Link>
             </Popover.Group> */}
-            {/* <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+            {/* <div className="items-center justify-end hidden md:flex md:flex-1 lg:w-0">
               <a
                 href="#"
-                className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+                className="text-base font-medium text-gray-500 whitespace-nowrap hover:text-gray-900"
               >
                 Sign in
               </a>
               <a
                 href="#"
-                className="ml-8 whitespace-nowrap inline-flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white hover:from-purple-700 hover:to-indigo-700"
+                className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white border border-transparent rounded-md shadow-sm whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700"
               >
                 Sign up
               </a>
@@ -196,22 +196,22 @@ function NavbarHome() {
           >
             <Popover.Panel
               focus
-              className="absolute z-30 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden"
+              className="absolute inset-x-0 top-0 z-30 p-2 transition origin-top-right transform md:hidden"
             >
-              <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
-                <div className="pt-5 pb-6 px-5">
+              <div className="bg-white divide-y-2 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 divide-gray-50">
+                <div className="px-5 pt-5 pb-6">
                   <div className="flex items-center justify-between">
                     <div>
                       <img
-                        className="h-8 w-auto"
+                        className="w-auto h-8"
                         src="/images/logo.png"
                         alt="Workflow"
                       />
                     </div>
                     <div className="-mr-2">
-                      <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                      <Popover.Button className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                         <span className="sr-only">Close menu</span>
-                        <XIcon className="h-6 w-6" aria-hidden="true" />
+                        <XIcon className="w-6 h-6" aria-hidden="true" />
                       </Popover.Button>
                     </div>
                   </div>
@@ -221,10 +221,10 @@ function NavbarHome() {
                         <Link
                           key={item.name}
                           to={item.href}
-                          className="-m-3 p-3 flex items-center rounded-lg hover:bg-gray-50"
+                          className="flex items-center p-3 -m-3 rounded-lg hover:bg-gray-50"
                         >
-                          <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
-                            <item.icon className="h-6 w-6" aria-hidden="true" />
+                          <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white rounded-md bg-gradient-to-r from-purple-600 to-indigo-600">
+                            <item.icon className="w-6 h-6" aria-hidden="true" />
                           </div>
                           <div className="ml-4 text-base font-medium text-gray-900">
                             {item.name}
@@ -234,7 +234,7 @@ function NavbarHome() {
                     </nav>
                   </div>
                 </div>
-                <div className="py-6 px-5">
+                <div className="px-5 py-6">
                   <div className="grid grid-cols-2 gap-4">
                     <Link
                       to="/lsp2"
@@ -246,11 +246,11 @@ function NavbarHome() {
                   <div className="mt-6">
                     <a
                       href="#"
-                      className="w-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white hover:from-purple-700 hover:to-indigo-700"
+                      className="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700"
                     >
                       Sign up
                     </a>
-                    <p className="mt-6 text-center text-base font-medium text-gray-500">
+                    <p className="mt-6 text-base font-medium text-center text-gray-500">
                       Existing customer?
                       <a href="#" className="text-gray-900">
                         Sign in
