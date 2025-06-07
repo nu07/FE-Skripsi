@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import "@/App.css";
 import DefaultTemplate from "@/layout/DefaultTemplate";
-import ProtectedRoute from "./layout/protectedPages";
 import Index from "@/pages/index";
 import About from "@/pages/about";
 import Login from "@/pages/login";
