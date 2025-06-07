@@ -1,6 +1,6 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import authStore from "@/store/loginStore";
-import Navbar from "@/components/navbar/NavbarDashboard";
+import Sidebar from "@/components/navbar/SidebarAuth";
 import { jwtDecode } from "jwt-decode";
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -23,8 +23,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   return (
     <>
-      <Navbar />
-      {children}
+      <Sidebar customContent={children} />
     </>
   );
 };

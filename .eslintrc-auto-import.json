@@ -55,6 +55,9 @@
     "ExclamationIcon": true,
     "ArrowRightIcon": true,
     "NewspaperIcon": true,
-    "LockClosedIcon": true
+    "LockClosedIcon": true,
+    "CalendarIcon": true,
+    "FolderIcon": true,
+    "HomeIcon": true
   }
 }
