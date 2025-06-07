@@ -7,7 +7,8 @@ import {
 import "@/App.css";
 import DefaultTemplate from "@/layout/DefaultTemplate";
 import Index from "@/pages/index";
-import About from "./pages/about";
+import About from "@/pages/about";
+import Login from "@/pages/login";
 // import authStore from "@/store/loginStore";
 
 const App: React.FC = () => {
@@ -15,11 +16,6 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* <Route
-          path="/login"
-          element={isLogin ? <Navigate to="/" /> : <Login />}
-        /> */}
-        {/* <Route path="/register" element={<Register />} /> */}
         <Route
           path="/"
           element={
@@ -36,15 +32,14 @@ const App: React.FC = () => {
             </DefaultTemplate>
           }
         />
-
-        {/* <Route
-          path="/history-booking"
+        <Route
+          path="/login"
           element={
-            <ProtectedRoute>
-              <HistoryBooking />
-            </ProtectedRoute>
+            <DefaultTemplate>
+              <Login />
+            </DefaultTemplate>
           }
-        /> */}
+        />
       </Routes>
     </Router>
   );

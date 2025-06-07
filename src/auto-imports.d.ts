@@ -24,6 +24,7 @@ declare global {
   const ExclamationIcon: typeof import('@heroicons/react/solid')['ExclamationIcon']
   const HeartIcon: typeof import('@heroicons/react/solid')['HeartIcon']
   const InboxIcon: typeof import('@heroicons/react/solid')['InboxIcon']
+  const LockClosedIcon: typeof import('@heroicons/react/solid')['LockClosedIcon']
   const MailIcon: typeof import('@heroicons/react/solid')['MailIcon']
   const Menu: typeof import('@headlessui/react')['Menu']
   const MenuIcon: typeof import('@heroicons/react/solid')['MenuIcon']

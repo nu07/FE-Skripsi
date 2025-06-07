@@ -54,6 +54,7 @@
     "CreditCardIcon": true,
     "ExclamationIcon": true,
     "ArrowRightIcon": true,
-    "NewspaperIcon": true
+    "NewspaperIcon": true,
+    "LockClosedIcon": true
   }
 }
