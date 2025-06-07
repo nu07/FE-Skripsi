@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import authStore from "@/store/loginStore";
 
 function classNames(...classes: string[]) {
@@ -11,7 +11,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ customContent }: NavbarProps) {
-  const location = useLocation();
+  // const location = useLocation();
   let navigate = useNavigate();
   const { data } = authStore();
   const { reset } = authStore();
@@ -204,9 +204,9 @@ export default function Navbar({ customContent }: NavbarProps) {
                       alt=""
                     />
                   </div>
-                  <div className="ml-3">
+                  <div className="ml-3" onClick={handleLogout}>
                     <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                      {data.nama}
+                      {data?.nama}
                     </p>
                     <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
                       View profile
