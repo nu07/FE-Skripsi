@@ -1,22 +1,25 @@
 import Axios from "@/API/axios";
 import authStore from "@/store/loginStore";
+import { useNavigate } from "react-router-dom";
 
 export default function Example() {
+  const navigate = useNavigate();
   const { setIsLogin, setData, setToken } = authStore();
   const [formLogin, setFormLogin] = useState({
-    username: "ilfan123123",
+    email: "ilfan123123",
     password: "admin123",
   });
 
   const SubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await Axios.post("/login", formLogin);
+      const res = await Axios.post("/auth/login", formLogin);
       console.log(res.data.data);
       setData(res.data.data);
       setToken(res.data.token);
       setIsLogin(true);
       localStorage.setItem("jwttoken", res.data.token);
+      navigate("/dashboard");
     } catch (err) {
       console.error(err);
     }
@@ -39,24 +42,24 @@ export default function Example() {
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="username" className="sr-only">
-                Username
+              <label htmlFor="email" className="sr-only">
+                email
               </label>
               <input
-                id="username"
-                name="username"
+                id="email"
+                name="email"
                 type="text"
-                autoComplete="username"
+                autoComplete="email"
                 required
-                value={formLogin.username}
+                value={formLogin.email}
                 onChange={(e) =>
                   setFormLogin({
                     ...formLogin,
-                    username: e.target.value,
+                    email: e.target.value,
                   })
                 }
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Username"
+                placeholder="email"
               />
             </div>
             <div>
