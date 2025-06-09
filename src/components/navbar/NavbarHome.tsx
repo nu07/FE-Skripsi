@@ -7,46 +7,22 @@ import { Link } from "react-router-dom";
 
 const solutions = [
   {
-    name: "Pelanggan",
-    description: "Pembayaran Pelanggan",
-    href: "/pelanggan",
+    name: "Home",
+    description: "Home",
+    href: "/",
     icon: UsersIcon,
   },
   {
-    name: "Level",
-    description: "Role Level User",
-    href: "/level",
+    name: "About",
+    description: "About",
+    href: "/about",
     icon: UserGroupIcon,
   },
   {
-    name: "Tarif",
-    description: "Tarif Pembayaran",
-    href: "/tarif",
+    name: "News",
+    description: "News",
+    href: "/news",
     icon: CashIcon,
-  },
-  {
-    name: "User",
-    description: "User Data",
-    href: "/user",
-    icon: UsersIcon,
-  },
-  {
-    name: "Penggunaan",
-    description: "Data Penggunaan",
-    href: "/penggunaan",
-    icon: ChartBarIcon,
-  },
-  {
-    name: "Tagihan",
-    description: "Data Tagihan",
-    href: "/tagihan",
-    icon: CalculatorIcon,
-  },
-  {
-    name: "Pembayaran",
-    description: "Data Pembayaran",
-    href: "/pembayaran",
-    icon: CreditCardIcon,
   },
 ];
 
@@ -235,27 +211,19 @@ function NavbarHome() {
                   </div>
                 </div>
                 <div className="px-5 py-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <Link
-                      to="/lsp2"
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
-                      LSP part 2
-                    </Link>
-                  </div>
                   <div className="mt-6">
-                    <a
-                      href="#"
+                    <Link
+                      to="/login"
                       className="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700"
                     >
-                      Sign up
-                    </a>
-                    <p className="mt-6 text-base font-medium text-center text-gray-500">
+                      Sign in
+                    </Link>
+                    {/* <p className="mt-6 text-base font-medium text-center text-gray-500">
                       Existing customer?
                       <a href="#" className="text-gray-900">
                         Sign in
                       </a>
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>
