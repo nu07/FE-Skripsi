@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 // function classNames(...classes: any[]) {
@@ -27,6 +27,7 @@ const solutions = [
 ];
 
 function NavbarHome() {
+  const [isOpenNav, setIsOpenNav] = useState(false);
   return (
     <div className="sticky top-0 z-50 bg-white shadow">
       <header>
@@ -71,7 +72,10 @@ function NavbarHome() {
             </div>
 
             <div className="-my-2 -mr-2 md:hidden">
-              <Popover.Button className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+              <Popover.Button
+                onClick={() => setIsOpenNav(true)}
+                className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              >
                 <span className="sr-only">Open menu</span>
                 <MenuIcon className="w-6 h-6" aria-hidden="true" />
               </Popover.Button>
@@ -169,6 +173,7 @@ function NavbarHome() {
             leave="duration-100 ease-in"
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
+            show={isOpenNav}
           >
             <Popover.Panel
               focus
@@ -185,7 +190,10 @@ function NavbarHome() {
                       />
                     </div>
                     <div className="-mr-2">
-                      <Popover.Button className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                      <Popover.Button
+                        onClick={() => setIsOpenNav(false)}
+                        className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                      >
                         <span className="sr-only">Close menu</span>
                         <XIcon className="w-6 h-6" aria-hidden="true" />
                       </Popover.Button>
@@ -198,6 +206,7 @@ function NavbarHome() {
                           key={item.name}
                           to={item.href}
                           className="flex items-center p-3 -m-3 rounded-lg hover:bg-gray-50"
+                          onClick={() => setIsOpenNav(false)}
                         >
                           <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white rounded-md bg-gradient-to-r from-purple-600 to-indigo-600">
                             <item.icon className="w-6 h-6" aria-hidden="true" />
@@ -211,7 +220,7 @@ function NavbarHome() {
                   </div>
                 </div>
                 <div className="px-5 py-6">
-                  <div className="mt-6">
+                  <div className="mt-6" onClick={() => setIsOpenNav(false)}>
                     <Link
                       to="/login"
                       className="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700"
