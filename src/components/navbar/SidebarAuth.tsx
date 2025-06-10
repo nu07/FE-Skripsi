@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import authStore from "@/store/loginStore";
 
 function classNames(...classes: string[]) {
@@ -19,7 +19,7 @@ export default function Navbar({ customContent }: NavbarProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigation = [
     { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-    { name: "Team", href: "#", icon: UsersIcon, current: false },
+    { name: "News", href: "/admin-news", icon: UsersIcon, current: false },
     { name: "Projects", href: "#", icon: FolderIcon, current: false },
     { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
     { name: "Documents", href: "#", icon: InboxIcon, current: false },
@@ -102,9 +102,9 @@ export default function Navbar({ customContent }: NavbarProps) {
                   </div>
                   <nav className="mt-5 px-2 space-y-1">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current
                             ? "bg-gray-100 text-gray-900"
@@ -122,7 +122,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                           aria-hidden="true"
                         />
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </nav>
                 </div>
@@ -170,9 +170,9 @@ export default function Navbar({ customContent }: NavbarProps) {
               </div>
               <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     className={classNames(
                       item.current
                         ? "bg-gray-100 text-gray-900"
@@ -190,7 +190,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                       aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </div>
@@ -229,12 +229,8 @@ export default function Navbar({ customContent }: NavbarProps) {
             </button>
           </div>
           <main className="flex-1">
-            <div className="px-4">
-              <div className="">
-                <h1 className="text-2xl font-semibold text-gray-900">
-                  Dashboard
-                </h1>
-              </div>
+            <div className="p-4">
+              {/* <div className=""></div> */}
               {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8"> */}
               {/* Replace with your content */}
               {/* <div className="py-4">

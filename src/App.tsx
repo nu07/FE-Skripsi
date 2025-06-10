@@ -10,8 +10,9 @@ import Index from "@/pages/index";
 import About from "@/pages/about";
 import Login from "@/pages/login";
 import News from "@/pages/news";
-import NewsDetail from "./pages/newsDetail";
+import NewsDetail from "@/pages/newsDetail";
 import ProtectedRoute from "./layout/protectedPages";
+import NewsAdmin from "@/pages/admin/news";
 // import authStore from "@/store/loginStore";
 
 const App: React.FC = () => {
@@ -65,6 +66,15 @@ const App: React.FC = () => {
           element={
             <ProtectedRoute>
               <h1>test</h1>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin-news"
+          element={
+            <ProtectedRoute>
+              <NewsAdmin />
             </ProtectedRoute>
           }
         />

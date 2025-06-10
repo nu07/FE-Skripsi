@@ -58,6 +58,11 @@
     "LockClosedIcon": true,
     "CalendarIcon": true,
     "FolderIcon": true,
-    "HomeIcon": true
+    "HomeIcon": true,
+    "DocumentIcon": true,
+    "DocumentTextIcon": true,
+    "DocumentRemoveIcon": true,
+    "PaperClipIcon": true,
+    "ChevronLeftIcon": true
   }
 }
