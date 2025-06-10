@@ -136,12 +136,12 @@ export default function Navbar({ customContent }: NavbarProps) {
                           alt=""
                         />
                       </div>
-                      <div className="ml-3">
+                      <div className="ml-3" onClick={handleLogout}>
                         <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
                           test
                         </p>
                         <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">
-                          View profile
+                          Logout Sementara
                         </p>
                       </div>
                     </div>
@@ -209,7 +209,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                       {data?.nama}
                     </p>
                     <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-                      View profile
+                      Logout Sementara
                     </p>
                   </div>
                 </div>
