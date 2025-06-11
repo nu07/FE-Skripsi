@@ -1,9 +1,6 @@
+import authStore from "@/store/loginStore";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
-
-// function classNames(...classes: any[]) {
-//   return classes.filter(Boolean).join(" ");
-// }
 
 const solutions = [
   {
@@ -13,20 +10,21 @@ const solutions = [
     icon: UsersIcon,
   },
   {
-    name: "About",
-    description: "About",
-    href: "/about",
-    icon: UserGroupIcon,
-  },
-  {
     name: "News",
     description: "News",
     href: "/news",
     icon: CashIcon,
   },
+  {
+    name: "About",
+    description: "About",
+    href: "/about",
+    icon: UserGroupIcon,
+  },
 ];
 
 function NavbarHome() {
+  const { isLogin } = authStore();
   const [isOpenNav, setIsOpenNav] = useState(false);
   return (
     <div className="sticky top-0 z-50 bg-white shadow">
@@ -51,24 +49,14 @@ function NavbarHome() {
               </Link>
             </div>
             <div className="hidden space-x-10 md:flex">
-              <Link
-                to="/"
-                className="text-base font-medium text-gray-500 hover:text-gray-900"
-              >
-                Home
-              </Link>
-              <Link
-                to="/about"
-                className="text-base font-medium text-gray-500 hover:text-gray-900"
-              >
-                About
-              </Link>
-              <Link
-                to="/news"
-                className="text-base font-medium text-gray-500 hover:text-gray-900"
-              >
-                News
-              </Link>
+              {solutions.map((data) => (
+                <Link
+                  to={data.href}
+                  className="text-base font-medium text-gray-500 hover:text-gray-900"
+                >
+                  {data.name}
+                </Link>
+              ))}
             </div>
 
             <div className="-my-2 -mr-2 md:hidden">
@@ -149,20 +137,21 @@ function NavbarHome() {
                 LSP part 2
               </Link>
             </Popover.Group> */}
-            {/* <div className="items-center justify-end hidden md:flex md:flex-1 lg:w-0">
-              <a
-                href="#"
-                className="text-base font-medium text-gray-500 whitespace-nowrap hover:text-gray-900"
-              >
-                Sign in
-              </a>
-              <a
-                href="#"
+            <div className="items-center justify-end hidden md:flex md:flex-1 lg:w-0">
+              {isLogin ? (<Link
+                to="/dashboard"
                 className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white border border-transparent rounded-md shadow-sm whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700"
               >
-                Sign up
-              </a>
-            </div> */}
+                Dashboard
+              </Link>) : (<Link
+                to="/login"
+                className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white border border-transparent rounded-md shadow-sm whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700"
+              >
+                Login
+              </Link>)}
+
+
+            </div>
           </div>
 
           <Transition
@@ -221,12 +210,19 @@ function NavbarHome() {
                 </div>
                 <div className="px-5 py-6">
                   <div className="mt-6" onClick={() => setIsOpenNav(false)}>
-                    <Link
+                    {isLogin ? (    <Link
+                      to="/dashboard"
+                      className="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700"
+                    >
+                      Dashboard
+                    </Link>) : (    <Link
                       to="/login"
                       className="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700"
                     >
                       Sign in
-                    </Link>
+                    </Link>)}
+                    
+                
                     {/* <p className="mt-6 text-base font-medium text-center text-gray-500">
                       Existing customer?
                       <a href="#" className="text-gray-900">
