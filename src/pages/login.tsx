@@ -32,7 +32,6 @@ export default function Example() {
       });
       navigate("/dashboard");
     } catch (err: any) {
-      console.log(err?.response?.data?.message);
       toast.error(err?.response?.data?.message ?? "Login Gagal!", {
         position: "top-right",
         autoClose: 5000,

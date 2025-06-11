@@ -65,7 +65,6 @@ function NewsAdmin() {
         ...prev,
         isLoading: false,
       }));
-      console.log(pagination);
     } catch (e) {
       console.error(e);
       setPagination((prev) => ({

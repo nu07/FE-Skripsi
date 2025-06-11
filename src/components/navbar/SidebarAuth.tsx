@@ -11,11 +11,11 @@ interface NavbarProps {
 }
 
 export default function Navbar({ customContent }: NavbarProps) {
+  const [isOpenNav, setIsOpenNav] = useState(false);
   const location = useLocation();
   let navigate = useNavigate();
   const { data } = authStore();
   const { reset } = authStore();
-  console.log(location.pathname);
 
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -108,6 +108,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                       <Link
                         key={item.name}
                         to={item.href}
+                        onClick={() => setSidebarOpen(false)}
                         className={classNames(
                           item.href === location.pathname
                             ? "bg-gray-100 text-gray-900"

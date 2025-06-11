@@ -11,7 +11,6 @@ interface modalCreateNews {
 }
 
 export default function ModalCreateNews({ isOpen, setIsOpen, data, setData, submitData }: modalCreateNews) {
-   console.log(data)
     return (
         <>
             <Dialog
