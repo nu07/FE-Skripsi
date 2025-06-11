@@ -1,6 +1,7 @@
 import Axios from "@/API/axios";
 import authStore from "@/store/loginStore";
 import { useNavigate } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
 
 export default function Example() {
   const navigate = useNavigate();
@@ -14,14 +15,35 @@ export default function Example() {
     e.preventDefault();
     try {
       const res = await Axios.post("/auth/login", formLogin);
-      console.log(res.data.data);
       setData(res.data.data);
       setToken(res.data.token);
       setIsLogin(true);
       localStorage.setItem("jwttoken", res.data.token);
+      toast.success("Login Berhasil!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
       navigate("/dashboard");
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.log(err?.response?.data?.message);
+      toast.error(err?.response?.data?.message ?? "Login Gagal!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
     }
   };
 
