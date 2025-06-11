@@ -11,7 +11,6 @@ interface NavbarProps {
 }
 
 export default function Navbar({ customContent }: NavbarProps) {
-  const [isOpenNav, setIsOpenNav] = useState(false);
   const location = useLocation();
   let navigate = useNavigate();
   const { data } = authStore();
