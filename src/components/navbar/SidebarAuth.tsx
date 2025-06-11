@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation  } from "react-router-dom";
 import authStore from "@/store/loginStore";
 
 function classNames(...classes: string[]) {
@@ -11,15 +11,17 @@ interface NavbarProps {
 }
 
 export default function Navbar({ customContent }: NavbarProps) {
-  // const location = useLocation();
+  const location = useLocation();
   let navigate = useNavigate();
   const { data } = authStore();
   const { reset } = authStore();
+  console.log(location.pathname);
+
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigation = [
-    { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-    { name: "News", href: "/admin-news", icon: UsersIcon, current: false },
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+    { name: "News", href: "/admin-news", icon: NewspaperIcon, current: false },
     { name: "Projects", href: "#", icon: FolderIcon, current: false },
     { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
     { name: "Documents", href: "#", icon: InboxIcon, current: false },
@@ -57,7 +59,7 @@ export default function Navbar({ customContent }: NavbarProps) {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
+              <div className="fixed inset-0 bg-purple-400 bg-opacity-75" />
             </Transition.Child>
             <Transition.Child
               as={Fragment}
@@ -68,7 +70,7 @@ export default function Navbar({ customContent }: NavbarProps) {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
+              <div className="relative flex-1 flex flex-col max-w-xs w-full bg-gradient-to-b from-purple-800  to-purple-500">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -99,6 +101,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                       src="./images/logo.png"
                       alt="Univ Pakuan"
                     />
+                      <h1 className="pl-2 text-white">Universitas Pakuan</h1>
                   </div>
                   <nav className="mt-5 px-2 space-y-1">
                     {navigation.map((item) => (
@@ -106,17 +109,17 @@ export default function Navbar({ customContent }: NavbarProps) {
                         key={item.name}
                         to={item.href}
                         className={classNames(
-                          item.current
+                          item.href === location.pathname
                             ? "bg-gray-100 text-gray-900"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                            : "text-gray-100 hover:bg-gray-50 hover:text-gray-900",
                           "group flex items-center px-2 py-2 text-base font-medium rounded-md"
                         )}
                       >
                         <item.icon
                           className={classNames(
-                            item.current
+                           item.href === location.pathname
                               ? "text-gray-500"
-                              : "text-gray-400 group-hover:text-gray-500",
+                              : "text-gray-100 group-hover:text-gray-500",
                             "mr-4 flex-shrink-0 h-6 w-6"
                           )}
                           aria-hidden="true"
@@ -137,10 +140,10 @@ export default function Navbar({ customContent }: NavbarProps) {
                         />
                       </div>
                       <div className="ml-3" onClick={handleLogout}>
-                        <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
-                          test
+                        <p className="text-base font-medium text-gray-100 group-hover:text-gray-900">
+                            {data?.nama}
                         </p>
-                        <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">
+                        <p className="text-sm font-medium text-gray-100 group-hover:text-gray-700">
                           Logout Sementara
                         </p>
                       </div>
@@ -156,11 +159,11 @@ export default function Navbar({ customContent }: NavbarProps) {
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
+        <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 text-white">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white">
-            <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-              <div className="flex items-center flex-shrink-0 px-4">
+          <div className="flex-1 flex flex-col min-h-0 border-r border-orange-200 bg-purple-500">
+            <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto bg-gradient-to-b from-purple-800  to-purple-500">
+              <div className="flex items-center flex-shrink-0 px-4 ">
                 <img
                   className="h-8 w-auto"
                   src="./images/logo.png"
@@ -168,23 +171,23 @@ export default function Navbar({ customContent }: NavbarProps) {
                 />
                 <h1 className="pl-2">Universitas Pakuan</h1>
               </div>
-              <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
+              <nav className="mt-5 flex-1 px-2 space-y-1 bg-gradient-to-b from-purple-800  to-purple-500">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
                     className={classNames(
-                      item.current
+                      item.href === location.pathname
                         ? "bg-gray-100 text-gray-900"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                        : "text-gray-100 hover:bg-gray-50 hover:text-gray-900",
                       "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                     )}
                   >
                     <item.icon
                       className={classNames(
-                        item.current
+                        item.href === location.pathname
                           ? "text-gray-500"
-                          : "text-gray-400 group-hover:text-gray-500",
+                          : "text-gray-100 group-hover:text-gray-500",
                         "mr-3 flex-shrink-0 h-6 w-6"
                       )}
                       aria-hidden="true"
@@ -205,10 +208,10 @@ export default function Navbar({ customContent }: NavbarProps) {
                     />
                   </div>
                   <div className="ml-3" onClick={handleLogout}>
-                    <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                    <p className="text-sm font-medium text-gray-100 group-hover:text-gray-900">
                       {data?.nama}
                     </p>
-                    <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
+                    <p className="text-xs font-medium text-gray-100 group-hover:text-gray-700">
                       Logout Sementara
                     </p>
                   </div>

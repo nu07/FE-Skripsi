@@ -63,6 +63,10 @@
     "DocumentTextIcon": true,
     "DocumentRemoveIcon": true,
     "PaperClipIcon": true,
-    "ChevronLeftIcon": true
+    "ChevronLeftIcon": true,
+    "DocumentAddIcon": true,
+    "CodeIcon": true,
+    "DotsVerticalIcon": true,
+    "FlagIcon": true
   }
 }

@@ -1,19 +1,19 @@
 // import Axios from "@/API/axios";
+import QuillEditor from "@/components/quillEditor/newsEditor";
 import { NewsData } from "@/types/news";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { ToastContainer } from "react-toastify";
 
 interface ModalEditProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   data?: NewsData | null;
+  setData?: any;
 }
 
-export default function ModalEdit({ isOpen, setIsOpen, data }: ModalEditProps) {
+export default function ModalEdit({ isOpen, setIsOpen, data, setData }: ModalEditProps) {
   const [isLoading, _setIsLoading] = useState(false);
   return (
     <>
-      <ToastContainer />
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
@@ -62,64 +62,21 @@ export default function ModalEdit({ isOpen, setIsOpen, data }: ModalEditProps) {
                       {data?.title}
                     </dd>
                   </div>
-                  <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt className="text-sm font-medium text-gray-500">
-                      Content
-                    </dt>
-                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {data?.content}
-                    </dd>
-                  </div>
-                  <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt className="text-sm font-medium text-gray-500">
-                      QR / Files
-                    </dt>
-                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      <ul
-                        role="list"
-                        className="border border-gray-200 rounded-md divide-y divide-gray-200"
-                      >
-                        <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                          <div className="w-0 flex-1 flex items-center">
-                            <PaperClipIcon
-                              className="flex-shrink-0 h-5 w-5 text-gray-400"
-                              aria-hidden="true"
-                            />
-                            <span className="ml-2 flex-1 w-0 truncate">
-                              Menyusul
-                            </span>
-                          </div>
-                          <div className="ml-4 flex-shrink-0">
-                            <a
-                              href="#"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
-                            >
-                              Download
-                            </a>
-                          </div>
-                        </li>
-                        <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                          <div className="w-0 flex-1 flex items-center">
-                            <PaperClipIcon
-                              className="flex-shrink-0 h-5 w-5 text-gray-400"
-                              aria-hidden="true"
-                            />
-                            <span className="ml-2 flex-1 w-0 truncate">
-                              Menyusul
-                            </span>
-                          </div>
-                          <div className="ml-4 flex-shrink-0">
-                            <a
-                              href="#"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
-                            >
-                              Download
-                            </a>
-                          </div>
-                        </li>
-                      </ul>
-                    </dd>
-                  </div>
+                  <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 min-h-96">
+                                        <p className="text-center w-full col-span-3">Isi Berita</p>
+                                        <div className=" w-full col-span-3">
+                                         <QuillEditor
+                                            content={data?.content || ""}
+                                            setContent={(val: string) => setData((prev: NewsData) => ({
+                                                ...prev,
+                                                content: val,
+                                            }))}
+                                            />
+                                        </div>
+                                        <div>
+
+                                        </div>
+                                    </div>
                 </dl>
               </div>
             </div>

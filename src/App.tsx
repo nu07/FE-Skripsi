@@ -14,11 +14,13 @@ import NewsDetail from "@/pages/newsDetail";
 import ProtectedRoute from "./layout/protectedPages";
 import NewsAdmin from "@/pages/admin/news";
 // import authStore from "@/store/loginStore";
+import { ToastContainer } from "react-toastify";
 
 const App: React.FC = () => {
   // const { isLogin } = authStore();
   return (
     <Router>
+            <ToastContainer />
       <Routes>
         <Route
           path="/"

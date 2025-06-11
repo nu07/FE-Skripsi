@@ -6,7 +6,7 @@ export default function Example() {
   const navigate = useNavigate();
   const { setIsLogin, setData, setToken } = authStore();
   const [formLogin, setFormLogin] = useState({
-    email: "ilfan123123",
+    email: "wisnu@gmail.com",
     password: "admin123",
   });
 
