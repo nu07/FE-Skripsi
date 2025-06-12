@@ -67,6 +67,8 @@
     "DocumentAddIcon": true,
     "CodeIcon": true,
     "DotsVerticalIcon": true,
-    "FlagIcon": true
+    "FlagIcon": true,
+    "ClockIcon": true,
+    "TrendingUpIcon": true
   }
 }
