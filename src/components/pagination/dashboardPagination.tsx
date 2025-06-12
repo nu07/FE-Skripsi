@@ -34,7 +34,7 @@ function dashboardPagination({ pagination, setPagination }: any) {
               {/* Showing <span className="font-medium">{pagination.perPage}</span>{" "}
               to <span className="font-medium">{pagination.totalItems}</span> of{" "} */}
               <span className="font-medium">{pagination.totalItems}</span>{" "}
-              results
+              Hasil
             </p>
           </div>
           <div>

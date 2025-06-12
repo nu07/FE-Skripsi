@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Link, useNavigate, useLocation  } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import authStore from "@/store/loginStore";
 
 function classNames(...classes: string[]) {
@@ -16,21 +16,35 @@ export default function Navbar({ customContent }: NavbarProps) {
   const { data } = authStore();
   const { reset } = authStore();
 
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigation = [
+  const navigationAdmin = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
     { name: "News", href: "/admin-news", icon: NewspaperIcon, current: false },
-    { name: "Projects", href: "#", icon: FolderIcon, current: false },
-    { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
-    { name: "Documents", href: "#", icon: InboxIcon, current: false },
-    { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
   ];
+
+  const navigationDosen =  [
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+    { name: "News", href: "/admin-news", icon: NewspaperIcon, current: false },
+  ];
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [navigation, setNavigation] = useState<any>([])
 
   const handleLogout = () => {
     reset();
     navigate("/login");
   };
+
+
+
+  useEffect(() => {
+    if (data?.role === 'admin') {
+      setNavigation(navigationAdmin)
+    }else if(data?.role === 'dosen'){
+      setNavigation(navigationDosen)
+    }
+  }, [data?.role])
+
+  console.log(data)
 
   return (
     <>
@@ -100,12 +114,12 @@ export default function Navbar({ customContent }: NavbarProps) {
                       src="./images/logo.png"
                       alt="Univ Pakuan"
                     />
-                      <h1 className="pl-2 text-white">Universitas Pakuan</h1>
+                    <h1 className="pl-2 text-white">Universitas Pakuan</h1>
                   </div>
                   <nav className="mt-5 px-2 space-y-1">
-                    {navigation.map((item) => (
+                    {navigation.map((item :any) => (
                       <Link
-                        key={item.name}
+                        key={item.href}
                         to={item.href}
                         onClick={() => setSidebarOpen(false)}
                         className={classNames(
@@ -117,7 +131,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                       >
                         <item.icon
                           className={classNames(
-                           item.href === location.pathname
+                            item.href === location.pathname
                               ? "text-gray-500"
                               : "text-gray-100 group-hover:text-gray-500",
                             "mr-4 flex-shrink-0 h-6 w-6"
@@ -141,7 +155,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                       </div>
                       <div className="ml-3" onClick={handleLogout}>
                         <p className="text-base font-medium text-gray-100 group-hover:text-gray-900">
-                            {data?.nama}
+                          {data?.nama}
                         </p>
                         <p className="text-sm font-medium text-gray-100 group-hover:text-gray-700">
                           Logout Sementara
@@ -172,7 +186,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                 <h1 className="pl-2">Universitas Pakuan</h1>
               </div>
               <nav className="mt-5 flex-1 px-2 space-y-1 bg-gradient-to-b from-purple-800  to-purple-500">
-                {navigation.map((item) => (
+                {navigation.map((item : any) => (
                   <Link
                     key={item.name}
                     to={item.href}
