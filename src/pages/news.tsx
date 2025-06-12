@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import createDOMPurify from 'dompurify'
 import { NewsData } from "@/types/news";
 import Axios from "@/API/axios";
+import DashboardPagination from '@/components/pagination/dashboardPagination';
 
 
 export default function NewsPage() {
@@ -107,6 +108,11 @@ export default function NewsPage() {
                                 ))}
                             </div>
                         </div>
+                     <DashboardPagination
+                        pagination={pagination}
+                        setPagination={setPagination}
+                        />
+                        
                     </div>
                 </div>
             </div>
