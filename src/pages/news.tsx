@@ -65,7 +65,6 @@ export default function NewsPage() {
 
                         {/* Search Bar */}
                         <div className="relative max-w-2xl mx-auto">
-                            <SearchIcon className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-4 top-1/2" />
                             <Input
                                 type="text"
                                 placeholder="Cari Berita"
@@ -74,7 +73,7 @@ export default function NewsPage() {
                                 className="py-3 pl-12 pr-4 text-lg text-gray-900 bg-white border-0 rounded-full"
                                 onKeyDown={(e) => {
                                 if (e.key === "Enter") {
-                                setDebouncedSearch(searchQuery); // trigger langsung saat Enter
+                                setDebouncedSearch(searchQuery); 
                                 }
                             }}
                             />
