@@ -31,7 +31,7 @@ export default function EditData({
               <button
                 type="button"
                 className={classNames(
-                  mode === 'edit' ? "bg-white hover:bg-gray-400 text-gray-900 focus:ring-gray-700 " :
+                  mode === 'edit' ? "bg-green-500 hover:bg-green-700 text-gray-100 focus:ring-green-700 " :
                  mode === 'create' ? 'bg-blue-500 hover:bg-blue-700 text-white focus:ring-blue-700' :
                   "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500", 
                   "w-full inline-flex justify-center rounded-md shadow-sm px-4 py-2 border border-gray-300  text-base font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2  sm:ml-3 sm:w-auto sm:text-sm")}

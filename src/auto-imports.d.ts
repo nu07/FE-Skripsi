@@ -30,6 +30,7 @@ declare global {
   const DocumentReportIcon: typeof import('@heroicons/react/solid')['DocumentReportIcon']
   const DocumentTextIcon: typeof import('@heroicons/react/solid')['DocumentTextIcon']
   const DotsVerticalIcon: typeof import('@heroicons/react/solid')['DotsVerticalIcon']
+  const ExclamationCircleIcon: typeof import('@heroicons/react/solid')['ExclamationCircleIcon']
   const ExclamationIcon: typeof import('@heroicons/react/solid')['ExclamationIcon']
   const FlagIcon: typeof import('@heroicons/react/solid')['FlagIcon']
   const FolderIcon: typeof import('@heroicons/react/solid')['FolderIcon']

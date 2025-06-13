@@ -70,6 +70,7 @@
     "FlagIcon": true,
     "ClockIcon": true,
     "TrendingUpIcon": true,
-    "UserIcon": true
+    "UserIcon": true,
+    "ExclamationCircleIcon": true
   }
 }
