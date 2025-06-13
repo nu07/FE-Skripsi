@@ -54,6 +54,7 @@ declare global {
   const TrashIcon: typeof import('@heroicons/react/solid')['TrashIcon']
   const TrendingUpIcon: typeof import('@heroicons/react/solid')['TrendingUpIcon']
   const UserGroupIcon: typeof import('@heroicons/react/solid')['UserGroupIcon']
+  const UserIcon: typeof import('@heroicons/react/solid')['UserIcon']
   const UsersIcon: typeof import('@heroicons/react/solid')['UsersIcon']
   const XIcon: typeof import('@heroicons/react/solid')['XIcon']
   const createRef: typeof import('react')['createRef']

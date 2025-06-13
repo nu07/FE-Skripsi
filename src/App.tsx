@@ -14,6 +14,7 @@ import News from "@/pages/news";
 import NewsDetail from "@/pages/newsDetail";
 import ProtectedRoute from "./layout/protectedPages";
 import NewsAdmin from "@/pages/admin/news";
+import DataDosen from "@/pages/admin/dataDosen";
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
@@ -49,7 +50,7 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="/news/:slug"
+          path="/news/?:slug"
           element={
             <DefaultTemplate>
               <NewsDetail />
@@ -81,6 +82,14 @@ const App: React.FC = () => {
           element={
             <ProtectedRoute>
               <NewsAdmin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-dosen"
+          element={
+            <ProtectedRoute>
+              <DataDosen />
             </ProtectedRoute>
           }
         />

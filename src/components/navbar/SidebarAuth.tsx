@@ -19,6 +19,7 @@ export default function Navbar({ customContent }: NavbarProps) {
   const navigationAdmin = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
     { name: "News", href: "/admin-news", icon: NewspaperIcon, current: false },
+    { name: "Data Dosen", href: "/data-dosen", icon: UserIcon, current: false },
   ];
 
   const navigationDosen =  [
