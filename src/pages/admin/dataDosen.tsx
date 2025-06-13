@@ -1,23 +1,32 @@
 import Axios from "@/API/axios";
 import { Input } from "@/components/ui/input"
 import { Button } from '@headlessui/react';
+// import EditData from "@/components/modal/EditData";
+import DashboardPagination from '@/components/pagination/dashboardPagination';
 
 export default function Example() {
     const [dataDosen, setDataDosen] = useState<any>([])
-        const [pagination, setPagination] = useState({
+    // const [isEditData, setIsEditData] = useState(true)
+    const [pagination, setPagination] = useState({
         currentPages: 1,
         perPage: 4,
         totalPages: 1,
         totalItems: 1,
         isLoading: true,
     });
-        const [searchQuery, setSearchQuery] = useState("");
-        const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
     const getAllDosen = async () => {
         try {
             const res = await Axios.get(`/dosen/dosen?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}`)
             console.log(res.data.data)
             setDataDosen(res.data.data)
+               setPagination((prev) => ({
+        ...prev,
+        totalPages: res.data.pagination.totalPages,
+        totalItems: res.data.pagination.totalItems,
+         isLoading: false,
+      }));
         } catch (e) {
             console.error(e)
         }
@@ -37,21 +46,26 @@ export default function Example() {
 
     return (
         <>
-
+            {/* <EditData 
+            isOpen={isEditData} 
+            setIsOpen={setIsEditData} 
+            title="Edit Data Dosen" 
+            mode="edit"
+            content={'test'} /> */}
             <div className="my-2 flex justify-between gap-x-4">
                 <div className="">
                     {/* <SearchIcon className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-4 top-1/2" /> */}
                     <Input
                         type="text"
                         placeholder="Cari Dosen"
-                          value={searchQuery}
-                          onChange={e => setSearchQuery(e.target.value)}
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
                         className="py-3 pl-4 pr-4 text-lg text-gray-900 bg-white border-2 rounded-full"
                         onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                setDebouncedSearch(searchQuery); 
-                                }
-                            }}
+                            if (e.key === "Enter") {
+                                setDebouncedSearch(searchQuery);
+                            }
+                        }}
                     />
                 </div>
                 <button
@@ -100,12 +114,12 @@ export default function Example() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {dataDosen.map((person : any) => (
+                                    {dataDosen.map((person: any) => (
                                         <tr key={person.id}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person.id}>{person.id}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-56 truncate " title={person.nama}>{person.nama}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-56 truncate" title={person.nidn}>{person.nidn}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-56 truncate" title={person.email}>{person.email}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person.nama}>{person.nama}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person.nidn}>{person.nidn}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.email}>{person.email}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                                 <Button className="text-indigo-600 hover:text-indigo-900">
                                                     Edit
@@ -118,6 +132,10 @@ export default function Example() {
                                     ))}
                                 </tbody>
                             </table>
+                                        <DashboardPagination
+          pagination={pagination}
+          setPagination={setPagination}
+        />
                         </div>
                     </div>
                 </div>

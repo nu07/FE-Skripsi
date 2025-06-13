@@ -58,10 +58,11 @@ function NewsAdmin() {
         `/news?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}`
       );
 
+      console.log(res.data)
       setPagination((prev) => ({
         ...prev,
-        totalPages: res.data.totalPages,
-        totalItems: res.data.totalItems,
+        totalPages: res.data.pagination.totalPages,
+        totalItems: res.data.pagination.total,
       }));
       setAllDataNews(res.data.data);
       setPagination((prev) => ({
