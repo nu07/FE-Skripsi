@@ -4,22 +4,16 @@ import { Button } from '@headlessui/react';
 import BaseModal from "@/components/modal/BaseModal";
 import DashboardPagination from '@/components/pagination/dashboardPagination';
 import { Bounce, toast } from "react-toastify";
-import ModalDelete from "@/components/modal/ModalDelete";
+import { classNames } from "@/utils/classNames";
 
 const defaultValue = {
-    id: "",
-    nama: "",
-    nidn: "",
-    email: "",
-    password: "",
-    deletedAt: null
+  "catatanPembayaran": "",
+  "status": "",
 }
 
 export default function Example() {
-    const [dataDosen, setDataDosen] = useState<any>([])
+    const [dataPembayaran, setDataPembayaran] = useState<any>([])
     const [isEditData, setIsEditData] = useState(false)
-    const [isCreateData, setIsCreateData] = useState(false)
-    const [isDeleteData, setIsDeleteData] = useState(false)
     const [pagination, setPagination] = useState({
         currentPages: 1,
         perPage: 10,
@@ -27,14 +21,15 @@ export default function Example() {
         totalItems: 1,
         isLoading: true,
         showDeleted: true,
+        status: '',
     });
     const [detailDosen, setDetailDosen] = useState<any>(defaultValue)
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
     const getAllDosen = async () => {
         try {
-            const res = await Axios.get(`/dosen/dosen?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}`)
-            setDataDosen(res.data.data)
+            const res = await Axios.get(`/skripsi?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}&status=${pagination.status}`)
+            setDataPembayaran(res.data.data)
             setPagination((prev) => ({
                 ...prev,
                 totalPages: res.data.pagination.totalPages,
@@ -48,7 +43,7 @@ export default function Example() {
 
     const SubmitEditData = async () => {
         try {
-            await Axios.put(`/dosen/dosen/${detailDosen?.id}`, detailDosen)
+            await Axios.put(`/skripsi/${detailDosen?.id}`, {status:detailDosen.status, catatan: detailDosen.catatanPembayaran })
             setIsEditData(false)
             toast.success("Dosen berhasil Di Edit!", {
                 position: "top-right",
@@ -62,39 +57,8 @@ export default function Example() {
                 transition: Bounce,
             });
             getAllDosen()
-        } catch (e : any) {
-            console.error(e)
-            toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-        }
-    }
-
-    const createDosenData = async () => {
-        try {
-            await Axios.post('/dosen/dosen', detailDosen)
-            toast.success("Dosen berhasil Di Tambahkan!", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-            getAllDosen()
-            setIsCreateData(false)
         } catch (e: any) {
+            console.error(e)
             toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
                 position: "top-right",
                 autoClose: 5000,
@@ -108,38 +72,6 @@ export default function Example() {
             });
         }
     }
-    const deleteDataDosen = async () => {
-        try {
-            await Axios.delete(`/dosen/dosen/${detailDosen.id}`)
-            toast.success("Dosen berhasil Di Delete!", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-            getAllDosen()
-            setIsDeleteData(false)
-        } catch (e) {
-            console.error(e)
-            toast.error("Dosen gagal Di Delete!", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-        }
-    }
-
 
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -158,32 +90,17 @@ export default function Example() {
             <BaseModal
                 isOpen={isEditData}
                 setIsOpen={setIsEditData}
-                title="Edit Data Dosen"
+                title="Edit Data Pembayaran"
                 mode="edit"
                 submitData={SubmitEditData}
                 content={<ModalEdit state={detailDosen} setState={setDetailDosen} />}
-            />
-            <BaseModal
-                isOpen={isCreateData}
-                setIsOpen={setIsCreateData}
-                title="Tambah Dosen"
-                mode="create"
-                submitData={createDosenData}
-                content={<ModalEdit state={detailDosen} setState={setDetailDosen} />}
-            />
-
-            <ModalDelete
-                isOpen={isDeleteData}
-                setIsOpen={setIsDeleteData}
-                submitData={deleteDataDosen}
-                content={`Anda Akan Menghapus Dosen ${detailDosen?.nama} ? `}
             />
             <div className="my-2 flex justify-between gap-x-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
                     {/* Input Pencarian */}
                     <Input
                         type="text"
-                        placeholder="Cari Dosen"
+                        placeholder="Cari Mahasiswa"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={(e) => {
@@ -203,7 +120,7 @@ export default function Example() {
                             onChange={(e) =>
                                 setPagination((prev: any) => ({
                                     ...prev,
-                                    showDeleted: e.target.checked, // ✅ gunakan `checked` untuk checkbox
+                                    showDeleted: e.target.checked,
                                 }))
                             }
                             className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
@@ -214,14 +131,6 @@ export default function Example() {
                     </div>
                 </div>
 
-                <button
-                    onClick={() => { setIsCreateData(true), setDetailDosen(defaultValue) }}
-                    type="button"
-                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Tambah Dosen
-                    <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-                </button>
             </div>
             <div className="flex flex-col">
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -234,25 +143,43 @@ export default function Example() {
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Id
+                                            Nama Mahasiswa
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Nama
+                                            NIM
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            NIDN
+                                            Judul
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Email
+                                            Status Pembayaran
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                            Bukti Pembayaran
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                            Skripsi
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                            Pembimbing
                                         </th>
                                         <th
                                             scope="col"
@@ -266,12 +193,37 @@ export default function Example() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {dataDosen.map((person: any) => (
+                                    {dataPembayaran.map((person: any) => (
                                         <tr key={person.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person.id}>{person.id}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person.nama}>{person.nama}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person.nidn}>{person.nidn}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.email}>{person.email}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person?.mahasiswa?.nama}>{person?.mahasiswa?.nama}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person?.mahasiswa?.nim}>{person?.mahasiswa?.nim}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person?.judul}>{person?.judul}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-14 truncate" title={person?.status}>
+
+                                                <button
+                                                    type="button"
+                                                    className={classNames(person?.status === 'sukses' ? 'text-white bg-green-600 hover:bg-green-700 focus:ring-green-500' : person?.status === 'pending' ? 'text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500' : 'text-white bg-red-600 hover:bg-red-700 focus:ring-red-500', 'inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 ')}
+                                                >
+                                                    {person?.status?.toUpperCase()}
+                                                </button>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-10 truncate" >
+                                                <div className="flex-shrink-0">
+                                                    <img className="h-12 w-12 rounded-full" src={import.meta.env.VITE_APP_URL + person.buktiPembayaran} alt="" />
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-5 truncate" title={person.deletedAt}>
+                                                <input
+                                                    type="checkbox"
+                                                    readOnly
+                                                    className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 disabled:opacity-100 disabled:bg-white disabled:text-indigo-600 disabled:cursor-default"
+                                                    checked={!!person.mahasiswa.isEligibleForSkripsi}
+                                                />
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-40 truncate" title={person.deletedAt}>
+                                                <div>Pembimbing 1: {person?.pembimbing1?.nama}</div>
+                                                <div>Pembimbing 2: {person?.pembimbing2?.nama}</div>
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.deletedAt}>
                                                 <input
                                                     type="checkbox"
@@ -288,14 +240,7 @@ export default function Example() {
                                                 }>
                                                     Edit
                                                 </Button>
-                                                <Button className="text-indigo-600 hover:text-indigo-900 pl-4"
-                                                    onClick={() => {
-                                                        setDetailDosen(person)
-                                                        setIsDeleteData(true)
-                                                    }}
-                                                >
-                                                    Delete
-                                                </Button>
+                                                
                                             </td>
                                         </tr>
                                     ))}
@@ -319,99 +264,59 @@ const ModalEdit = ({ state, setState }: any) => {
     return (
         <>
             <div className="space-y-3">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        NIDN
-                    </label>
-                    <div className="mt-1">
-                        <input
-                            type="text"
-                            required
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                nidn: e.target.value,
-                            }))}
-                            value={state.nidn}
-                        />
-                    </div>
-                </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Nama Lengkap
-                    </label>
-                    <div className="mt-1">
-                        <input
-                            type="text"
-                            required
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                nama: e.target.value,
-                            }))}
-                            value={state.nama}
-                        />
+                    <div className="flex-shrink-0">
+                        <img className="max-h-36 max-w-40 rounded-full" src={import.meta.env.VITE_APP_URL + state.buktiPembayaran} alt="" />
                     </div>
                 </div>
-
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
-                        Email
+                        Status
                     </label>
                     <div className="mt-1">
-                        <input
-                            type="email" id="emails" name="emails"
-                            required
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                email: e.target.value,
-                            }))}
-                            value={state.email}
-                        />
-                    </div>
-                </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Password
-                    </label>
-                    <div className="mt-1">
-                        <input
-                            type="text"
-                            required
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                password: e.target.value,
-                            }))}
-                            value={state.password}
-                            placeholder="Isi Password Baru. kosongkan jika tidak ingin di ganti"
-                        />
-                    </div>
-                </div>
-                {state.deletedAt && (
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Pulihkan Data yang Dihapus?
-                        </label>
-                        <div className="mt-1 flex items-center space-x-2">
-                            <input
-                                type="checkbox"
-                                checked={!!state.restore} // ✅ pastikan boolean
-                                onChange={(e) =>
-                                    setState((prev: any) => ({
-                                        ...prev,
-                                        restore: e.target.checked, // ✅ gunakan `checked`, bukan `value`
-                                    }))
-                                }
-                                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                            />
-                            <span className="text-sm text-gray-600">Aktifkan untuk menghapus status deleted</span>
+                        <div>
+                            <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                                Location
+                            </label>
+                            <select
+                                id="location"
+                                name="location"
+                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
+                                defaultValue="sukses"
+                                onChange={(e: any) => setState((prev: any) => ({
+                                    ...prev,
+                                    status: e.target.value,
+                                }))}
+                                value={state.status}
+                            >
+                                <option>sukses</option>
+                                <option>pending</option>
+                                <option>gagal</option>
+                            </select>
                         </div>
+
                     </div>
-                )}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                        Catatan
+                    </label>
+                    <div className="mt-1">
+                        <input
+                            type="text"
+                            required
+                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            onChange={(e: any) => setState((prev: any) => ({
+                                ...prev,
+                                catatanPembayaran: e.target.value,
+                            }))}
+                            value={state.catatanPembayaran}
+                        />
+                    </div>
+                </div>
 
             </div>
         </>

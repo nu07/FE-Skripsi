@@ -17,14 +17,17 @@ export default function Navbar({ customContent }: NavbarProps) {
   const { reset } = authStore();
 
   const navigationAdmin = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
-    { name: "News", href: "/admin-news", icon: NewspaperIcon, current: false },
-    { name: "Data Dosen", href: "/data-dosen", icon: UserIcon, current: false },
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon},
+    { name: "News", href: "/admin-news", icon: NewspaperIcon },
+    { name: "Data Dosen", href: "/data-dosen", icon: UserIcon },
+    { name: "Data Mahasiswa", href: "/data-mahasiswa", icon: UserAddIcon },
+    { name: "Data Admin", href: "/data-admin", icon: UserCircleIcon },
+    { name: "Data Pembayaran Skripsi", href: "/data-pembayaran-skripsi", icon: CurrencyDollarIcon },
   ];
 
   const navigationDosen =  [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
-    { name: "News", href: "/admin-news", icon: NewspaperIcon, current: false },
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon},
+    { name: "News", href: "/admin-news", icon: NewspaperIcon },
   ];
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -44,8 +47,6 @@ export default function Navbar({ customContent }: NavbarProps) {
       setNavigation(navigationDosen)
     }
   }, [data?.role])
-
-  console.log(data)
 
   return (
     <>

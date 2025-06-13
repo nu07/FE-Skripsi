@@ -73,5 +73,9 @@
     "UserIcon": true,
     "PencilIcon": true,
     "PlusIcon": true
+    "ExclamationCircleIcon": true,
+    "UserAddIcon": true,
+    "UserCircleIcon": true,
+    "CurrencyDollarIcon": true
   }
 }

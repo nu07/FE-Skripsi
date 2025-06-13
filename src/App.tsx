@@ -16,12 +16,15 @@ import ProtectedRoute from "./layout/protectedPages";
 import Dashboard from '@/pages/admin/dashboard';
 import NewsAdmin from "@/pages/admin/news";
 import DataDosen from "@/pages/admin/dataDosen";
+import DataMahasiswa from "@/pages/admin/dataMahasiswa"
+import DataAdmin from "@/pages/admin/dataAdmin"
+import DataPembayaranSkripsi from "@/pages/admin/dataPembayaranSkripsi"
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
 
 const App: React.FC = () => {
-    const { isLogin } = authStore();
+    const { isLogin, data } = authStore();
   return (
     <Router>
             <ToastContainer />
@@ -58,16 +61,22 @@ const App: React.FC = () => {
             </DefaultTemplate>
           }
         />
-        <Route
-          path="/login"
-          element={
-            isLogin  ? <Navigate to="/dashboard"/> : 
-            (
-            <DefaultTemplate>
-              <Login />
-            </DefaultTemplate>)
-          }
-        />
+<Route
+  path="/login"
+  element={
+    isLogin ? (
+      data?.role === "mahasiswa" ? (
+        <Navigate to="/" />
+      ) : (
+        <Navigate to="/dashboard" />
+      )
+    ) : (
+      <DefaultTemplate>
+        <Login />
+      </DefaultTemplate>
+    )
+  }
+/>
 
         <Route
           path="/dashboard"
@@ -91,6 +100,30 @@ const App: React.FC = () => {
           element={
             <ProtectedRoute>
               <DataDosen />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-mahasiswa"
+          element={
+            <ProtectedRoute>
+              <DataMahasiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-admin"
+          element={
+            <ProtectedRoute>
+              <DataAdmin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-pembayaran-skripsi"
+          element={
+            <ProtectedRoute>
+              <DataPembayaranSkripsi />
             </ProtectedRoute>
           }
         />

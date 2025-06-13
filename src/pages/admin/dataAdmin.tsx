@@ -16,7 +16,7 @@ const defaultValue = {
 }
 
 export default function Example() {
-    const [dataDosen, setDataDosen] = useState<any>([])
+    const [dataAdmin, setDataAdmin] = useState<any>([])
     const [isEditData, setIsEditData] = useState(false)
     const [isCreateData, setIsCreateData] = useState(false)
     const [isDeleteData, setIsDeleteData] = useState(false)
@@ -28,13 +28,13 @@ export default function Example() {
         isLoading: true,
         showDeleted: true,
     });
-    const [detailDosen, setDetailDosen] = useState<any>(defaultValue)
+    const [detailAdmin, setDetailAdmin] = useState<any>(defaultValue)
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
     const getAllDosen = async () => {
         try {
-            const res = await Axios.get(`/dosen/dosen?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}`)
-            setDataDosen(res.data.data)
+            const res = await Axios.get(`/admin?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}`)
+            setDataAdmin(res.data.data)
             setPagination((prev) => ({
                 ...prev,
                 totalPages: res.data.pagination.totalPages,
@@ -48,7 +48,7 @@ export default function Example() {
 
     const SubmitEditData = async () => {
         try {
-            await Axios.put(`/dosen/dosen/${detailDosen?.id}`, detailDosen)
+            await Axios.put(`/admin/${detailAdmin?.id}`, detailAdmin)
             setIsEditData(false)
             toast.success("Dosen berhasil Di Edit!", {
                 position: "top-right",
@@ -80,7 +80,7 @@ export default function Example() {
 
     const createDosenData = async () => {
         try {
-            await Axios.post('/dosen/dosen', detailDosen)
+            await Axios.post('/admin', detailAdmin)
             toast.success("Dosen berhasil Di Tambahkan!", {
                 position: "top-right",
                 autoClose: 5000,
@@ -108,9 +108,9 @@ export default function Example() {
             });
         }
     }
-    const deleteDataDosen = async () => {
+    const deletedataAdmin = async () => {
         try {
-            await Axios.delete(`/dosen/dosen/${detailDosen.id}`)
+            await Axios.delete(`/admin/${detailAdmin.id}`)
             toast.success("Dosen berhasil Di Delete!", {
                 position: "top-right",
                 autoClose: 5000,
@@ -161,7 +161,7 @@ export default function Example() {
                 title="Edit Data Dosen"
                 mode="edit"
                 submitData={SubmitEditData}
-                content={<ModalEdit state={detailDosen} setState={setDetailDosen} />}
+                content={<ModalEdit state={detailAdmin} setState={setDetailAdmin} />}
             />
             <BaseModal
                 isOpen={isCreateData}
@@ -169,21 +169,21 @@ export default function Example() {
                 title="Tambah Dosen"
                 mode="create"
                 submitData={createDosenData}
-                content={<ModalEdit state={detailDosen} setState={setDetailDosen} />}
+                content={<ModalEdit state={detailAdmin} setState={setDetailAdmin} />}
             />
 
             <ModalDelete
                 isOpen={isDeleteData}
                 setIsOpen={setIsDeleteData}
-                submitData={deleteDataDosen}
-                content={`Anda Akan Menghapus Dosen ${detailDosen?.nama} ? `}
+                submitData={deletedataAdmin}
+                content={`Anda Akan Menghapus Dosen ${detailAdmin?.nama} ? `}
             />
             <div className="my-2 flex justify-between gap-x-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
                     {/* Input Pencarian */}
                     <Input
                         type="text"
-                        placeholder="Cari Dosen"
+                        placeholder="Cari Admin"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={(e) => {
@@ -209,17 +209,17 @@ export default function Example() {
                             className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                         />
                         <label htmlFor="showDeleted" className="text-sm text-gray-700">
-                            Tampilkan Dosen yang Sudah Dihapus
+                            Tampilkan Admin yang Sudah Dihapus
                         </label>
                     </div>
                 </div>
 
                 <button
-                    onClick={() => { setIsCreateData(true), setDetailDosen(defaultValue) }}
+                    onClick={() => { setIsCreateData(true), setDetailAdmin(defaultValue) }}
                     type="button"
                     className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Tambah Dosen
+                    Tambah Admin
                     <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
                 </button>
             </div>
@@ -246,12 +246,6 @@ export default function Example() {
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            NIDN
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        >
                                             Email
                                         </th>
                                         <th
@@ -266,11 +260,10 @@ export default function Example() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {dataDosen.map((person: any) => (
+                                    {dataAdmin.map((person: any) => (
                                         <tr key={person.id}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person.id}>{person.id}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person.nama}>{person.nama}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person.nidn}>{person.nidn}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.email}>{person.email}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.deletedAt}>
                                                 <input
@@ -282,7 +275,7 @@ export default function Example() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                                 <Button className="text-indigo-600 hover:text-indigo-900" onClick={() => {
-                                                    setDetailDosen(person)
+                                                    setDetailAdmin(person)
                                                     setIsEditData(true)
                                                 }
                                                 }>
@@ -290,7 +283,7 @@ export default function Example() {
                                                 </Button>
                                                 <Button className="text-indigo-600 hover:text-indigo-900 pl-4"
                                                     onClick={() => {
-                                                        setDetailDosen(person)
+                                                        setDetailAdmin(person)
                                                         setIsDeleteData(true)
                                                     }}
                                                 >
@@ -319,24 +312,6 @@ const ModalEdit = ({ state, setState }: any) => {
     return (
         <>
             <div className="space-y-3">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        NIDN
-                    </label>
-                    <div className="mt-1">
-                        <input
-                            type="text"
-                            required
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                nidn: e.target.value,
-                            }))}
-                            value={state.nidn}
-                        />
-                    </div>
-                </div>
-
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
                         Nama Lengkap

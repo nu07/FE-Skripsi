@@ -30,7 +30,11 @@ export default function Example() {
         theme: "colored",
         transition: Bounce,
       });
-      navigate("/dashboard");
+      if(res.data.data.role === 'mahasiswa'){
+        navigate("/");
+      }else{
+        navigate("/dashboard");
+      }
     } catch (err: any) {
       toast.error(err?.response?.data?.message ?? "Login Gagal!", {
         position: "top-right",

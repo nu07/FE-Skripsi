@@ -7,12 +7,12 @@ import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
 
 const defaultValue = {
-    id: "",
-    nama: "",
-    nidn: "",
-    email: "",
-    password: "",
-    deletedAt: null
+    "nim": "",
+    "nama": "",
+    "email": "",
+    "password": "",
+    "isEligibleForSkripsi" : true,
+    "deletedAt": null,
 }
 
 export default function Example() {
@@ -28,12 +28,13 @@ export default function Example() {
         isLoading: true,
         showDeleted: true,
     });
-    const [detailDosen, setDetailDosen] = useState<any>(defaultValue)
+    const [detailMahasiswa, setDetailMahasiswa] = useState<any>(defaultValue)
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
-    const getAllDosen = async () => {
+
+    const getAllMahasiswa = async () => {
         try {
-            const res = await Axios.get(`/dosen/dosen?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}`)
+            const res = await Axios.get(`/mahasiswa?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}`)
             setDataDosen(res.data.data)
             setPagination((prev) => ({
                 ...prev,
@@ -41,6 +42,7 @@ export default function Example() {
                 totalItems: res.data.pagination.total,
                 isLoading: false,
             }));
+            console.log(res.data.data)
         } catch (e) {
             console.error(e)
         }
@@ -48,7 +50,7 @@ export default function Example() {
 
     const SubmitEditData = async () => {
         try {
-            await Axios.put(`/dosen/dosen/${detailDosen?.id}`, detailDosen)
+            await Axios.put(`/mahasiswa${detailMahasiswa?.id}`, detailMahasiswa)
             setIsEditData(false)
             toast.success("Dosen berhasil Di Edit!", {
                 position: "top-right",
@@ -61,7 +63,7 @@ export default function Example() {
                 theme: "colored",
                 transition: Bounce,
             });
-            getAllDosen()
+            getAllMahasiswa()
         } catch (e : any) {
             console.error(e)
             toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
@@ -78,10 +80,10 @@ export default function Example() {
         }
     }
 
-    const createDosenData = async () => {
+    const createMahasiswaData = async () => {
         try {
-            await Axios.post('/dosen/dosen', detailDosen)
-            toast.success("Dosen berhasil Di Tambahkan!", {
+            await Axios.post('/mahasiswa', detailMahasiswa)
+            toast.success("Mahasiswa berhasil Di Tambahkan!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -92,10 +94,10 @@ export default function Example() {
                 theme: "colored",
                 transition: Bounce,
             });
-            getAllDosen()
+            getAllMahasiswa()
             setIsCreateData(false)
         } catch (e: any) {
-            toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
+            toast.error(e.response.data.message ?? "Mahasiswa gagal Di Tambahkan!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -110,7 +112,7 @@ export default function Example() {
     }
     const deleteDataDosen = async () => {
         try {
-            await Axios.delete(`/dosen/dosen/${detailDosen.id}`)
+            await Axios.delete(`/mahasiswa/${detailMahasiswa.id}`)
             toast.success("Dosen berhasil Di Delete!", {
                 position: "top-right",
                 autoClose: 5000,
@@ -122,7 +124,7 @@ export default function Example() {
                 theme: "colored",
                 transition: Bounce,
             });
-            getAllDosen()
+            getAllMahasiswa()
             setIsDeleteData(false)
         } catch (e) {
             console.error(e)
@@ -150,7 +152,7 @@ export default function Example() {
     }, [searchQuery]);
 
     useEffect(() => {
-        getAllDosen()
+        getAllMahasiswa()
     }, [pagination.currentPages, debouncedSearch, pagination.showDeleted]);
 
     return (
@@ -158,32 +160,32 @@ export default function Example() {
             <BaseModal
                 isOpen={isEditData}
                 setIsOpen={setIsEditData}
-                title="Edit Data Dosen"
+                title="Edit Data Mahasiswa"
                 mode="edit"
                 submitData={SubmitEditData}
-                content={<ModalEdit state={detailDosen} setState={setDetailDosen} />}
+                content={<ModalEdit state={detailMahasiswa} setState={setDetailMahasiswa} />}
             />
             <BaseModal
                 isOpen={isCreateData}
                 setIsOpen={setIsCreateData}
-                title="Tambah Dosen"
+                title="Tambah Mahasiswa"
                 mode="create"
-                submitData={createDosenData}
-                content={<ModalEdit state={detailDosen} setState={setDetailDosen} />}
+                submitData={createMahasiswaData}
+                content={<ModalEdit state={detailMahasiswa} setState={setDetailMahasiswa} />}
             />
 
             <ModalDelete
                 isOpen={isDeleteData}
                 setIsOpen={setIsDeleteData}
                 submitData={deleteDataDosen}
-                content={`Anda Akan Menghapus Dosen ${detailDosen?.nama} ? `}
+                content={`Anda Akan Menghapus Mahasiswa ${detailMahasiswa?.nama} ? `}
             />
             <div className="my-2 flex justify-between gap-x-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
                     {/* Input Pencarian */}
                     <Input
                         type="text"
-                        placeholder="Cari Dosen"
+                        placeholder="Cari Mahasiswa"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={(e) => {
@@ -209,17 +211,17 @@ export default function Example() {
                             className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                         />
                         <label htmlFor="showDeleted" className="text-sm text-gray-700">
-                            Tampilkan Dosen yang Sudah Dihapus
+                            Tampilkan Mahasiswa yang Sudah Dihapus
                         </label>
                     </div>
                 </div>
 
                 <button
-                    onClick={() => { setIsCreateData(true), setDetailDosen(defaultValue) }}
+                    onClick={() => { setIsCreateData(true), setDetailMahasiswa(defaultValue) }}
                     type="button"
                     className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Tambah Dosen
+                    Tambah Mahasiswa
                     <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
                 </button>
             </div>
@@ -246,13 +248,25 @@ export default function Example() {
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            NIDN
+                                            NIM
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                           Dapat Mengikuti Skripsi
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
                                             Email
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                           Catatan Skripsi
                                         </th>
                                         <th
                                             scope="col"
@@ -270,8 +284,18 @@ export default function Example() {
                                         <tr key={person.id}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person.id}>{person.id}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person.nama}>{person.nama}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person.nidn}>{person.nidn}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person.nim}>{person.nim}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 truncate" title={person.isEligibleForSkripsi}>
+   <input
+                                                    type="checkbox"
+                                                    readOnly
+                                                    className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 disabled:opacity-100 disabled:bg-white disabled:text-indigo-600 disabled:cursor-default"
+                                                    checked={!!person.isEligibleForSkripsi}
+                                                />
+
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.email}>{person.email}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-12 truncate" title={person.catatanSkripsi}>{person.catatanSkripsi}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.deletedAt}>
                                                 <input
                                                     type="checkbox"
@@ -282,7 +306,7 @@ export default function Example() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                                 <Button className="text-indigo-600 hover:text-indigo-900" onClick={() => {
-                                                    setDetailDosen(person)
+                                                    setDetailMahasiswa(person)
                                                     setIsEditData(true)
                                                 }
                                                 }>
@@ -290,7 +314,7 @@ export default function Example() {
                                                 </Button>
                                                 <Button className="text-indigo-600 hover:text-indigo-900 pl-4"
                                                     onClick={() => {
-                                                        setDetailDosen(person)
+                                                        setDetailMahasiswa(person)
                                                         setIsDeleteData(true)
                                                     }}
                                                 >
@@ -321,7 +345,7 @@ const ModalEdit = ({ state, setState }: any) => {
             <div className="space-y-3">
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
-                        NIDN
+                        NIM
                     </label>
                     <div className="mt-1">
                         <input
@@ -330,7 +354,7 @@ const ModalEdit = ({ state, setState }: any) => {
                             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             onChange={(e: any) => setState((prev: any) => ({
                                 ...prev,
-                                nidn: e.target.value,
+                                nim: e.target.value,
                             }))}
                             value={state.nidn}
                         />
@@ -391,6 +415,27 @@ const ModalEdit = ({ state, setState }: any) => {
                         />
                     </div>
                 </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Bisa Mendaftar Skripsi?
+                        </label>
+                        <div className="mt-1 flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                checked={!!state.isEligibleForSkripsi} // ✅ pastikan boolean
+                                onChange={(e) =>
+                                    setState((prev: any) => ({
+                                        ...prev,
+                                        isEligibleForSkripsi: e.target.checked, // ✅ gunakan `checked`, bukan `value`
+                                    }))
+                                }
+                                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            />
+                            <span className="text-sm text-gray-600">Aktifkan Jika Dapat Mendaftar Skripsi</span>
+                        </div>
+                    </div>
+
                 {state.deletedAt && (
                     <div>
                         <label className="block text-sm font-medium text-gray-700">

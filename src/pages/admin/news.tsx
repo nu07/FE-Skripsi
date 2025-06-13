@@ -67,31 +67,20 @@ function NewsAdmin() {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [selectedNews, setSelectedNews] = useState<string[]>([]);
 
-  const getAllNews = async () => {
-    setPagination(prev => ({
-      ...prev,
-      isLoading: true,
-    }));
-    try {
-      const res = await Axios.get(`/news?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${debouncedSearch}`);
-      setPagination(prev => ({
-        ...prev,
-        totalPages: res.data.totalPages,
-        totalItems: res.data.totalItems,
-      }));
-      setAllDataNews(res.data.data);
-      setPagination(prev => ({
-        ...prev,
-        isLoading: false,
-      }));
-    } catch (e) {
-      console.error(e);
-      setPagination(prev => ({
-        ...prev,
-        isLoading: false,
-      }));
+    const getAllNews = async () => {
+        try {
+            const res = await Axios.get(`/news?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}`)
+            setDatanews(res.data.data)
+            setPagination((prev) => ({
+                ...prev,
+                totalPages: res.data.totalPages,
+                totalItems: res.data.totalItems,
+                isLoading: false,
+            }));
+        } catch (e) {
+            console.error(e)
+        }
     }
-  };
 
   const CreateDataNews = async () => {
     try {
