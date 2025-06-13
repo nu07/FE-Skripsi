@@ -293,35 +293,37 @@ function NewsAdmin() {
               <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
             </button>
           </div> */}
-          <div className="my-2 flex flex-row-reverse items-center space-x-4 space-x-reverse">
-            <button
-              onClick={() => setIsOpenCreateNews(true)}
-              type="button"
-              className="inline-flex items-center px-4 py-2 border w-60 border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Tambah Berita
-              <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-            </button>
-            <button
-              onClick={handleDeleteAll}
-              type="button"
-              className="inline-flex items-center px-4 py-2 border w-60 border-transparent shadow-sm text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-              Hapus Semua
-              <TrashIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-            </button>
-            <button
-              onClick={() => setViewMode(viewMode === "card" ? "list" : "card")}
-              type="button"
-              className="inline-flex items-center px-4 py-2 w-60 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-              {viewMode === "card" ? "Tampilan List" : "Tampilan Card"}
-              <SwitchHorizontalIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-            </button>
+          <div className="my-2 grid grid-cols-2 gap-4">
             <input
               type="text"
               placeholder="Cari berita..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="px-4 py-2 border border-gray-300 w-full rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="px-4 py-2 border w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
+            <div className="flex gap-3">
+              <button
+                onClick={() => setIsOpenCreateNews(true)}
+                type="button"
+                className="inline-flex items-center px-4 py-2 border w-auto 2xl:w-60 border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Tambah Berita
+                <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+              </button>
+              <button
+                onClick={handleDeleteAll}
+                type="button"
+                className="inline-flex items-center px-4 py-2 border w-auto 2xl:w-60 border-transparent shadow-sm text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                Hapus Semua
+                <TrashIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+              </button>
+              <button
+                onClick={() => setViewMode(viewMode === "card" ? "list" : "card")}
+                type="button"
+                className="inline-flex items-center px-4 py-2 w-auto 2xl:w-60 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                {viewMode === "card" ? "Tampilan List" : "Tampilan Card"}
+                <SwitchHorizontalIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
           </div>
           <ul role="list" className={`grid ${viewMode === "card" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"} gap-6 p-4`}>
             {allDataNews

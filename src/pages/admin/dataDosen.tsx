@@ -4,24 +4,29 @@ import { Button } from '@headlessui/react';
 
 export default function Example() {
     const [dataDosen, setDataDosen] = useState<any>([])
-        const [pagination, setPagination] = useState({
+    const [pagination, setPagination] = useState({
         currentPages: 1,
         perPage: 4,
         totalPages: 1,
         totalItems: 1,
         isLoading: true,
     });
-        const [searchQuery, setSearchQuery] = useState("");
-        const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
-    const getAllDosen = async () => {
+    const [searchQuery, setSearchQuery] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+
+    const fetchDosenData = async (page: number, limit: number, search: string) => {
         try {
-            const res = await Axios.get(`/dosen/dosen?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}`)
-            console.log(res.data.data)
-            setDataDosen(res.data.data)
+            const res = await Axios.get(`/dosen/dosen?page=${page}&limit=${limit}&search=${search}`);
+            return res.data.data;
         } catch (e) {
-            console.error(e)
+            console.error(e);
+            return [];
         }
-    }
+    };
+
+    const handlePaginationChange = (newPage: number) => {
+        setPagination(prev => ({ ...prev, currentPages: newPage }));
+    };
 
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -32,7 +37,11 @@ export default function Example() {
     }, [searchQuery]);
 
     useEffect(() => {
-        getAllDosen()
+        const fetchData = async () => {
+            const data = await fetchDosenData(pagination.currentPages, pagination.perPage, debouncedSearch);
+            setDataDosen(data);
+        };
+        fetchData();
     }, [pagination.currentPages, debouncedSearch]);
 
     return (
@@ -44,14 +53,14 @@ export default function Example() {
                     <Input
                         type="text"
                         placeholder="Cari Dosen"
-                          value={searchQuery}
-                          onChange={e => setSearchQuery(e.target.value)}
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
                         className="py-3 pl-4 pr-4 text-lg text-gray-900 bg-white border-2 rounded-full"
                         onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                setDebouncedSearch(searchQuery); 
-                                }
-                            }}
+                            if (e.key === "Enter") {
+                                setDebouncedSearch(searchQuery);
+                            }
+                        }}
                     />
                 </div>
                 <button
@@ -100,7 +109,7 @@ export default function Example() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {dataDosen.map((person : any) => (
+                                    {dataDosen.map((person: any) => (
                                         <tr key={person.id}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person.id}>{person.id}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-56 truncate " title={person.nama}>{person.nama}</td>
