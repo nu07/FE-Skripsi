@@ -7,16 +7,14 @@ import { Bounce, toast } from "react-toastify";
 import { classNames } from "@/utils/classNames";
 
 const defaultValue = {
-    catatanPembayaran: "",
     status: "",
-    idSkripsi: "",
-    id_pembimbing1: "",
-    id_pembimbing2: "",
-
+    id_penguji1: "",
+    id_penguji2: "",
+    tanggal_sidang: "",
 }
 
 export default function Example() {
-    const [dataDosen, setDataDosen] = useState<any>([])
+    const [dataSidang, setDataSidang] = useState<any>([])
     const [isEditData, setIsEditData] = useState(false)
     const [pagination, setPagination] = useState({
         currentPages: 1,
@@ -25,17 +23,16 @@ export default function Example() {
         totalItems: 1,
         isLoading: true,
         showDeleted: true,
-        status: '',
     });
-    const [detailData, setDatailData] = useState<any>(defaultValue)
+    const [detailDosen, setDetailDosen] = useState<any>(defaultValue)
+    const [dataDosen, setDataDosen] = useState<any>([])
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
-    const [allDosen, setAllDosen] = useState([])
 
-    const getAllDosen = async () => {
+    const getAllDataSidang = async () => {
         try {
-            const res = await Axios.get(`/skripsi?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}&status=${pagination.status}`)
-            setDataDosen(res.data.data)
+            const res = await Axios.get(`/sidang?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}`)
+            setDataSidang(res.data.data)
             setPagination((prev) => ({
                 ...prev,
                 totalPages: res.data.pagination.totalPages,
@@ -47,10 +44,11 @@ export default function Example() {
         }
     }
 
+
     const getAllDataDosen = async () => {
         try {
             const res = await Axios.get('/dosen/dosen?page=1&limit=1000&search=a&showDeleted=true')
-            setAllDosen(res.data.data)
+            setDataDosen(res.data.data)
         } catch (e: any) {
             console.error(e)
         }
@@ -58,8 +56,7 @@ export default function Example() {
 
     const SubmitEditData = async () => {
         try {
-            await Axios.put(`/skripsi/${detailData?.id}`, { status: detailData.status, catatan: detailData.catatanPembayaran })
-            await Axios.post('/set-pembimbing', {idSkripsi : detailData.id, idPembimbing1: detailData.id_pembimbing1,idPembimbing2: detailData.id_pembimbing2 })
+            await Axios.put(`/sidang/${detailDosen?.id}`, detailDosen)
             setIsEditData(false)
             toast.success("Dosen berhasil Di Edit!", {
                 position: "top-right",
@@ -72,7 +69,7 @@ export default function Example() {
                 theme: "colored",
                 transition: Bounce,
             });
-            getAllDosen()
+            getAllDataSidang()
         } catch (e: any) {
             console.error(e)
             toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
@@ -98,30 +95,30 @@ export default function Example() {
     }, [searchQuery]);
 
     useEffect(() => {
-        getAllDosen()
-    }, [pagination.currentPages, debouncedSearch, pagination.showDeleted, pagination.status]);
+        getAllDataSidang()
+    }, [pagination.currentPages, debouncedSearch, pagination.showDeleted]);
 
     useEffect(() => {
-        getAllDataDosen()
+    getAllDataDosen()
     }, [])
-
+    
 
     return (
         <>
             <BaseModal
                 isOpen={isEditData}
                 setIsOpen={setIsEditData}
-                title="Edit Data Pembayaran"
+                title="Edit Data Sidang"
                 mode="edit"
                 submitData={SubmitEditData}
-                content={<ModalEdit state={detailData} setState={setDatailData} allDosen={allDosen} />}
+                content={<ModalEdit state={detailDosen} setState={setDetailDosen} dataDosen={dataDosen} />}
             />
             <div className="my-2 flex justify-between gap-x-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
                     {/* Input Pencarian */}
                     <Input
                         type="text"
-                        placeholder="Cari Mahasiswa"
+                        placeholder="Cari Data Sidang"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={(e) => {
@@ -132,27 +129,25 @@ export default function Example() {
                         className="py-3 px-4 text-base text-gray-900 bg-white border-2 border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
 
-                    <div className="flex">
-                        <label htmlFor="location" className="block text-sm font-medium text-gray-700 my-auto">
-                            Status
+                    <div className="flex items-center space-x-2">
+                        <input
+                            id="showDeleted"
+                            name="showDeleted"
+                            type="checkbox"
+                            checked={pagination.showDeleted}
+                            onChange={(e) =>
+                                setPagination((prev: any) => ({
+                                    ...prev,
+                                    showDeleted: e.target.checked, // ✅ gunakan `checked` untuk checkbox
+                                }))
+                            }
+                            className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                        />
+                        <label htmlFor="showDeleted" className="text-sm text-gray-700">
+                            Tampilkan Sidang yang Sudah Dihapus
                         </label>
-                        <select
-                            className="mt-1 block w-32 ml-4 pl-3 pr-0  py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
-                            defaultValue="sukses"
-                            onChange={(e: any) => setPagination((prev: any) => ({
-                                ...prev,
-                                status: e.target.value,
-                            }))}
-                            value={pagination.status}
-                        >
-                            <option value="">Semua Data</option>
-                            <option value="sukses">Sukses</option>
-                            <option value="pending">Pending</option>
-                            <option value="gagal">Gagal</option>
-                        </select>
                     </div>
                 </div>
-
             </div>
             <div className="flex flex-col">
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -165,7 +160,7 @@ export default function Example() {
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Nama Mahasiswa
+                                            Nama
                                         </th>
                                         <th
                                             scope="col"
@@ -177,31 +172,13 @@ export default function Example() {
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Judul
+                                            Email
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Status Pembayaran
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        >
-                                            Bukti Pembayaran
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        >
-                                            Skripsi
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        >
-                                            Pembimbing
+                                            status
                                         </th>
                                         <th
                                             scope="col"
@@ -209,41 +186,30 @@ export default function Example() {
                                         >
                                             Deleted
                                         </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                            Tanggal Sidang
+                                        </th>
                                         <th scope="col" className="relative px-6 py-3 text-gray-500">
                                             <span className="">Edit</span>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {dataDosen.map((person: any) => (
+                                    {dataSidang.map((person: any) => (
                                         <tr key={person.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person?.mahasiswa?.nama}>{person?.mahasiswa?.nama}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person?.mahasiswa?.nim}>{person?.mahasiswa?.nim}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person?.judul}>{person?.judul}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-14 truncate" title={person?.status}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person.mahasiswa.nama}>{person.mahasiswa.nama}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person.mahasiswa.nim}>{person.mahasiswa.nim}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.mahasiswa.email}>{person.mahasiswa.email}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.status}>
                                                 <button
                                                     type="button"
-                                                    className={classNames(person?.status === 'sukses' ? 'text-white bg-green-600 hover:bg-green-700 focus:ring-green-500' : person?.status === 'pending' ? 'text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500' : 'text-white bg-red-600 hover:bg-red-700 focus:ring-red-500', 'inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 ')}
+                                                    className={classNames(person?.status === 'finished' ? 'text-white bg-green-600 hover:bg-green-700 focus:ring-green-500' : person?.status === 'ongoing' ? 'text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500' : 'text-white bg-red-600 hover:bg-red-700 focus:ring-red-500', 'inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 ')}
                                                 >
                                                     {person?.status?.toUpperCase()}
                                                 </button>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-10 truncate" >
-                                                <div className="flex-shrink-0">
-                                                    <img className="h-12 w-12 rounded-full" src={import.meta.env.VITE_APP_URL + person.buktiPembayaran} alt="" />
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-5 truncate" title={person.deletedAt}>
-                                                <input
-                                                    type="checkbox"
-                                                    readOnly
-                                                    className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 disabled:opacity-100 disabled:bg-white disabled:text-indigo-600 disabled:cursor-default"
-                                                    checked={!!person.mahasiswa.isEligibleForSkripsi}
-                                                />
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-40 truncate" title={person.deletedAt}>
-                                                <div>Pembimbing 1: {person?.pembimbing1?.nama}</div>
-                                                <div>Pembimbing 2: {person?.pembimbing2?.nama}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.deletedAt}>
                                                 <input
@@ -253,15 +219,22 @@ export default function Example() {
                                                     checked={!!person.deletedAt}
                                                 />
                                             </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.tanggal_sidang}>  {new Date(person?.tanggal_sidang).toLocaleString('id-ID', {
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                second: '2-digit',
+                                                day: '2-digit',
+                                                month: 'long',
+                                                year: 'numeric',
+                                            })}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                                 <Button className="text-indigo-600 hover:text-indigo-900" onClick={() => {
-                                                    setDatailData(person)
+                                                    setDetailDosen(person)
                                                     setIsEditData(true)
                                                 }
                                                 }>
                                                     Edit
                                                 </Button>
-
                                             </td>
                                         </tr>
                                     ))}
@@ -281,85 +254,37 @@ export default function Example() {
 
 
 
-const ModalEdit = ({ state, setState, allDosen }: any) => {
+const ModalEdit = ({ state, setState, dataDosen }: any) => {
     return (
         <>
             <div className="space-y-3">
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 text-center">
-                        Bukti Pembayaran
-                    </label>
-                    <div className="flex-shrink-0 flex items-center justify-center">
-                        <img className="max-h-36 max-w-40 rounded-full" src={import.meta.env.VITE_APP_URL + state.buktiPembayaran} alt="" />
-                    </div>
-                </div>
-                <div>
-                    <div className="mt-1">
-
-                        <div>
-                            <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-                                Location
-                            </label>
-                            <select
-                                id="location"
-                                name="location"
-                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
-                                defaultValue="sukses"
-                                onChange={(e: any) => setState((prev: any) => ({
-                                    ...prev,
-                                    status: e.target.value,
-                                }))}
-                                value={state.status}
-                            >
-                                <option>sukses</option>
-                                <option>pending</option>
-                                <option>gagal</option>
-                            </select>
-                        </div>
-
-                    </div>
-                </div>
-
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
-                        Catatan
+                        Status
                     </label>
                     <div className="mt-1">
-                        <input
-                            type="text"
-                            required
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+
+                        <select
+                            id="location"
+                            name="location"
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
+                            defaultValue="sukses"
                             onChange={(e: any) => setState((prev: any) => ({
                                 ...prev,
-                                catatanPembayaran: e.target.value,
+                                status: e.target.value,
                             }))}
-                            value={state.catatanPembayaran}
-                        />
+                            value={state.status}
+                        >
+                            <option value='unfinished'>Unfinished</option>
+                            <option value='ongoing'>On Going</option>
+                            <option value='finished'>Finished</option>
+                        </select>
                     </div>
                 </div>
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
-                        ID Skripsi
-                    </label>
-                    <div className="mt-1">
-                        <input
-                            type="text"
-                            required
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                idSkripsi: e.target.value,
-                            }))}
-                            value={state.id}
-                            disabled
-                        />
-                    </div>
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Nama Pembimbing 1
+                        Nama Penguji 1
                     </label>
                     <div className="mt-1">
                         <select
@@ -369,12 +294,11 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             defaultValue=""
                             onChange={(e: any) => setState((prev: any) => ({
                                 ...prev,
-                                idPembimbing1: e.target.value,
-                                id_pembimbing1: e.target.value,
+                                id_penguji1: e.target.value,
                             }))}
-                            value={state.id_pembimbing1}
+                            value={state.id_penguji1}
                         >
-                            {allDosen.map((data: any)=> (
+                            {dataDosen.map((data: any)=> (
                                 <>
                                 <option key={data.id} value={data.id}>{data.nama}</option>
                                 </>
@@ -382,9 +306,10 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                         </select>
                     </div>
                 </div>
+
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
-                        Nama Pembimbing 2
+                        Nama Penguji 2
                     </label>
                     <div className="mt-1">
                         <select
@@ -394,12 +319,11 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             defaultValue=""
                             onChange={(e: any) => setState((prev: any) => ({
                                 ...prev,
-                                idPembimbing2: e.target.value,
-                                id_pembimbing2: e.target.value,
+                                id_penguji2: e.target.value,
                             }))}
-                            value={state.id_pembimbing2}
+                            value={state.id_penguji2}
                         >
-                            {allDosen.map((data: any)=> (
+                            {dataDosen.map((data: any)=> (
                                 <>
                                 <option key={data.id} value={data.id}>{data.nama}</option>
                                 </>
@@ -407,6 +331,58 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                         </select>
                     </div>
                 </div>
+
+     <div>
+  <label className="block text-sm font-medium text-gray-700">
+    Tanggal Sidang
+  </label>
+  <div className="mt-1">
+    <input
+      type="datetime-local"
+      id="tanggal_sidang"
+      name="tanggal_sidang"
+      required
+      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      onChange={(e: any) => {
+        const localValue = e.target.value; // e.g., "2025-06-22T09:00"
+        const isoString = new Date(localValue).toISOString(); // e.g., "2025-06-22T09:00:00.000Z"
+        setState((prev: any) => ({
+          ...prev,
+          tanggal_sidang: isoString,
+        }));
+      }}
+      value={
+        state.tanggal_sidang
+          ? new Date(state.tanggal_sidang).toISOString().slice(0, 16)
+          : ''
+      }
+    />
+  </div>
+</div>
+
+                {state.deletedAt && (
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Pulihkan Data yang Dihapus?
+                        </label>
+                        
+                        <div className="mt-1 flex items-center space-x-2">
+                            
+                            <input
+                                type="checkbox"
+                                checked={!!state.restore} // ✅ pastikan boolean
+                                onChange={(e) =>
+                                    setState((prev: any) => ({
+                                        ...prev,
+                                        restore: e.target.checked, // ✅ gunakan `checked`, bukan `value`
+                                    }))
+                                }
+                                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            />
+                            <span className="text-sm text-gray-600">Aktifkan untuk menghapus status deleted</span>
+                        </div>
+                    </div>
+                )}
 
             </div>
         </>

@@ -9,6 +9,7 @@ declare global {
   const AnnotationIcon: typeof import('@heroicons/react/solid')['AnnotationIcon']
   const ArrowRightIcon: typeof import('@heroicons/react/solid')['ArrowRightIcon']
   const BellIcon: typeof import('@heroicons/react/solid')['BellIcon']
+  const BriefcaseIcon: typeof import('@heroicons/react/solid')['BriefcaseIcon']
   const CalculatorIcon: typeof import('@heroicons/react/solid')['CalculatorIcon']
   const CalendarIcon: typeof import('@heroicons/react/solid')['CalendarIcon']
   const CashIcon: typeof import('@heroicons/react/solid')['CashIcon']

@@ -18,6 +18,7 @@ import DataDosen from "@/pages/admin/dataDosen";
 import DataMahasiswa from "@/pages/admin/dataMahasiswa"
 import DataAdmin from "@/pages/admin/dataAdmin"
 import DataPembayaranSkripsi from "@/pages/admin/dataPembayaranSkripsi"
+import DataSidang from "@/pages/admin/dataSidang"
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
@@ -126,7 +127,15 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-      </Routes>
+        <Route
+          path="/data-sidang"
+          element={
+            <ProtectedRoute>
+              <DataSidang />
+            </ProtectedRoute>
+          }
+        />
+      </Routes> 
     </Router>
   );
 };

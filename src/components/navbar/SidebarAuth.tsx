@@ -23,6 +23,7 @@ export default function Navbar({ customContent }: NavbarProps) {
     { name: "Data Mahasiswa", href: "/data-mahasiswa", icon: UserAddIcon },
     { name: "Data Admin", href: "/data-admin", icon: UserCircleIcon },
     { name: "Data Pembayaran Skripsi", href: "/data-pembayaran-skripsi", icon: CurrencyDollarIcon },
+    { name: "Data Sidang", href: "/data-sidang", icon: BriefcaseIcon  },
   ];
 
   const navigationDosen =  [
