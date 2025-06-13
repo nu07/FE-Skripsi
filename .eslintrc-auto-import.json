@@ -69,6 +69,8 @@
     "DotsVerticalIcon": true,
     "FlagIcon": true,
     "ClockIcon": true,
-    "TrendingUpIcon": true
+    "TrendingUpIcon": true,
+    "PencilIcon": true,
+    "PlusIcon": true
   }
 }

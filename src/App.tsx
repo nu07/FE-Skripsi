@@ -13,6 +13,7 @@ import Login from "@/pages/login";
 import News from "@/pages/news";
 import NewsDetail from "@/pages/newsDetail";
 import ProtectedRoute from "./layout/protectedPages";
+import Dashboard from '@/pages/admin/dashboard';
 import NewsAdmin from "@/pages/admin/news";
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
@@ -71,7 +72,7 @@ const App: React.FC = () => {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <h1>test</h1>
+              <Dashboard/>
             </ProtectedRoute>
           }
         />
