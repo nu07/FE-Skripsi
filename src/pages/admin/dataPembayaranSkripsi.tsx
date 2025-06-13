@@ -7,8 +7,12 @@ import { Bounce, toast } from "react-toastify";
 import { classNames } from "@/utils/classNames";
 
 const defaultValue = {
-  "catatanPembayaran": "",
-  "status": "",
+    catatanPembayaran: "",
+    status: "",
+    idSkripsi: "",
+    id_pembimbing1: "",
+    id_pembimbing2: "",
+
 }
 
 export default function Example() {
@@ -23,9 +27,11 @@ export default function Example() {
         showDeleted: true,
         status: '',
     });
-    const [detailDosen, setDetailDosen] = useState<any>(defaultValue)
+    const [detailData, setDatailData] = useState<any>(defaultValue)
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+    const [allDosen, setAllDosen] = useState([])
+
     const getAllDosen = async () => {
         try {
             const res = await Axios.get(`/skripsi?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}&status=${pagination.status}`)
@@ -41,9 +47,19 @@ export default function Example() {
         }
     }
 
+    const getAllDataDosen = async () => {
+        try {
+            const res = await Axios.get('/dosen/dosen?page=1&limit=1000&search=a&showDeleted=true')
+            setAllDosen(res.data.data)
+        } catch (e: any) {
+            console.error(e)
+        }
+    }
+
     const SubmitEditData = async () => {
         try {
-            await Axios.put(`/skripsi/${detailDosen?.id}`, {status:detailDosen.status, catatan: detailDosen.catatanPembayaran })
+            await Axios.put(`/skripsi/${detailData?.id}`, { status: detailData.status, catatan: detailData.catatanPembayaran })
+            await Axios.post('/set-pembimbing', {idSkripsi : detailData.id, idPembimbing1: detailData.id_pembimbing1,idPembimbing2: detailData.id_pembimbing2 })
             setIsEditData(false)
             toast.success("Dosen berhasil Di Edit!", {
                 position: "top-right",
@@ -83,7 +99,12 @@ export default function Example() {
 
     useEffect(() => {
         getAllDosen()
-    }, [pagination.currentPages, debouncedSearch, pagination.showDeleted]);
+    }, [pagination.currentPages, debouncedSearch, pagination.showDeleted, pagination.status]);
+
+    useEffect(() => {
+        getAllDataDosen()
+    }, [])
+
 
     return (
         <>
@@ -93,7 +114,7 @@ export default function Example() {
                 title="Edit Data Pembayaran"
                 mode="edit"
                 submitData={SubmitEditData}
-                content={<ModalEdit state={detailDosen} setState={setDetailDosen} />}
+                content={<ModalEdit state={detailData} setState={setDatailData} allDosen={allDosen} />}
             />
             <div className="my-2 flex justify-between gap-x-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
@@ -111,23 +132,24 @@ export default function Example() {
                         className="py-3 px-4 text-base text-gray-900 bg-white border-2 border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
 
-                    <div className="flex items-center space-x-2">
-                        <input
-                            id="showDeleted"
-                            name="showDeleted"
-                            type="checkbox"
-                            checked={pagination.showDeleted}
-                            onChange={(e) =>
-                                setPagination((prev: any) => ({
-                                    ...prev,
-                                    showDeleted: e.target.checked,
-                                }))
-                            }
-                            className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                        />
-                        <label htmlFor="showDeleted" className="text-sm text-gray-700">
-                            Tampilkan Dosen yang Sudah Dihapus
+                    <div className="flex">
+                        <label htmlFor="location" className="block text-sm font-medium text-gray-700 my-auto">
+                            Status
                         </label>
+                        <select
+                            className="mt-1 block w-32 ml-4 pl-3 pr-0  py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
+                            defaultValue="sukses"
+                            onChange={(e: any) => setPagination((prev: any) => ({
+                                ...prev,
+                                status: e.target.value,
+                            }))}
+                            value={pagination.status}
+                        >
+                            <option value="">Semua Data</option>
+                            <option value="sukses">Sukses</option>
+                            <option value="pending">Pending</option>
+                            <option value="gagal">Gagal</option>
+                        </select>
                     </div>
                 </div>
 
@@ -234,13 +256,13 @@ export default function Example() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                                 <Button className="text-indigo-600 hover:text-indigo-900" onClick={() => {
-                                                    setDetailDosen(person)
+                                                    setDatailData(person)
                                                     setIsEditData(true)
                                                 }
                                                 }>
                                                     Edit
                                                 </Button>
-                                                
+
                                             </td>
                                         </tr>
                                     ))}
@@ -260,20 +282,20 @@ export default function Example() {
 
 
 
-const ModalEdit = ({ state, setState }: any) => {
+const ModalEdit = ({ state, setState, allDosen }: any) => {
     return (
         <>
             <div className="space-y-3">
 
                 <div>
-                    <div className="flex-shrink-0">
+                    <label className="block text-sm font-medium text-gray-700 text-center">
+                        Bukti Pembayaran
+                    </label>
+                    <div className="flex-shrink-0 flex items-center justify-center">
                         <img className="max-h-36 max-w-40 rounded-full" src={import.meta.env.VITE_APP_URL + state.buktiPembayaran} alt="" />
                     </div>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Status
-                    </label>
                     <div className="mt-1">
 
                         <div>
@@ -315,6 +337,75 @@ const ModalEdit = ({ state, setState }: any) => {
                             }))}
                             value={state.catatanPembayaran}
                         />
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                        ID Skripsi
+                    </label>
+                    <div className="mt-1">
+                        <input
+                            type="text"
+                            required
+                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            onChange={(e: any) => setState((prev: any) => ({
+                                ...prev,
+                                idSkripsi: e.target.value,
+                            }))}
+                            value={state.id}
+                            disabled
+                        />
+                    </div>
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                        Nama Pembimbing 1
+                    </label>
+                    <div className="mt-1">
+                        <select
+                            id="id_pembimbing1"
+                            name="id_pembimbing1"
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
+                            defaultValue=""
+                            onChange={(e: any) => setState((prev: any) => ({
+                                ...prev,
+                                idPembimbing1: e.target.value,
+                                id_pembimbing1: e.target.value,
+                            }))}
+                            value={state.id_pembimbing1}
+                        >
+                            {allDosen.map((data: any)=> (
+                                <>
+                                <option key={data.id} value={data.id}>{data.nama}</option>
+                                </>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                        Nama Pembimbing 2
+                    </label>
+                    <div className="mt-1">
+                        <select
+                            id="id_pembimbing2"
+                            name="id_pembimbing2"
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
+                            defaultValue=""
+                            onChange={(e: any) => setState((prev: any) => ({
+                                ...prev,
+                                idPembimbing2: e.target.value,
+                                id_pembimbing2: e.target.value,
+                            }))}
+                            value={state.id_pembimbing2}
+                        >
+                            {allDosen.map((data: any)=> (
+                                <>
+                                <option key={data.id} value={data.id}>{data.nama}</option>
+                                </>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
