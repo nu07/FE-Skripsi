@@ -30,7 +30,6 @@ export default function Example() {
         theme: "colored",
         transition: Bounce,
       });
-      console.log(res.data.data)
       if(res.data.data.role === 'mahasiswa'){
         navigate("/");
       }else{

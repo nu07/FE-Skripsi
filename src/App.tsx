@@ -16,6 +16,8 @@ import ProtectedRoute from "./layout/protectedPages";
 import NewsAdmin from "@/pages/admin/news";
 import DataDosen from "@/pages/admin/dataDosen";
 import DataMahasiswa from "@/pages/admin/dataMahasiswa"
+import DataAdmin from "@/pages/admin/dataAdmin"
+import DataPembayaranSkripsi from "@/pages/admin/dataPembayaranSkripsi"
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
@@ -105,6 +107,22 @@ const App: React.FC = () => {
           element={
             <ProtectedRoute>
               <DataMahasiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-admin"
+          element={
+            <ProtectedRoute>
+              <DataAdmin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-pembayaran-skripsi"
+          element={
+            <ProtectedRoute>
+              <DataPembayaranSkripsi />
             </ProtectedRoute>
           }
         />
