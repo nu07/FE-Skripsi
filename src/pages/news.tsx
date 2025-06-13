@@ -14,6 +14,7 @@ import DashboardPagination from '@/components/pagination/dashboardPagination';
 export default function NewsPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [datanews, setDatanews] = useState<NewsData[] | any>([])
+    const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
     const DOMPurify = createDOMPurify(window)
     const [pagination, setPagination] = useState({
         currentPages: 1,
@@ -26,7 +27,7 @@ export default function NewsPage() {
 
     const getAllNews = async () => {
         try {
-            const res = await Axios.get(`/news?page=${pagination.currentPages}&limit=${pagination.perPage}`)
+            const res = await Axios.get(`/news?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}`)
             setDatanews(res.data.data)
             setPagination((prev) => ({
                 ...prev,
@@ -40,8 +41,16 @@ export default function NewsPage() {
     }
 
     useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearch(searchQuery);
+        }, 1000);
+
+        return () => clearTimeout(handler)
+    }, [searchQuery]);
+
+    useEffect(() => {
         getAllNews();
-    }, [pagination.currentPages]);
+    }, [pagination.currentPages, debouncedSearch]);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -56,13 +65,17 @@ export default function NewsPage() {
 
                         {/* Search Bar */}
                         <div className="relative max-w-2xl mx-auto">
-                            <SearchIcon className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-4 top-1/2" />
                             <Input
                                 type="text"
-                                placeholder="Cari berita, penelitian, atau topik..."
+                                placeholder="Cari Berita"
                                 value={searchQuery}
                                 onChange={e => setSearchQuery(e.target.value)}
                                 className="py-3 pl-12 pr-4 text-lg text-gray-900 bg-white border-0 rounded-full"
+                                onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                setDebouncedSearch(searchQuery); 
+                                }
+                            }}
                             />
                         </div>
                     </div>
@@ -108,11 +121,11 @@ export default function NewsPage() {
                                 ))}
                             </div>
                         </div>
-                     <DashboardPagination
-                        pagination={pagination}
-                        setPagination={setPagination}
+                        <DashboardPagination
+                            pagination={pagination}
+                            setPagination={setPagination}
                         />
-                        
+
                     </div>
                 </div>
             </div>

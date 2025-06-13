@@ -1,13 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { AcademicCapIcon, UserIcon } from "@heroicons/react/outline";
-import { fetchNewsData } from "./news";
-
-const stats = [
-  { name: "Total Mahasiswa Terdaftar", value: "0", icon: UserIcon, color: "bg-green-500" },
-  { name: "Total Dosen", value: "0", icon: AcademicCapIcon, color: "bg-yellow-500" },
-];
+import { AcademicCapIcon, UserIcon, NewspaperIcon } from "@heroicons/react/outline";
+import Axios from "@/API/axios";
 
 export default function Dashboard() {
   const [user] = useState({
@@ -15,12 +10,32 @@ export default function Dashboard() {
     role: "Admin",
   });
 
+  const [stats, setStats] = useState([
+    { name: "Total Mahasiswa Terdaftar", value: "0", icon: UserIcon, color: "bg-green-500" },
+    { name: "Total Dosen", value: "0", icon: AcademicCapIcon, color: "bg-yellow-500" },
+    { name: "Total Berita", value: "0", icon: NewspaperIcon, color: "bg-blue-500" },
+  ]);
+
   const [activityLog, setActivityLog] = useState([]);
 
   useEffect(() => {
+    // const fetchStats = async () => {
+    //   try {
+    //     const dosenRes = await Axios.get("/dosen/dosen");
+    //     const newsRes = await Axios.get("/news");
+    //     setStats(prevStats => [
+    //       prevStats[0],
+    //       { ...prevStats[1], value: dosenRes.data.totalItems.toString() },
+    //       { ...prevStats[2], value: newsRes.data.totalItems.toString() },
+    //     ]);
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // };
+
     const fetchActivityLog = async () => {
-      const newsData = await fetchNewsData(1, 5); // Fetch the latest 5 news items
-      const logData = newsData.map(news => ({
+      const newsData = await Axios.get("/news?page=1&limit=5");
+      const logData = newsData.data.data.map(news => ({
         id: news.id,
         user: news.admin.nama,
         action: `Menambahkan berita terbaru: ${news.title}`,
@@ -36,6 +51,7 @@ export default function Dashboard() {
       setActivityLog(logData);
     };
 
+    // fetchStats();
     fetchActivityLog();
   }, []);
 
@@ -48,7 +64,7 @@ export default function Dashboard() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6">
           {stats.map(stat => (
             <div key={stat.name} className="bg-white rounded-lg shadow p-5 border-l-4 border-purple-600">
               <div className="flex items-center">

@@ -7,6 +7,7 @@ import { Button, Menu, Transition } from "@headlessui/react";
 import DashboardPagination from "@/components/pagination/dashboardPagination";
 import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
+import { Input } from "@/components/ui/input";
 import {
   DocumentAddIcon,
   TrashIcon,
@@ -54,6 +55,8 @@ function NewsAdmin() {
   const [isOpenCreateNews, setIsOpenCreateNews] = useState(false);
   const [isOpenEditNews, setIsOpenEditNews] = useState(false);
   const [isOpenDeleteNews, setIsOpenDeleteNews] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
   const [pagination, setPagination] = useState({
     currentPages: 1,
     perPage: 12,
@@ -62,7 +65,6 @@ function NewsAdmin() {
     isLoading: true,
   });
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedNews, setSelectedNews] = useState<string[]>([]);
 
   const getAllNews = async () => {
@@ -71,8 +73,7 @@ function NewsAdmin() {
       isLoading: true,
     }));
     try {
-      const res = await Axios.get(`/news?page=${pagination.currentPages}&limit=${pagination.perPage}`);
-
+      const res = await Axios.get(`/news?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${debouncedSearch}`);
       setPagination(prev => ({
         ...prev,
         totalPages: res.data.totalPages,
@@ -221,8 +222,16 @@ function NewsAdmin() {
   };
 
   useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  useEffect(() => {
     getAllNews();
-  }, [pagination.currentPages]);
+  }, [pagination.currentPages, debouncedSearch]);
 
   useEffect(() => {
     if (isOpenCreateNews) {
@@ -232,7 +241,7 @@ function NewsAdmin() {
 
   return (
     <>
-      {false ? (
+      {pagination.isLoading ? (
         <div>
           <p>Loading...</p>
         </div>
@@ -245,7 +254,6 @@ function NewsAdmin() {
             setData={setisDetailData}
             submitData={CreateDataNews}
           />
-          {/* edit news */}
           <ModalCreate
             isOpen={isOpenEditNews}
             setIsOpen={setIsOpenEditNews}
@@ -261,12 +269,22 @@ function NewsAdmin() {
             content={`Anda Akan Menghapus data ${isDetailData?.title}`}
             submitData={DeleteDataNews}
           />
-          {/* Judul */}
           <div className="flex">
             <h2 className="text-3xl font-bold text-gray-900 text-center">Data Berita</h2>
           </div>
-          {/* News Tools */}
-          <div className="my-2 flex flex-row-reverse items-center space-x-4 space-x-reverse">
+          {/* <div className="my-2 flex justify-between gap-x-4">
+            <Input
+              type="text"
+              placeholder="Cari berita"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="py-3 pl-4 pr-4 text-lg text-gray-900 bg-white border-2 rounded-full"
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  setDebouncedSearch(searchQuery);
+                }
+              }}
+            />
             <button
               onClick={() => setIsOpenCreateNews(true)}
               type="button"
@@ -274,29 +292,37 @@ function NewsAdmin() {
               Tambah Berita
               <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
             </button>
+          </div> */}
+          <div className="my-2 flex flex-row-reverse items-center space-x-4 space-x-reverse">
+            <button
+              onClick={() => setIsOpenCreateNews(true)}
+              type="button"
+              className="inline-flex items-center px-4 py-2 border w-60 border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Tambah Berita
+              <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+            </button>
             <button
               onClick={handleDeleteAll}
               type="button"
-              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              className="inline-flex items-center px-4 py-2 border w-60 border-transparent shadow-sm text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
               Hapus Semua
               <TrashIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+            </button>
+            <button
+              onClick={() => setViewMode(viewMode === "card" ? "list" : "card")}
+              type="button"
+              className="inline-flex items-center px-4 py-2 w-60 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+              {viewMode === "card" ? "Tampilan List" : "Tampilan Card"}
+              <SwitchHorizontalIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
             </button>
             <input
               type="text"
               placeholder="Cari berita..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="px-4 py-2 border border-gray-300 w-full rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            <button
-              onClick={() => setViewMode(viewMode === "card" ? "list" : "card")}
-              type="button"
-              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-              {viewMode === "card" ? "Tampilan List" : "Tampilan Card"}
-              <SwitchHorizontalIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-            </button>
           </div>
-          {/* News List */}
           <ul role="list" className={`grid ${viewMode === "card" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"} gap-6 p-4`}>
             {allDataNews
               ?.filter(person => person.title.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -317,7 +343,7 @@ function NewsAdmin() {
                       className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                     />
                   )}
-                  <div className={viewMode === "list" ? "flex-1" : "px-6 py-4 flex-grow"}>
+                  <div className={viewMode === "list" ? "flex-1" : "px-6 py-4 flex-grow overflow-hidden"}>
                     <div className="flex justify-between items-center">
                       <h3 className="text-lg font-semibold text-gray-900 truncate">{person.title || "Judul Tidak Tersedia"}</h3>
                       <p className="text-sm text-gray-500">
