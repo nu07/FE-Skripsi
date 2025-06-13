@@ -54,6 +54,7 @@ declare global {
   const Transition: typeof import('@headlessui/react')['Transition']
   const TrashIcon: typeof import('@heroicons/react/solid')['TrashIcon']
   const TrendingUpIcon: typeof import('@heroicons/react/solid')['TrendingUpIcon']
+  const UserAddIcon: typeof import('@heroicons/react/solid')['UserAddIcon']
   const UserGroupIcon: typeof import('@heroicons/react/solid')['UserGroupIcon']
   const UserIcon: typeof import('@heroicons/react/solid')['UserIcon']
   const UsersIcon: typeof import('@heroicons/react/solid')['UsersIcon']

@@ -71,6 +71,7 @@
     "ClockIcon": true,
     "TrendingUpIcon": true,
     "UserIcon": true,
-    "ExclamationCircleIcon": true
+    "ExclamationCircleIcon": true,
+    "UserAddIcon": true
   }
 }

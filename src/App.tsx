@@ -3,7 +3,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
   // Navigate,
 } from "react-router-dom";
 import "@/App.css";
@@ -16,14 +15,13 @@ import NewsDetail from "@/pages/newsDetail";
 import ProtectedRoute from "./layout/protectedPages";
 import NewsAdmin from "@/pages/admin/news";
 import DataDosen from "@/pages/admin/dataDosen";
+import DataMahasiswa from "@/pages/admin/dataMahasiswa"
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
 
 const App: React.FC = () => {
     const { isLogin, data } = authStore();
-    console.log(data)
-      // let navigate = useNavigate();
   return (
     <Router>
             <ToastContainer />
@@ -99,6 +97,14 @@ const App: React.FC = () => {
           element={
             <ProtectedRoute>
               <DataDosen />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-mahasiswa"
+          element={
+            <ProtectedRoute>
+              <DataMahasiswa />
             </ProtectedRoute>
           }
         />
