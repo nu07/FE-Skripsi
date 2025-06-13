@@ -80,8 +80,8 @@ function Index() {
                                 alt={featuredNews.title}
                             />
                         </div> */}
-                        {datanews?.map((news: any) => (
-                            <div className="flex flex-col justify-center p-6 border-2 hover:cursor-pointer transition-shadow duration-300  hover:shadow-lg">
+                        {datanews?.map((news: any, index : any) => (
+                            <div className="flex flex-col justify-center p-6 border-2 hover:cursor-pointer transition-shadow duration-300  hover:shadow-lg" key={index}>
                                 <p className="mb-2 text-sm font-medium text-gray-500">
                                     {new Date(news?.updatedAt).toLocaleString('id-ID', {
                                         hour: '2-digit',

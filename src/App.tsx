@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate,
   // Navigate,
 } from "react-router-dom";
 import "@/App.css";
@@ -20,7 +21,9 @@ import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
 
 const App: React.FC = () => {
-    const { isLogin } = authStore();
+    const { isLogin, data } = authStore();
+    console.log(data)
+      // let navigate = useNavigate();
   return (
     <Router>
             <ToastContainer />
@@ -57,16 +60,22 @@ const App: React.FC = () => {
             </DefaultTemplate>
           }
         />
-        <Route
-          path="/login"
-          element={
-            isLogin  ? <Navigate to="/dashboard"/> : 
-            (
-            <DefaultTemplate>
-              <Login />
-            </DefaultTemplate>)
-          }
-        />
+<Route
+  path="/login"
+  element={
+    isLogin ? (
+      data?.role === "mahasiswa" ? (
+        <Navigate to="/" />
+      ) : (
+        <Navigate to="/dashboard" />
+      )
+    ) : (
+      <DefaultTemplate>
+        <Login />
+      </DefaultTemplate>
+    )
+  }
+/>
 
         <Route
           path="/dashboard"

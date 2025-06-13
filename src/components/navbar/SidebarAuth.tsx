@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import authStore from "@/store/loginStore";
+import { UserAddIcon, UserCircleIcon } from "@heroicons/react/outline";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -20,6 +21,7 @@ export default function Navbar({ customContent }: NavbarProps) {
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
     { name: "News", href: "/admin-news", icon: NewspaperIcon, current: false },
     { name: "Data Dosen", href: "/data-dosen", icon: UserIcon, current: false },
+    // { name: "Data Mahasiswa", href: "/data-mahasiswa", icon: UserAddIcon, current: false },
   ];
 
   const navigationDosen =  [
@@ -44,8 +46,6 @@ export default function Navbar({ customContent }: NavbarProps) {
       setNavigation(navigationDosen)
     }
   }, [data?.role])
-
-  console.log(data)
 
   return (
     <>
