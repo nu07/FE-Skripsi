@@ -6,6 +6,7 @@ import DashboardPagination from '@/components/pagination/dashboardPagination';
 import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
 
+// =>
 const defaultValue = {
     id: "",
     nama: "",
