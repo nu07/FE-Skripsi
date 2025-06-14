@@ -6,18 +6,57 @@ import DashboardPagination from "@/components/pagination/dashboardPagination";
 import { Bounce, toast } from "react-toastify";
 import { classNames } from "@/utils/classNames";
 
-const defaultValue = {
+// Define the Pagination type
+type Pagination = {
+  currentPages: number;
+  perPage: number;
+  totalPages: number;
+  totalItems: number;
+  isLoading: boolean;
+  showDeleted: boolean;
+  status: string;
+};
+
+// Define the Skripsi type
+type Skripsi = {
+  id: string;
+  catatanPembayaran: string;
+  status: string;
+  idSkripsi: string;
+  id_pembimbing1: string;
+  id_pembimbing2: string;
+  buktiPembayaran: string;
+  mahasiswa: {
+    nama: string;
+    nim: string;
+    isEligibleForSkripsi: boolean;
+  };
+  pembimbing1?: { nama: string };
+  pembimbing2?: { nama: string };
+  deletedAt: string | null;
+};
+
+// Update defaultValue to match the Skripsi type
+const defaultValue: Skripsi = {
+  id: "",
   catatanPembayaran: "",
   status: "",
   idSkripsi: "",
   id_pembimbing1: "",
   id_pembimbing2: "",
+  buktiPembayaran: "",
+  mahasiswa: {
+    nama: "",
+    nim: "",
+    isEligibleForSkripsi: false,
+  },
+  deletedAt: null,
 };
 
 export default function Example() {
-  const [dataDosen, setDataDosen] = useState<any>([]);
+  const [dataDosen, setDataDosen] = useState<Skripsi[]>([]);
   const [isEditData, setIsEditData] = useState(false);
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<Pagination>({
     currentPages: 1,
     perPage: 10,
     totalPages: 1,
@@ -26,10 +65,10 @@ export default function Example() {
     showDeleted: true,
     status: "",
   });
-  const [detailData, setDatailData] = useState<any>(defaultValue);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
-  const [allDosen, setAllDosen] = useState([]);
+  const [detailData, setDatailData] = useState<Skripsi>(defaultValue);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debouncedSearch, setDebouncedSearch] = useState<string>(searchQuery);
+  const [allDosen, setAllDosen] = useState<{ id: string; nama: string }[]>([]);
 
   const getAllDosen = async () => {
     try {
@@ -52,14 +91,17 @@ export default function Example() {
     try {
       const res = await Axios.get("/dosen/dosen?page=1&limit=1000&search=a&showDeleted=true");
       setAllDosen(res.data.data);
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
     }
   };
 
   const SubmitEditData = async () => {
     try {
-      await Axios.put(`/skripsi/${detailData?.id}`, { status: detailData.status, catatan: detailData.catatanPembayaran });
+      await Axios.put(`/skripsi/${detailData?.id}`, {
+        status: detailData.status,
+        catatan: detailData.catatanPembayaran,
+      });
       await Axios.post("/set-pembimbing", {
         idSkripsi: detailData.id,
         idPembimbing1: detailData.id_pembimbing1,
@@ -110,8 +152,6 @@ export default function Example() {
     getAllDataDosen();
   }, []);
 
-  console.log(dataDosen);
-
   return (
     <>
       <BaseModal
@@ -146,7 +186,7 @@ export default function Example() {
               className="mt-1 block w-32 ml-4 pl-3 pr-0  py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
               defaultValue="sukses"
               onChange={(e: any) =>
-                setPagination((prev: any) => ({
+                setPagination((prev: Pagination) => ({
                   ...prev,
                   status: e.target.value,
                 }))
@@ -197,7 +237,7 @@ export default function Example() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {dataDosen.map((person: any) => (
+                  {dataDosen.map((person: Skripsi) => (
                     <tr key={person.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person?.mahasiswa?.nama}>
                         {person?.mahasiswa?.nama}
@@ -224,7 +264,6 @@ export default function Example() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-10 truncate">
                         <div className="flex-shrink-0">
-                            // Gak muncul gambarnya
                           <img className="h-12 w-12 rounded-full" src={import.meta.env.VITE_APP_URL + person.buktiPembayaran} alt="" />
                         </div>
                       </td>
@@ -271,7 +310,15 @@ export default function Example() {
   );
 }
 
-const ModalEdit = ({ state, setState, allDosen }: any) => {
+const ModalEdit = ({
+  state,
+  setState,
+  allDosen,
+}: {
+  state: Skripsi;
+  setState: React.Dispatch<React.SetStateAction<Skripsi>>;
+  allDosen: { id: string; nama: string }[];
+}) => {
   return (
     <>
       <div className="space-y-3">
@@ -293,7 +340,7 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
                 defaultValue="sukses"
                 onChange={(e: any) =>
-                  setState((prev: any) => ({
+                  setState((prev: Skripsi) => ({
                     ...prev,
                     status: e.target.value,
                   }))
@@ -315,7 +362,7 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
               required
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               onChange={(e: any) =>
-                setState((prev: any) => ({
+                setState((prev: Skripsi) => ({
                   ...prev,
                   catatanPembayaran: e.target.value,
                 }))
@@ -333,7 +380,7 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
               required
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               onChange={(e: any) =>
-                setState((prev: any) => ({
+                setState((prev: Skripsi) => ({
                   ...prev,
                   idSkripsi: e.target.value,
                 }))
@@ -352,14 +399,14 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
               defaultValue=""
               onChange={(e: any) =>
-                setState((prev: any) => ({
+                setState((prev: Skripsi) => ({
                   ...prev,
                   idPembimbing1: e.target.value,
                   id_pembimbing1: e.target.value,
                 }))
               }
               value={state.id_pembimbing1}>
-              {allDosen.map((data: any) => (
+              {allDosen.map(data => (
                 <>
                   <option key={data.id} value={data.id}>
                     {data.nama}
@@ -378,14 +425,14 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
               defaultValue=""
               onChange={(e: any) =>
-                setState((prev: any) => ({
+                setState((prev: Skripsi) => ({
                   ...prev,
                   idPembimbing2: e.target.value,
                   id_pembimbing2: e.target.value,
                 }))
               }
               value={state.id_pembimbing2}>
-              {allDosen.map((data: any) => (
+              {allDosen.map(data => (
                 <>
                   <option key={data.id} value={data.id}>
                     {data.nama}

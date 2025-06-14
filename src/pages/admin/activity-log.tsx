@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 const activityLog = [
   { id: 1, user: "Wisnu User 123", action: "Menambahkan berita terbaru: Kulit Buah Naga Jadi Camilan Sehat", timestamp: "21 April 2025, 10:45 AM" },
   { id: 2, user: "Admin 456", action: "Menghapus berita: Breakthrough Penelitian AI", timestamp: "20 April 2025, 3:15 PM" },
@@ -9,11 +5,6 @@ const activityLog = [
 ];
 
 export default function ActivityLog() {
-  const [user] = useState({
-    name: "Wisnu User 123",
-    role: "Admin",
-  });
-
   return (
     <div className="flex-1 overflow-auto">
       <main className="p-6">
