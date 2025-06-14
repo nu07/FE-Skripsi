@@ -224,6 +224,7 @@ export default function Example() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-10 truncate">
                         <div className="flex-shrink-0">
+                            // Gak muncul gambarnya
                           <img className="h-12 w-12 rounded-full" src={import.meta.env.VITE_APP_URL + person.buktiPembayaran} alt="" />
                         </div>
                       </td>
