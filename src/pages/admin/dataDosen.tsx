@@ -5,10 +5,8 @@ import BaseModal from "@/components/modal/BaseModal";
 import DashboardPagination from "@/components/pagination/dashboardPagination";
 import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
-import { Pagination } from "@/types/Pagination"; // Import the Pagination type
-import { Dosen } from "@/types/Dosen"; // Import the Dosen type
 
-const defaultValue: Dosen = {
+const defaultValue = {
   id: "",
   nama: "",
   nidn: "",
@@ -18,11 +16,11 @@ const defaultValue: Dosen = {
 };
 
 export default function Example() {
-  const [dataDosen, setDataDosen] = useState<Dosen[]>([]);
+  const [dataDosen, setDataDosen] = useState<any>([]);
   const [isEditData, setIsEditData] = useState(false);
   const [isCreateData, setIsCreateData] = useState(false);
   const [isDeleteData, setIsDeleteData] = useState(false);
-  const [pagination, setPagination] = useState<Pagination>({
+  const [pagination, setPagination] = useState({
     currentPages: 1,
     perPage: 10,
     totalPages: 1,
@@ -30,7 +28,7 @@ export default function Example() {
     isLoading: true,
     showDeleted: true,
   });
-  const [detailDosen, setDetailDosen] = useState<Dosen>(defaultValue);
+  const [detailDosen, setDetailDosen] = useState<any>(defaultValue);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
   const getAllDosen = async () => {

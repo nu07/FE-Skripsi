@@ -6,32 +6,7 @@ import DashboardPagination from "@/components/pagination/dashboardPagination";
 import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
 
-// Define the Pagination type
-type Pagination = {
-  currentPages: number;
-  perPage: number;
-  totalPages: number;
-  totalItems: number;
-  isLoading: boolean;
-  showDeleted: boolean;
-};
-
-// Define the Mahasiswa type
-type Mahasiswa = {
-  id: string;
-  nim: string;
-  nama: string;
-  email: string;
-  password: string;
-  isEligibleForSkripsi: boolean;
-  deletedAt: string | null;
-  catatanSkripsi?: string;
-  restore?: boolean;
-};
-
-// Update defaultValue to match the Mahasiswa type
-const defaultValue: Mahasiswa = {
-  id: "",
+const defaultValue = {
   nim: "",
   nama: "",
   email: "",
@@ -41,8 +16,11 @@ const defaultValue: Mahasiswa = {
 };
 
 export default function Example() {
-  const [dataDosen, setDataDosen] = useState<Mahasiswa[]>([]);
-  const [pagination, setPagination] = useState<Pagination>({
+  const [dataDosen, setDataDosen] = useState<any>([]);
+  const [isEditData, setIsEditData] = useState(false);
+  const [isCreateData, setIsCreateData] = useState(false);
+  const [isDeleteData, setIsDeleteData] = useState(false);
+  const [pagination, setPagination] = useState({
     currentPages: 1,
     perPage: 10,
     totalPages: 1,
@@ -50,9 +28,9 @@ export default function Example() {
     isLoading: true,
     showDeleted: true,
   });
-  const [detailMahasiswa, setDetailMahasiswa] = useState<Mahasiswa>(defaultValue);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [debouncedSearch, setDebouncedSearch] = useState<string>(searchQuery);
+  const [detailMahasiswa, setDetailMahasiswa] = useState<any>(defaultValue);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
 
   const getAllMahasiswa = async () => {
     try {
@@ -226,7 +204,7 @@ export default function Example() {
               type="checkbox"
               checked={pagination.showDeleted}
               onChange={e =>
-                setPagination((prev: Pagination) => ({
+                setPagination((prev: any) => ({
                   ...prev,
                   showDeleted: e.target.checked, // ✅ gunakan `checked` untuk checkbox
                 }))
@@ -283,7 +261,7 @@ export default function Example() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {dataDosen.map((person: Mahasiswa) => (
+                  {dataDosen.map((person: any) => (
                     <tr key={person.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person.id}>
                         {person.id}
@@ -347,7 +325,7 @@ export default function Example() {
   );
 }
 
-const ModalEdit = ({ state, setState }: { state: Mahasiswa; setState: React.Dispatch<React.SetStateAction<Mahasiswa>> }) => {
+const ModalEdit = ({ state, setState }: any) => {
   return (
     <>
       <div className="space-y-3">
@@ -359,12 +337,12 @@ const ModalEdit = ({ state, setState }: { state: Mahasiswa; setState: React.Disp
               required
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               onChange={(e: any) =>
-                setState((prev: Mahasiswa) => ({
+                setState((prev: any) => ({
                   ...prev,
                   nim: e.target.value,
                 }))
               }
-              value={state.nim}
+              value={state.nidn}
             />
           </div>
         </div>
@@ -377,7 +355,7 @@ const ModalEdit = ({ state, setState }: { state: Mahasiswa; setState: React.Disp
               required
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               onChange={(e: any) =>
-                setState((prev: Mahasiswa) => ({
+                setState((prev: any) => ({
                   ...prev,
                   nama: e.target.value,
                 }))
@@ -397,7 +375,7 @@ const ModalEdit = ({ state, setState }: { state: Mahasiswa; setState: React.Disp
               required
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               onChange={(e: any) =>
-                setState((prev: Mahasiswa) => ({
+                setState((prev: any) => ({
                   ...prev,
                   email: e.target.value,
                 }))
@@ -415,7 +393,7 @@ const ModalEdit = ({ state, setState }: { state: Mahasiswa; setState: React.Disp
               required
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               onChange={(e: any) =>
-                setState((prev: Mahasiswa) => ({
+                setState((prev: any) => ({
                   ...prev,
                   password: e.target.value,
                 }))
@@ -433,7 +411,7 @@ const ModalEdit = ({ state, setState }: { state: Mahasiswa; setState: React.Disp
               type="checkbox"
               checked={!!state.isEligibleForSkripsi} // ✅ pastikan boolean
               onChange={e =>
-                setState((prev: Mahasiswa) => ({
+                setState((prev: any) => ({
                   ...prev,
                   isEligibleForSkripsi: e.target.checked, // ✅ gunakan `checked`, bukan `value`
                 }))
@@ -452,7 +430,7 @@ const ModalEdit = ({ state, setState }: { state: Mahasiswa; setState: React.Disp
                 type="checkbox"
                 checked={!!state.restore} // ✅ pastikan boolean
                 onChange={e =>
-                  setState((prev: Mahasiswa) => ({
+                  setState((prev: any) => ({
                     ...prev,
                     restore: e.target.checked, // ✅ gunakan `checked`, bukan `value`
                   }))

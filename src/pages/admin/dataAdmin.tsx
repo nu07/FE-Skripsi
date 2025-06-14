@@ -5,23 +5,22 @@ import BaseModal from "@/components/modal/BaseModal";
 import DashboardPagination from "@/components/pagination/dashboardPagination";
 import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
-import { Pagination } from "@/types/Pagination"; // Import the Pagination type
-import { Admin } from "@/types/Admin"; // Import the Admin type
 
-const defaultValue: Admin = {
+const defaultValue = {
   id: "",
   nama: "",
+  nidn: "",
   email: "",
   password: "",
   deletedAt: null,
 };
 
 export default function Example() {
-  const [dataAdmin, setDataAdmin] = useState<Admin[]>([]);
+  const [dataAdmin, setDataAdmin] = useState<any>([]);
   const [isEditData, setIsEditData] = useState(false);
   const [isCreateData, setIsCreateData] = useState(false);
   const [isDeleteData, setIsDeleteData] = useState(false);
-  const [pagination, setPagination] = useState<Pagination>({
+  const [pagination, setPagination] = useState({
     currentPages: 1,
     perPage: 10,
     totalPages: 1,
@@ -29,7 +28,7 @@ export default function Example() {
     isLoading: true,
     showDeleted: true,
   });
-  const [detailAdmin, setDetailAdmin] = useState<Admin>(defaultValue);
+  const [detailAdmin, setDetailAdmin] = useState<any>(defaultValue);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
   const getAllDosen = async () => {
