@@ -9,12 +9,18 @@ interface DashboardPaginationProps {
   setPagination: React.Dispatch<React.SetStateAction<Pagination>>;
 }
 
-export interface Pagination {
+interface Pagination {
   currentPages: number;
   perPage: number;
   totalPages: number;
   totalItems: number;
   isLoading: boolean;
+  showDeleted: boolean;
+}
+
+interface DashboardPaginationProps {
+  pagination: Pagination;
+  setPagination: React.Dispatch<React.SetStateAction<Pagination>>;
 }
 
 function dashboardPagination({ pagination, setPagination }: DashboardPaginationProps) {
