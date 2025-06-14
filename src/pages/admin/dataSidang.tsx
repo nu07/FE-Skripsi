@@ -6,7 +6,42 @@ import DashboardPagination from '@/components/pagination/dashboardPagination';
 import { Bounce, toast } from "react-toastify";
 import { classNames } from "@/utils/classNames";
 
-const defaultValue = {
+interface Pagination {
+    currentPages: number;
+    perPage: number;
+    totalPages: number;
+    totalItems: number;
+    isLoading: boolean;
+    showDeleted: boolean;
+}
+
+interface Dosen {
+    id: string;
+    nama: string;
+}
+
+interface Sidang {
+    id: string;
+    mahasiswa: {
+        nama: string;
+        nim: string;
+        email: string;
+    };
+    status: string;
+    deletedAt: string | null;
+    tanggal_sidang: string;
+}
+
+interface DetailDosen {
+    id?: string;
+    status: string;
+    id_penguji1: string;
+    id_penguji2: string;
+    tanggal_sidang: string;
+    restore?: boolean;
+}
+
+const defaultValue: DetailDosen = {
     status: "",
     id_penguji1: "",
     id_penguji2: "",
@@ -14,9 +49,9 @@ const defaultValue = {
 }
 
 export default function Example() {
-    const [dataSidang, setDataSidang] = useState<any>([])
+    const [dataSidang, setDataSidang] = useState<Sidang[]>([])
     const [isEditData, setIsEditData] = useState(false)
-    const [pagination, setPagination] = useState({
+    const [pagination, setPagination] = useState<Pagination>({
         currentPages: 1,
         perPage: 10,
         totalPages: 1,
@@ -24,8 +59,8 @@ export default function Example() {
         isLoading: true,
         showDeleted: true,
     });
-    const [detailDosen, setDetailDosen] = useState<any>(defaultValue)
-    const [dataDosen, setDataDosen] = useState<any>([])
+    const [detailDosen, setDetailDosen] = useState<DetailDosen>(defaultValue)
+    const [dataDosen, setDataDosen] = useState<Dosen[]>([])
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
 
@@ -49,7 +84,7 @@ export default function Example() {
         try {
             const res = await Axios.get('/dosen/dosen?page=1&limit=1000&search=a&showDeleted=true')
             setDataDosen(res.data.data)
-        } catch (e: any) {
+        } catch (e) {
             console.error(e)
         }
     }
@@ -72,7 +107,7 @@ export default function Example() {
             getAllDataSidang()
         } catch (e: any) {
             console.error(e)
-            toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
+            toast.error(e.response?.data?.message ?? "Dosen gagal Di Tambahkan!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -99,7 +134,7 @@ export default function Example() {
     }, [pagination.currentPages, debouncedSearch, pagination.showDeleted]);
 
     useEffect(() => {
-    getAllDataDosen()
+        getAllDataDosen()
     }, [])
     
 
@@ -136,7 +171,7 @@ export default function Example() {
                             type="checkbox"
                             checked={pagination.showDeleted}
                             onChange={(e) =>
-                                setPagination((prev: any) => ({
+                                setPagination((prev) => ({
                                     ...prev,
                                     showDeleted: e.target.checked, // ✅ gunakan `checked` untuk checkbox
                                 }))
@@ -198,7 +233,7 @@ export default function Example() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {dataSidang.map((person: any) => (
+                                    {dataSidang.map((person) => (
                                         <tr key={person.id}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person.mahasiswa.nama}>{person.mahasiswa.nama}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person.mahasiswa.nim}>{person.mahasiswa.nim}</td>
@@ -254,7 +289,7 @@ export default function Example() {
 
 
 
-const ModalEdit = ({ state, setState, dataDosen }: any) => {
+const ModalEdit = ({ state, setState, dataDosen }: { state: DetailDosen; setState: React.Dispatch<React.SetStateAction<DetailDosen>>; dataDosen: Dosen[] }) => {
     return (
         <>
             <div className="space-y-3">
@@ -269,7 +304,7 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
                             name="location"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
                             defaultValue="sukses"
-                            onChange={(e: any) => setState((prev: any) => ({
+                            onChange={(e) => setState((prev) => ({
                                 ...prev,
                                 status: e.target.value,
                             }))}
@@ -292,13 +327,13 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
                             name="id_pembimbing1"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
                             defaultValue=""
-                            onChange={(e: any) => setState((prev: any) => ({
+                            onChange={(e) => setState((prev) => ({
                                 ...prev,
                                 id_penguji1: e.target.value,
                             }))}
                             value={state.id_penguji1}
                         >
-                            {dataDosen.map((data: any)=> (
+                            {dataDosen.map((data) => (
                                 <>
                                 <option key={data.id} value={data.id}>{data.nama}</option>
                                 </>
@@ -317,13 +352,13 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
                             name="id_pembimbing2"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
                             defaultValue=""
-                            onChange={(e: any) => setState((prev: any) => ({
+                            onChange={(e) => setState((prev) => ({
                                 ...prev,
                                 id_penguji2: e.target.value,
                             }))}
                             value={state.id_penguji2}
                         >
-                            {dataDosen.map((data: any)=> (
+                            {dataDosen.map((data) => (
                                 <>
                                 <option key={data.id} value={data.id}>{data.nama}</option>
                                 </>
@@ -343,10 +378,10 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
       name="tanggal_sidang"
       required
       className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-      onChange={(e: any) => {
+      onChange={(e) => {
         const localValue = e.target.value; // e.g., "2025-06-22T09:00"
         const isoString = new Date(localValue).toISOString(); // e.g., "2025-06-22T09:00:00.000Z"
-        setState((prev: any) => ({
+        setState((prev) => ({
           ...prev,
           tanggal_sidang: isoString,
         }));
@@ -372,7 +407,7 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
                                 type="checkbox"
                                 checked={!!state.restore} // ✅ pastikan boolean
                                 onChange={(e) =>
-                                    setState((prev: any) => ({
+                                    setState((prev) => ({
                                         ...prev,
                                         restore: e.target.checked, // ✅ gunakan `checked`, bukan `value`
                                     }))
