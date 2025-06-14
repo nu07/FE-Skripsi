@@ -3,7 +3,6 @@ import {
   Routes,
   Route,
   Navigate,
-  // Navigate,
 } from "react-router-dom";
 import "@/App.css";
 import DefaultTemplate from "@/layout/DefaultTemplate";
@@ -13,21 +12,23 @@ import Login from "@/pages/login";
 import News from "@/pages/news";
 import NewsDetail from "@/pages/newsDetail";
 import ProtectedRoute from "./layout/protectedPages";
+import Dashboard from "@/pages/admin/dashboard";
 import NewsAdmin from "@/pages/admin/news";
 import DataDosen from "@/pages/admin/dataDosen";
 import DataMahasiswa from "@/pages/admin/dataMahasiswa"
 import DataAdmin from "@/pages/admin/dataAdmin"
 import DataPembayaranSkripsi from "@/pages/admin/dataPembayaranSkripsi"
 import DataSidang from "@/pages/admin/dataSidang"
+import Skripsi from "@/pages/mahasiswa/skripsi";
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
 
 const App: React.FC = () => {
-    const { isLogin, data } = authStore();
+  const { isLogin, data } = authStore();
   return (
     <Router>
-            <ToastContainer />
+      <ToastContainer />
       <Routes>
         <Route
           path="/"
@@ -61,28 +62,37 @@ const App: React.FC = () => {
             </DefaultTemplate>
           }
         />
-<Route
-  path="/login"
-  element={
-    isLogin ? (
-      data?.role === "mahasiswa" ? (
-        <Navigate to="/" />
-      ) : (
-        <Navigate to="/dashboard" />
-      )
-    ) : (
-      <DefaultTemplate>
-        <Login />
-      </DefaultTemplate>
-    )
-  }
-/>
+        <Route
+          path="/login"
+          element={
+            isLogin ? (
+              data?.role === "mahasiswa" ? (
+                <Navigate to="/" />
+              ) : (
+                <Navigate to="/dashboard" />
+              )
+            ) : (
+              <DefaultTemplate>
+                <Login />
+              </DefaultTemplate>
+            )
+          }
+        />
+
+        <Route
+          path="/skripsi"
+          element={
+            <DefaultTemplate>
+              <Skripsi />
+            </DefaultTemplate>
+          }
+        />
 
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <h1>test</h1>
+              <Dashboard />
             </ProtectedRoute>
           }
         />
