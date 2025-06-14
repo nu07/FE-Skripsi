@@ -7,15 +7,18 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isLogin, token, reset, loadingHydration } = authStore();
-  let navigate = useNavigate();
+  const { isLogin, token, reset, loadingHydration, data } = authStore();
+  const navigate = useNavigate();
   if (!loadingHydration && token) {
     const currentTime = Date.now() / 1000;
-    const decoded: any = jwtDecode(token);
+    const decoded = jwtDecode(token);
     if (decoded.exp < currentTime) {
       reset();
       navigate("/login");
     }
+  }
+  if (data?.role === "mahasiswa") {
+    return <Navigate to="/" />;
   }
   if (!isLogin) {
     return <Navigate to="/login" />;

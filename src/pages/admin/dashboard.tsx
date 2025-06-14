@@ -2,13 +2,40 @@
 
 import { useState, useEffect } from "react";
 import Axios from "@/API/axios";
-
 import { AcademicCapIcon, UserIcon, NewspaperIcon } from "@heroicons/react/outline";
 
-const fetchStats = async () => {
+type Stat = {
+  name: string;
+  value: string | number;
+  icon: React.ElementType;
+  color: string;
+};
+
+type News = {
+  id: string;
+  title: string;
+  updatedAt: string;
+  admin: {
+    nama: string;
+  };
+};
+
+type Dosen = {
+  id: string;
+  nama: string;
+};
+
+type ActivityLog = {
+  id: string;
+  user: string;
+  action: string;
+  timestamp: string;
+};
+
+const fetchStats = async (): Promise<Stat[]> => {
   try {
-    const dosenRes = await Axios.get("/dosen/dosen");
-    const newsRes = await Axios.get("/news");
+    const dosenRes = await Axios.get<{ data: Dosen[] }>("/dosen/dosen");
+    const newsRes = await Axios.get<{ data: News[] }>("/news");
     return [
       { name: "Total Mahasiswa Terdaftar", value: "0", icon: UserIcon, color: "bg-green-500" },
       { name: "Total Dosen", value: dosenRes.data.data.length, icon: AcademicCapIcon, color: "bg-yellow-500" },
@@ -20,9 +47,9 @@ const fetchStats = async () => {
   }
 };
 
-const fetchActivityLog = async () => {
+const fetchActivityLog = async (): Promise<ActivityLog[]> => {
   try {
-    const newsData = await Axios.get("/news?page=1&limit=5");
+    const newsData = await Axios.get<{ data: News[] }>("/news?page=1&limit=5");
     return newsData.data.data.map(news => ({
       id: news.id,
       user: news.admin.nama,
@@ -48,10 +75,10 @@ export default function Dashboard() {
     role: "Admin",
   });
 
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState<Stat[]>([]);
   const [loadingStats, setLoadingStats] = useState(true);
 
-  const [activityLog, setActivityLog] = useState([]);
+  const [activityLog, setActivityLog] = useState<ActivityLog[]>([]);
   const [loadingActivityLog, setLoadingActivityLog] = useState(true);
 
   useEffect(() => {

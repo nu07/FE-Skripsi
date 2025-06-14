@@ -71,7 +71,8 @@
     "ClockIcon": true,
     "TrendingUpIcon": true,
     "UserIcon": true,
-    "PencilIcon": true,
-    "PlusIcon": true
+    "ExclamationCircleIcon": true,
+    "AcademicCapIcon": true,
+    "CheckCircleIcon": true
   }
 }

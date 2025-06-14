@@ -6,6 +6,7 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const AcademicCapIcon: typeof import('@heroicons/react/solid')['AcademicCapIcon']
   const AnnotationIcon: typeof import('@heroicons/react/solid')['AnnotationIcon']
   const ArrowRightIcon: typeof import('@heroicons/react/solid')['ArrowRightIcon']
   const BellIcon: typeof import('@heroicons/react/solid')['BellIcon']
@@ -15,6 +16,7 @@ declare global {
   const ChartBarIcon: typeof import('@heroicons/react/solid')['ChartBarIcon']
   const ChatAlt2Icon: typeof import('@heroicons/react/solid')['ChatAlt2Icon']
   const ChatAltIcon: typeof import('@heroicons/react/solid')['ChatAltIcon']
+  const CheckCircleIcon: typeof import('@heroicons/react/solid')['CheckCircleIcon']
   const CheckIcon: typeof import('@heroicons/react/solid')['CheckIcon']
   const ChevronDownIcon: typeof import('@heroicons/react/solid')['ChevronDownIcon']
   const ChevronLeftIcon: typeof import('@heroicons/react/solid')['ChevronLeftIcon']
@@ -30,6 +32,7 @@ declare global {
   const DocumentReportIcon: typeof import('@heroicons/react/solid')['DocumentReportIcon']
   const DocumentTextIcon: typeof import('@heroicons/react/solid')['DocumentTextIcon']
   const DotsVerticalIcon: typeof import('@heroicons/react/solid')['DotsVerticalIcon']
+  const ExclamationCircleIcon: typeof import('@heroicons/react/solid')['ExclamationCircleIcon']
   const ExclamationIcon: typeof import('@heroicons/react/solid')['ExclamationIcon']
   const FlagIcon: typeof import('@heroicons/react/solid')['FlagIcon']
   const FolderIcon: typeof import('@heroicons/react/solid')['FolderIcon']

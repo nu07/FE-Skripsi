@@ -3,7 +3,6 @@ import {
   Routes,
   Route,
   Navigate,
-  // Navigate,
 } from "react-router-dom";
 import "@/App.css";
 import DefaultTemplate from "@/layout/DefaultTemplate";
@@ -13,18 +12,19 @@ import Login from "@/pages/login";
 import News from "@/pages/news";
 import NewsDetail from "@/pages/newsDetail";
 import ProtectedRoute from "./layout/protectedPages";
-import Dashboard from '@/pages/admin/dashboard';
+import Dashboard from "@/pages/admin/dashboard";
 import NewsAdmin from "@/pages/admin/news";
 import DataDosen from "@/pages/admin/dataDosen";
+import Skripsi from "@/pages/mahasiswa/skripsi";
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
 
 const App: React.FC = () => {
-    const { isLogin } = authStore();
+  const { isLogin, data } = authStore();
   return (
     <Router>
-            <ToastContainer />
+      <ToastContainer />
       <Routes>
         <Route
           path="/"
@@ -61,11 +61,26 @@ const App: React.FC = () => {
         <Route
           path="/login"
           element={
-            isLogin  ? <Navigate to="/dashboard"/> : 
-            (
+            isLogin ? (
+              data?.role === "mahasiswa" ? (
+                <Navigate to="/" />
+              ) : (
+                <Navigate to="/dashboard" />
+              )
+            ) : (
+              <DefaultTemplate>
+                <Login />
+              </DefaultTemplate>
+            )
+          }
+        />
+
+        <Route
+          path="/skripsi"
+          element={
             <DefaultTemplate>
-              <Login />
-            </DefaultTemplate>)
+              <Skripsi />
+            </DefaultTemplate>
           }
         />
 
@@ -73,7 +88,7 @@ const App: React.FC = () => {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard/>
+              <Dashboard />
             </ProtectedRoute>
           }
         />

@@ -3,11 +3,11 @@ import Axios from "@/API/axios";
 import { NewsData } from "@/types/news";
 import ModalDetail from "@/components/modal/News/modalDetail";
 import ModalCreate from "@/components/modal/News/modalCreateNews";
-import { Button, Menu, Transition } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import DashboardPagination from "@/components/pagination/dashboardPagination";
 import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import {
   DocumentAddIcon,
   TrashIcon,
@@ -18,9 +18,9 @@ import {
   DocumentRemoveIcon,
 } from "@heroicons/react/outline";
 
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(" ");
-}
+// function classNames(...classes: any[]) {
+//   return classes.filter(Boolean).join(" ");
+// }
 
 const defaultData = {
   id: "",
@@ -73,11 +73,15 @@ function NewsAdmin() {
       isLoading: true,
     }));
     try {
-      const res = await Axios.get(`/news?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${debouncedSearch}`);
-      setPagination(prev => ({
+      const res = await Axios.get(
+        `/news?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}`
+      );
+
+      console.log(res.data)
+      setPagination((prev) => ({
         ...prev,
-        totalPages: res.data.totalPages,
-        totalItems: res.data.totalItems,
+        totalPages: res.data.pagination.totalPages,
+        totalItems: res.data.pagination.total,
       }));
       setAllDataNews(res.data.data);
       setPagination(prev => ({
