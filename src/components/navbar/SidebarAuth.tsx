@@ -17,7 +17,7 @@ export default function Navbar({ customContent }: NavbarProps) {
   const { reset } = authStore();
 
   const navigationAdmin = [
-    // { name: "Dashboard", href: "/dashboard", icon: HomeIcon},
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon},
     { name: "News", href: "/admin-news", icon: NewspaperIcon },
     { name: "Data Dosen", href: "/data-dosen", icon: UserIcon },
     { name: "Data Mahasiswa", href: "/data-mahasiswa", icon: UserAddIcon },
