@@ -7,11 +7,11 @@ import Button from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
 import { Bounce, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import Axios from "axios";
+import Axios from "@/API/axios";
 
 interface FormData {
   judulSkripsi: string;
-  pembayaranFile: File | null;
+  buktiPembayaran: File | null;
 }
 
 export default function MahasiswaSkripsi() {
@@ -20,7 +20,7 @@ export default function MahasiswaSkripsi() {
   const [submissionSuccess, setSubmissionSuccess] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     judulSkripsi: "",
-    pembayaranFile: null,
+    buktiPembayaran: null,
   });
 
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function MahasiswaSkripsi() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!formData.judulSkripsi || !formData.pembayaranFile) {
+    if (!formData.judulSkripsi || !formData.buktiPembayaran) {
       toast.error(`${!formData.judulSkripsi ? "Judul" : "File Pembayaran"} tidak boleh kosong!`, {
         position: "top-right",
         autoClose: 5000,
@@ -40,13 +40,15 @@ export default function MahasiswaSkripsi() {
 
     const formDataToSend = new FormData();
     formDataToSend.append("judulSkripsi", formData.judulSkripsi);
-    formDataToSend.append("pembayaranFile", formData.pembayaranFile);
+    formDataToSend.append("buktiPembayaran", formData.buktiPembayaran);
 
     setLoading(true);
     try {
       const response = await Axios.post("/upload-pembayaran-skripsi", formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
+      console.log(response)
 
       if (response.status !== 200) {
         throw new Error("Gagal menyimpan data");
@@ -76,12 +78,12 @@ export default function MahasiswaSkripsi() {
   };
 
   const handleDeleteFile = () => {
-    setFormData(prev => ({ ...prev, pembayaranFile: null }));
+    setFormData(prev => ({ ...prev, buktiPembayaran: null }));
   };
 
   const handlePreviewFile = () => {
-    if (formData.pembayaranFile) {
-      const fileURL = URL.createObjectURL(formData.pembayaranFile);
+    if (formData.buktiPembayaran) {
+      const fileURL = URL.createObjectURL(formData.buktiPembayaran);
       window.open(fileURL, "_blank");
     }
   };
@@ -128,7 +130,7 @@ export default function MahasiswaSkripsi() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-medium text-gray-900">Pembayaran Skripsi</h2>
             </div>
-            {!formData.pembayaranFile ? (
+            {!formData.buktiPembayaran ? (
               <div className="space-y-4">
                 <p className="text-sm text-gray-600">Silahkan upload bukti pembayaran skripsi untuk melanjutkan proses.</p>
                 <div className="flex items-center space-x-4">
@@ -150,10 +152,10 @@ export default function MahasiswaSkripsi() {
                               onChange={e => {
                                 if (e.target.files && e.target.files[0]) {
                                   const selectedFile = e.target.files[0];
-                                  setFormData(prev => ({ ...prev, pembayaranFile: selectedFile }));
+                                  setFormData(prev => ({ ...prev, buktiPembayaran: selectedFile }));
                                 }
                               }}
-                              accept="image/*,.pdf"
+                              // accept="image/*,.pdf"
                             />
                           </label>
                           <p className="pl-1">atau drag and drop</p>
@@ -169,7 +171,7 @@ export default function MahasiswaSkripsi() {
                 <div className="flex items-center justify-between bg-gray-50 p-3 rounded-md">
                   <div className="flex items-center">
                     <DocumentTextIcon className="h-5 w-5 text-gray-400 mr-2" />
-                    <span className="text-sm text-gray-700">{formData.pembayaranFile.name}</span>
+                    <span className="text-sm text-gray-700">{formData.buktiPembayaran.name}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <button onClick={handlePreviewFile} type="button" className="text-sm text-blue-600 hover:text-blue-500 focus:outline-none">
