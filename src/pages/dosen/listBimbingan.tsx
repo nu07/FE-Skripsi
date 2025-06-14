@@ -4,7 +4,6 @@ import { Button } from '@headlessui/react';
 import BaseModal from "@/components/modal/BaseModal";
 import DashboardPagination from '@/components/pagination/dashboardPagination';
 import { Bounce, toast } from "react-toastify";
-import ModalDelete from "@/components/modal/ModalDelete";
 import authStore from "@/store/loginStore";
 
 const defaultValue = {
