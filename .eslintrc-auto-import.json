@@ -73,6 +73,10 @@
     "UserIcon": true,
     "ExclamationCircleIcon": true,
     "AcademicCapIcon": true,
-    "CheckCircleIcon": true
+    "CheckCircleIcon": true,
+    "UserAddIcon": true,
+    "UserCircleIcon": true,
+    "CurrencyDollarIcon": true,
+    "BriefcaseIcon": true
   }
 }

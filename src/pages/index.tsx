@@ -1,12 +1,13 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { NewspaperIcon } from "@heroicons/react/solid";
 import Axios from "@/API/axios";
 import createDOMPurify from "dompurify";
-import { NewsData } from "../types/news";
+import { NewsData } from "@/types/news";
 import DashboardPagination from "@/components/pagination/dashboardPagination";
 
 function Index() {
-  const [datanews, setDatanews] = useState<NewsData | any>([]);
+  const [datanews, setDatanews] = useState<NewsData[]>([]);
   const DOMPurify = createDOMPurify(window);
   const [pagination, setPagination] = useState({
     currentPages: 1,
@@ -15,6 +16,7 @@ function Index() {
     totalItems: 1,
     isLoading: true,
   });
+
   const getAllNews = async () => {
     try {
       const res = await Axios.get(`/news?page=${pagination.currentPages}&limit=${pagination.perPage}`);
@@ -67,12 +69,12 @@ function Index() {
 
           {/* Featured News */}
           <div className="grid grid-cols-1 gap-8 mb-16 overflow-hidden border shadow-lg lg:grid-cols-2 rounded-xl p-2">
-            {datanews?.map((news: string, index: any) => (
+            {datanews.map(news => (
               <div
-                className="flex flex-col justify-center p-6 border-2 hover:cursor-pointer transition-shadow duration-300  hover:shadow-lg"
-                key={index}>
+                className="flex flex-col justify-center p-6 border-2 hover:cursor-pointer transition-shadow duration-300 hover:shadow-lg"
+                key={news.id}>
                 <p className="mb-2 text-sm font-medium text-gray-500">
-                  {new Date(news?.updatedAt).toLocaleString("id-ID", {
+                  {new Date(news.updatedAt).toLocaleString("id-ID", {
                     hour: "2-digit",
                     minute: "2-digit",
                     second: "2-digit",
@@ -82,7 +84,7 @@ function Index() {
                   })}
                 </p>
                 <h3 className="mb-4 text-2xl font-bold text-gray-900">{news.title}</h3>
-                <p className="mb-6 text-gray-600" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news?.content) }}></p>
+                <p className="mb-6 text-gray-600" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news.content) }}></p>
                 <Link to="#" className="inline-flex items-center px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 w-fit">
                   Baca Selengkapnya
                 </Link>

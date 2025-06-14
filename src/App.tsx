@@ -15,6 +15,10 @@ import ProtectedRoute from "./layout/protectedPages";
 import Dashboard from "@/pages/admin/dashboard";
 import NewsAdmin from "@/pages/admin/news";
 import DataDosen from "@/pages/admin/dataDosen";
+import DataMahasiswa from "@/pages/admin/dataMahasiswa"
+import DataAdmin from "@/pages/admin/dataAdmin"
+import DataPembayaranSkripsi from "@/pages/admin/dataPembayaranSkripsi"
+import DataSidang from "@/pages/admin/dataSidang"
 import Skripsi from "@/pages/mahasiswa/skripsi";
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
@@ -109,7 +113,39 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-      </Routes>
+        <Route
+          path="/data-mahasiswa"
+          element={
+            <ProtectedRoute>
+              <DataMahasiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-admin"
+          element={
+            <ProtectedRoute>
+              <DataAdmin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-pembayaran-skripsi"
+          element={
+            <ProtectedRoute>
+              <DataPembayaranSkripsi />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-sidang"
+          element={
+            <ProtectedRoute>
+              <DataSidang />
+            </ProtectedRoute>
+          }
+        />
+      </Routes> 
     </Router>
   );
 };
