@@ -12,7 +12,8 @@ const defaultValue = {
     idSkripsi: "",
     id_pembimbing1: "",
     id_pembimbing2: "",
-
+    status_pembimbing1: "",
+    status_pembimbing2: "",
 }
 
 export default function Example() {

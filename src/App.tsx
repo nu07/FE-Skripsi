@@ -19,15 +19,17 @@ import DataMahasiswa from "@/pages/admin/dataMahasiswa"
 import DataAdmin from "@/pages/admin/dataAdmin"
 import DataPembayaranSkripsi from "@/pages/admin/dataPembayaranSkripsi"
 import DataSidang from "@/pages/admin/dataSidang"
+import ListMahasiswaBimbingan from "@/pages/dosen/listBimbingan"
+import ListMahasiswaSidang from "@/pages/dosen/listSidang"
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
 
 const App: React.FC = () => {
-    const { isLogin, data } = authStore();
+  const { isLogin, data } = authStore();
   return (
     <Router>
-            <ToastContainer />
+      <ToastContainer />
       <Routes>
         <Route
           path="/"
@@ -61,22 +63,22 @@ const App: React.FC = () => {
             </DefaultTemplate>
           }
         />
-<Route
-  path="/login"
-  element={
-    isLogin ? (
-      data?.role === "mahasiswa" ? (
-        <Navigate to="/" />
-      ) : (
-        <Navigate to="/dashboard" />
-      )
-    ) : (
-      <DefaultTemplate>
-        <Login />
-      </DefaultTemplate>
-    )
-  }
-/>
+        <Route
+          path="/login"
+          element={
+            isLogin ? (
+              data?.role === "mahasiswa" ? (
+                <Navigate to="/" />
+              ) : (
+                <Navigate to="/dashboard" />
+              )
+            ) : (
+              <DefaultTemplate>
+                <Login />
+              </DefaultTemplate>
+            )
+          }
+        />
 
         <Route
           path="/dashboard"
@@ -135,7 +137,24 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-      </Routes> 
+
+        <Route
+          path="/dosen/mahasiswa-bimbingan"
+          element={
+            <ProtectedRoute>
+              <ListMahasiswaBimbingan />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dosen/mahasiswa-sidang"
+          element={
+            <ProtectedRoute>
+              <ListMahasiswaSidang />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </Router>
   );
 };
