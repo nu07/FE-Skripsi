@@ -20,6 +20,8 @@ import DataAdmin from "@/pages/admin/dataAdmin"
 import DataPembayaranSkripsi from "@/pages/admin/dataPembayaranSkripsi"
 import DataSidang from "@/pages/admin/dataSidang"
 import Skripsi from "@/pages/mahasiswa/skripsi";
+import ListMahasiswaBimbingan from "@/pages/dosen/listBimbingan"
+import ListMahasiswaSidang from "@/pages/dosen/listSidang"
 // import authStore from "@/store/loginStore";
 import { ToastContainer } from "react-toastify";
 import authStore from "./store/loginStore";
@@ -78,7 +80,6 @@ const App: React.FC = () => {
             )
           }
         />
-
         <Route
           path="/skripsi"
           element={
@@ -145,7 +146,24 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-      </Routes> 
+
+        <Route
+          path="/dosen/mahasiswa-bimbingan"
+          element={
+            <ProtectedRoute>
+              <ListMahasiswaBimbingan />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dosen/mahasiswa-sidang"
+          element={
+            <ProtectedRoute>
+              <ListMahasiswaSidang />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </Router>
   );
 };

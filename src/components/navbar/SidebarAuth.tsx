@@ -43,26 +43,28 @@ export default function Navbar({ customContent }: NavbarProps) {
     { name: "Data Sidang", href: "/data-sidang", icon: BriefcaseIcon },
   ];
 
-  const navigationDosen: NavigationItem[] = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
-    { name: "News", href: "/admin-news", icon: NewspaperIcon },
+  const navigationDosen =  [
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon},
+    // { name: "News", href: "/admin-news", icon: NewspaperIcon },
+    { name: "List Mahasiswa Bimbingan", href: "/dosen/mahasiswa-bimbingan", icon: NewspaperIcon },
+    { name: "List Sidang", href: "/dosen/mahasiswa-sidang", icon: NewspaperIcon },
   ];
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [navigation, setNavigation] = useState<NavigationItem[]>([]);
+  const [navigation, _setNavigation] = useState<any>(data?.role === 'admin' ? navigationAdmin : navigationDosen)
 
   const handleLogout = () => {
     reset();
     navigate("/login");
   };
 
-  useEffect(() => {
-    if (data?.role === "admin") {
-      setNavigation(navigationAdmin);
-    } else if (data?.role === "dosen") {
-      setNavigation(navigationDosen);
-    }
-  }, [data?.role]);
+  // useEffect(() => {
+  //   if (data?.role === 'admin') {
+  //     setNavigation(navigationAdmin)
+  //   }else if(data?.role === 'dosen'){
+  //     setNavigation(navigationDosen)
+  //   }
+  // }, [data?.role])
 
   return (
     <>

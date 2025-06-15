@@ -347,9 +347,29 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
           </div>
         </div>
 
-        {state.deletedAt && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Pulihkan Data yang Dihapus?</label>
+                {state.deletedAt && (
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Pulihkan Data yang Dihapus?
+                        </label>
+                        
+                        <div className="mt-1 flex items-center space-x-2">
+                            
+                            <input
+                                type="checkbox"
+                                checked={!!state.restore} // ✅ pastikan boolean
+                                onChange={(e) =>
+                                    setState((prev: any) => ({
+                                        ...prev,
+                                        restore: e.target.checked, 
+                                    }))
+                                }
+                                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            />
+                            <span className="text-sm text-gray-600">Aktifkan untuk menghapus status deleted</span>
+                        </div>
+                    </div>
+                )}
 
             <div className="mt-1 flex items-center space-x-2">
               <input
