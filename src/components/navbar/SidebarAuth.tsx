@@ -43,15 +43,15 @@ export default function Navbar({ customContent }: NavbarProps) {
     { name: "Data Sidang", href: "/data-sidang", icon: BriefcaseIcon },
   ];
 
-  const navigationDosen =  [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon},
+  const navigationDosen = [
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
     // { name: "News", href: "/admin-news", icon: NewspaperIcon },
     { name: "List Mahasiswa Bimbingan", href: "/dosen/mahasiswa-bimbingan", icon: NewspaperIcon },
     { name: "List Sidang", href: "/dosen/mahasiswa-sidang", icon: NewspaperIcon },
   ];
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [navigation, _setNavigation] = useState<any>(data?.role === 'admin' ? navigationAdmin : navigationDosen)
+  const [navigation, _setNavigation] = useState<any>(data?.role === "admin" ? navigationAdmin : navigationDosen);
 
   const handleLogout = () => {
     reset();
@@ -105,7 +105,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                     <h1 className="pl-2 text-white">Universitas Pakuan</h1>
                   </div>
                   <nav className="mt-5 px-2 space-y-1">
-                    {navigation.map(item => (
+                    {navigation.map(item:any => (
                       <Link
                         key={item.href}
                         to={item.href}
@@ -150,7 +150,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                 <h1 className="pl-2">Universitas Pakuan</h1>
               </div>
               <nav className="mt-5 flex-1 px-2 space-y-1">
-                {navigation.map(item => (
+                {navigation.map(item:any => (
                   <Link
                     key={item.name}
                     to={item.href}
