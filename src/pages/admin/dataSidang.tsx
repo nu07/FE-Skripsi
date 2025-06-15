@@ -385,8 +385,6 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
               />
               <span className="text-sm text-gray-600">Aktifkan untuk menghapus status deleted</span>
             </div>
-          </div>
-        )}
       </div>
     </>
   );
