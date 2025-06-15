@@ -105,7 +105,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                     <h1 className="pl-2 text-white">Universitas Pakuan</h1>
                   </div>
                   <nav className="mt-5 px-2 space-y-1">
-                    {navigation.map(item:any => (
+                    {navigation.map((item: any) => (
                       <Link
                         key={item.href}
                         to={item.href}
@@ -150,7 +150,7 @@ export default function Navbar({ customContent }: NavbarProps) {
                 <h1 className="pl-2">Universitas Pakuan</h1>
               </div>
               <nav className="mt-5 flex-1 px-2 space-y-1">
-                {navigation.map(item:any => (
+                {navigation.map((item: any) => (
                   <Link
                     key={item.name}
                     to={item.href}
