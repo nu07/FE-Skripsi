@@ -3,7 +3,6 @@ import {
   Routes,
   Route,
   Navigate,
-  // Navigate,
 } from "react-router-dom";
 import "@/App.css";
 import DefaultTemplate from "@/layout/DefaultTemplate";
@@ -13,12 +12,14 @@ import Login from "@/pages/login";
 import News from "@/pages/news";
 import NewsDetail from "@/pages/newsDetail";
 import ProtectedRoute from "./layout/protectedPages";
+import Dashboard from "@/pages/admin/dashboard";
 import NewsAdmin from "@/pages/admin/news";
 import DataDosen from "@/pages/admin/dataDosen";
 import DataMahasiswa from "@/pages/admin/dataMahasiswa"
 import DataAdmin from "@/pages/admin/dataAdmin"
 import DataPembayaranSkripsi from "@/pages/admin/dataPembayaranSkripsi"
 import DataSidang from "@/pages/admin/dataSidang"
+import Skripsi from "@/pages/mahasiswa/skripsi";
 import ListMahasiswaBimbingan from "@/pages/dosen/listBimbingan"
 import ListMahasiswaSidang from "@/pages/dosen/listSidang"
 // import authStore from "@/store/loginStore";
@@ -79,12 +80,20 @@ const App: React.FC = () => {
             )
           }
         />
+        <Route
+          path="/skripsi"
+          element={
+            <DefaultTemplate>
+              <Skripsi />
+            </DefaultTemplate>
+          }
+        />
 
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <h1>test</h1>
+              <Dashboard />
             </ProtectedRoute>
           }
         />

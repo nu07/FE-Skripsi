@@ -6,6 +6,7 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const AcademicCapIcon: typeof import('@heroicons/react/solid')['AcademicCapIcon']
   const AnnotationIcon: typeof import('@heroicons/react/solid')['AnnotationIcon']
   const ArrowRightIcon: typeof import('@heroicons/react/solid')['ArrowRightIcon']
   const BellIcon: typeof import('@heroicons/react/solid')['BellIcon']
@@ -16,6 +17,7 @@ declare global {
   const ChartBarIcon: typeof import('@heroicons/react/solid')['ChartBarIcon']
   const ChatAlt2Icon: typeof import('@heroicons/react/solid')['ChatAlt2Icon']
   const ChatAltIcon: typeof import('@heroicons/react/solid')['ChatAltIcon']
+  const CheckCircleIcon: typeof import('@heroicons/react/solid')['CheckCircleIcon']
   const CheckIcon: typeof import('@heroicons/react/solid')['CheckIcon']
   const ChevronDownIcon: typeof import('@heroicons/react/solid')['ChevronDownIcon']
   const ChevronLeftIcon: typeof import('@heroicons/react/solid')['ChevronLeftIcon']
@@ -46,7 +48,9 @@ declare global {
   const NewspaperIcon: typeof import('@heroicons/react/solid')['NewspaperIcon']
   const PaperClipIcon: typeof import('@heroicons/react/solid')['PaperClipIcon']
   const PencilAltIcon: typeof import('@heroicons/react/solid')['PencilAltIcon']
+  const PencilIcon: typeof import('@heroicons/react/solid')['PencilIcon']
   const PhoneIcon: typeof import('@heroicons/react/solid')['PhoneIcon']
+  const PlusIcon: typeof import('@heroicons/react/solid')['PlusIcon']
   const Popover: typeof import('@headlessui/react')['Popover']
   const QuestionMarkCircleIcon: typeof import('@heroicons/react/solid')['QuestionMarkCircleIcon']
   const ReplyIcon: typeof import('@heroicons/react/solid')['ReplyIcon']
