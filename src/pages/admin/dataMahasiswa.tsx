@@ -272,11 +272,11 @@ export default function Example() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person.nim}>
                         {person.nim}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 truncate" title={person.isEligibleForSkripsi}>
+                      <td className="px-0 py-4 whitespace-nowrap text-sm text-gray-700 truncate text-center" title={person.isEligibleForSkripsi}>
                         <input
                           type="checkbox"
                           readOnly
-                          className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 disabled:opacity-100 disabled:bg-white disabled:text-indigo-600 disabled:cursor-default"
+                          className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 text-center disabled:opacity-100 disabled:bg-white disabled:text-indigo-600 disabled:cursor-default"
                           checked={!!person.isEligibleForSkripsi}
                         />
                       </td>
