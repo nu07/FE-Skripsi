@@ -52,7 +52,7 @@ export default function Example() {
     try {
       await Axios.put(`/admin/${detailAdmin?.id}`, detailAdmin);
       setIsEditData(false);
-      toast.success("Dosen berhasil Di Edit!", {
+      toast.success("Admin berhasil Di Edit!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -83,7 +83,7 @@ export default function Example() {
   const createDosenData = async () => {
     try {
       await Axios.post("/admin", detailAdmin);
-      toast.success("Dosen berhasil Di Tambahkan!", {
+      toast.success("Admin berhasil Di Tambahkan!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -97,7 +97,7 @@ export default function Example() {
       getAllDosen();
       setIsCreateData(false);
     } catch (e: any) {
-      toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
+      toast.error(e.response.data.message ?? "Admin gagal Di Tambahkan!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -113,7 +113,7 @@ export default function Example() {
   const deletedataAdmin = async () => {
     try {
       await Axios.delete(`/admin/${detailAdmin.id}`);
-      toast.success("Dosen berhasil Di Delete!", {
+      toast.success("Admin berhasil Di Delete!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

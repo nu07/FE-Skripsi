@@ -7,6 +7,7 @@ import { Menu, Transition } from "@headlessui/react";
 import DashboardPagination from "@/components/pagination/dashboardPagination";
 import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
+import createDOMPurify from 'dompurify';
 import {
   DocumentAddIcon,
   TrashIcon,
@@ -44,6 +45,7 @@ export const fetchNewsData = async (page = 1, limit = 12): Promise<NewsData[]> =
 };
 
 function NewsAdmin() {
+    const DOMPurify = createDOMPurify(window);
   const [allDataNews, setAllDataNews] = useState<NewsData[]>([]);
   const [isOpenDetail, setIsOpenDetail] = useState(false);
   const [isDetailData, setIsDetailData] = useState<NewsData>(defaultData);
@@ -239,7 +241,7 @@ function NewsAdmin() {
                         })}
                       </p>
                     </div>
-                    <p className="text-sm text-gray-700 mt-2 line-clamp-3">{news.content || "Konten berita tidak tersedia."}</p>
+                    <p className="text-sm text-gray-700 mt-2 line-clamp-3"  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news.content ??  '<p> Data Tidak DiTemukan! </p>') } }></p>
                   </div>
                   <div className="px-6 py-4 bg-gray-50 flex justify-between items-center">
                     <p className="text-sm text-gray-600">Admin: {news.admin.nama || "Tidak diketahui"}</p>

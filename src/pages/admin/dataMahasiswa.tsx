@@ -54,7 +54,7 @@ export default function Example() {
     try {
       await Axios.put(`/mahasiswa${detailMahasiswa?.id}`, detailMahasiswa);
       setIsEditData(false);
-      toast.success("Dosen berhasil Di Edit!", {
+      toast.success("Mahasiswa berhasil Di Edit!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -68,7 +68,7 @@ export default function Example() {
       getAllMahasiswa();
     } catch (e: any) {
       console.error(e);
-      toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
+      toast.error(e.response.data.message ?? "Mahasiswa gagal Di Tambahkan!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -115,7 +115,7 @@ export default function Example() {
   const deleteDataDosen = async () => {
     try {
       await Axios.delete(`/mahasiswa/${detailMahasiswa.id}`);
-      toast.success("Dosen berhasil Di Delete!", {
+      toast.success("Mahasiswa berhasil Di Delete!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -342,7 +342,7 @@ const ModalEdit = ({ state, setState }: any) => {
                   nim: e.target.value,
                 }))
               }
-              value={state.nidn}
+              value={state.nim}
             />
           </div>
         </div>

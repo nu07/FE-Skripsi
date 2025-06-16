@@ -54,7 +54,7 @@ export default function ListBimbingan() {
         try {
             await Axios.post(`dosen/approve-skripsi`, payload)
             setIsEditData(false)
-            toast.success("Dosen berhasil Di Edit!", {
+            toast.success("Data Bimbingan Di Edit!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -68,7 +68,7 @@ export default function ListBimbingan() {
             getAlllistBimbingan()
         } catch (e: any) {
             console.error(e)
-            toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
+            toast.error(e.response.data.message ?? "Data Bimbingan gagal Di Tambahkan!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,

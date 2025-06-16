@@ -49,7 +49,7 @@ export default function Example() {
         try {
             await Axios.put('/dosen/sidang/catatan', { pendaftaranId: detailData.id, catatan: data?.id === detailData?.pembimbing1?.id ? detailData.catatan_penguji1 : detailData.catatan_penguji2 })
             setIsEditData(false)
-            toast.success("Dosen berhasil Di Edit!", {
+            toast.success("Data Sidang berhasil Di Edit!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,

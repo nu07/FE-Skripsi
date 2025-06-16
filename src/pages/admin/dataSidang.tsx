@@ -59,7 +59,7 @@ export default function Example() {
     try {
       await Axios.put(`/sidang/${detailDosen?.id}`, detailDosen);
       setIsEditData(false);
-      toast.success("Dosen berhasil Di Edit!", {
+      toast.success("Data Sidang berhasil Di Edit!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -73,7 +73,7 @@ export default function Example() {
       getAllDataSidang();
     } catch (e: any) {
       console.error(e);
-      toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
+      toast.error(e.response.data.message ?? "Data Sidang gagal Di Tambahkan!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

@@ -62,7 +62,7 @@ export default function Example() {
             await Axios.put(`/skripsi/${detailData?.id}`, { status: detailData.status, catatan: detailData.catatanPembayaran })
             await Axios.post('/set-pembimbing', {idSkripsi : detailData.id, idPembimbing1: detailData.id_pembimbing1,idPembimbing2: detailData.id_pembimbing2 })
             setIsEditData(false)
-            toast.success("Dosen berhasil Di Edit!", {
+            toast.success("Data Pembayaran berhasil Di Edit!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -76,7 +76,7 @@ export default function Example() {
             getAllDosen()
         } catch (e: any) {
             console.error(e)
-            toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
+            toast.error(e.response.data.message ?? "Data Pembayaran gagal Di Tambahkan!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -313,9 +313,9 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                                 }))}
                                 value={state.status}
                             >
-                                <option>sukses</option>
-                                <option>pending</option>
-                                <option>gagal</option>
+                                <option value="sukses">Sukses</option>
+                                <option value="pending">Pending</option>
+                                <option value="gagal">Gagal</option>
                             </select>
                         </div>
 
