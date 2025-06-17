@@ -14,7 +14,7 @@ interface FormData {
 }
 
 export default function MahasiswaSkripsi() {
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   const [getMySkripsiData, setGetMySkripsiData] = useState({
     judul: "",
     status: "",
@@ -70,7 +70,7 @@ export default function MahasiswaSkripsi() {
     formDataToSend.append("judul", formData.judulSkripsi);
     formDataToSend.append("buktiPembayaran", formData.buktiPembayaran);
 
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await Axios.post("/upload-pembayaran-skripsi", formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -96,9 +96,10 @@ export default function MahasiswaSkripsi() {
         theme: "colored",
         transition: Bounce,
       });
-    } finally {
-      setLoading(false);
-    }
+    } 
+    // finally {
+    //   setLoading(false);
+    // }
   };
 
   const handleDeleteFile = () => {
