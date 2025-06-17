@@ -39,8 +39,8 @@ export default function MahasiswaSkripsi() {
     }
 
     const formDataToSend = new FormData();
-    formDataToSend.append("judulSkripsi", formData.judulSkripsi);
-    formDataToSend.append("pembayaranFile", formData.pembayaranFile);
+    formDataToSend.append("Judul", formData.judulSkripsi);
+    formDataToSend.append("buktiPembayaran", formData.pembayaranFile);
 
     setLoading(true);
     try {
