@@ -86,10 +86,10 @@ export default function Example() {
     }
   };
 
-    const createManyMahasiswaData = async () => {
+  const createManyMahasiswaData = async () => {
     try {
-     const res = await Axios.post("/mahasiswa", dataExcellMany);
-        const { inserted, skipped } = res.data;
+      const res = await Axios.post("/mahasiswa", dataExcellMany);
+      const { inserted, skipped } = res.data;
       toast.success(inserted.length + " Mahasiswa berhasil Di Tambahkan!", {
         position: "top-right",
         autoClose: 5000,
@@ -101,17 +101,17 @@ export default function Example() {
         theme: "colored",
         transition: Bounce,
       });
-//  toast.success(`Berhasil menambahkan ${inserted.length} mahasiswa.`);
+      //  toast.success(`Berhasil menambahkan ${inserted.length} mahasiswa.`);
 
-    if (skipped.length > 0) {
-      toast.warning(`${skipped.length} mahasiswa gagal ditambahkan.`);
-      setDataExcellMany(skipped); // update table untuk hanya menampilkan data yang gagal
-    } else {
-      setDataExcellMany([]); // kosongkan jika semua berhasil
-    }
-console.log(skipped)
-    getAllMahasiswa();
-      // setModalUploadMahasiswa(false);
+      getAllMahasiswa();
+      if (skipped.length > 0) {
+        toast.warning(`${skipped.length} mahasiswa gagal ditambahkan.`);
+        setDataExcellMany(skipped);
+      } else {
+        setDataExcellMany([]);
+        setModalUploadMahasiswa(false);
+      }
+      console.log(skipped)
     } catch (e: any) {
       toast.error(e.response.data.message ?? "Mahasiswa gagal Di Tambahkan!", {
         position: "top-right",
@@ -271,28 +271,28 @@ console.log(skipped)
           </div>
         </div>
 
-<div className="space-x-2">
+        <div className="space-x-2">
 
-        <button
-          onClick={() => {
-            setModalUploadMahasiswa(true), setDetailMahasiswa(defaultValue);
-          }}
-          type="button"
-          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Tambah Banyak Mahasiswa
-          <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-        </button>
-        <button
-          onClick={() => {
-            setIsCreateData(true), setDetailMahasiswa(defaultValue);
-          }}
-          type="button"
-          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Tambah Mahasiswa
-          <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-        </button>
-        
-            </div>
+          <button
+            onClick={() => {
+              setModalUploadMahasiswa(true), setDetailMahasiswa(defaultValue);
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Tambah Banyak Mahasiswa
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
+          <button
+            onClick={() => {
+              setIsCreateData(true), setDetailMahasiswa(defaultValue);
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Tambah Mahasiswa
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
+
+        </div>
       </div>
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -394,6 +394,7 @@ console.log(skipped)
 
 const ModalUploadMahasiswa = ({ state, setState }: any) => {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState([])
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -402,13 +403,9 @@ const ModalUploadMahasiswa = ({ state, setState }: any) => {
       const binaryStr = evt.target?.result;
       const workbook = XLSX.read(binaryStr, { type: "binary" });
 
-      // Ambil sheet pertama
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
-
-      // Konversi ke JSON
       const jsonData = XLSX.utils.sheet_to_json(sheet);
-      console.log(jsonData)
       setState(jsonData);
     };
     reader.readAsBinaryString(file);
@@ -424,70 +421,70 @@ const ModalUploadMahasiswa = ({ state, setState }: any) => {
     <>
       <div className="p-4">
         <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
-        
+
         <div className="overflow-y-auto max-h-[400px] mt-4 border rounded">
 
-        <table className="table-auto w-full border mt-4">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border px-2">NIM</th>
-              <th className="border px-2">Nama</th>
-              <th className="border px-2">Email</th>
-              <th className="border px-2">Password</th>
-              <th className="border px-2">Eligible</th>
-               <th className="border px-2">Alasan Gagal</th>
-            </tr>
-          </thead>
-          <tbody>
-            {state?.map((mhs : any, index : any) => (
-              <tr key={index}>
-                <td className="border px-2">
-                  <input
-                    type="text"
-                    value={mhs.nim}
-                    onChange={(e) => handleChange(index, "nim", e.target.value)}
-                    className="w-full"
-                    />
-                </td>
-                <td className="border px-2">
-                  <input
-                    type="text"
-                    value={mhs.nama}
-                    onChange={(e) => handleChange(index, "nama", e.target.value)}
-                    className="w-full"
-                    />
-                </td>
-                <td className="border px-2">
-                  <input
-                    type="email"
-                    value={mhs.email}
-                    onChange={(e) => handleChange(index, "email", e.target.value)}
-                    className="w-full"
-                    />
-                </td>
-                <td className="border px-2">
-                  <input
-                    type="text"
-                    value={mhs.password}
-                    onChange={(e) => handleChange(index, "password", e.target.value)}
-                    className="w-full"
-                    />
-                </td>
-                <td className="border px-2 text-center">
-                  <input
-                    type="checkbox"
-                    checked={mhs.isEligibleForSkripsi}
-                    onChange={(e) => handleChange(index, "isEligibleForSkripsi", e.target.checked)}
-                  />
-                </td>
-                <td className="border px-2 text-red-500 text-sm italic">
-          {mhs.reason ?? "-"}
-        </td>
+          <table className="table-auto w-full border mt-4">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border px-2">NIM</th>
+                <th className="border px-2">Nama</th>
+                <th className="border px-2">Email</th>
+                <th className="border px-2">Password</th>
+                <th className="border px-2">Eligible</th>
+                <th className="border px-2">Alasan Gagal</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-</div>
+            </thead>
+            <tbody>
+              {state?.map((mhs: any, index: any) => (
+                <tr key={index}>
+                  <td className="border px-2">
+                    <input
+                      type="text"
+                      value={mhs.nim}
+                      onChange={(e) => handleChange(index, "nim", e.target.value)}
+                      className="w-full"
+                    />
+                  </td>
+                  <td className="border px-2">
+                    <input
+                      type="text"
+                      value={mhs.nama}
+                      onChange={(e) => handleChange(index, "nama", e.target.value)}
+                      className="w-full"
+                    />
+                  </td>
+                  <td className="border px-2">
+                    <input
+                      type="email"
+                      value={mhs.email}
+                      onChange={(e) => handleChange(index, "email", e.target.value)}
+                      className="w-full"
+                    />
+                  </td>
+                  <td className="border px-2">
+                    <input
+                      type="text"
+                      value={mhs.password}
+                      onChange={(e) => handleChange(index, "password", e.target.value)}
+                      className="w-full"
+                    />
+                  </td>
+                  <td className="border px-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={mhs.isEligibleForSkripsi}
+                      onChange={(e) => handleChange(index, "isEligibleForSkripsi", e.target.checked)}
+                    />
+                  </td>
+                  <td className="border px-2 text-red-500 text-sm italic">
+                    {mhs.reason ?? "-"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   )
