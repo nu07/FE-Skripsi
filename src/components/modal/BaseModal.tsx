@@ -1,4 +1,5 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { classNames } from "@/utils/classNames";
 interface ModalEditProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -6,14 +7,11 @@ interface ModalEditProps {
   content: any;
   submitData: () => void | Promise<void>;
   mode: string
-}
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  width? : string
 }
 
 export default function EditData({
-  isOpen = false, setIsOpen, title, content, submitData, mode
+  isOpen = false, setIsOpen, title, content, submitData, mode, width
 }: ModalEditProps) {
   return (
     <>
@@ -21,9 +19,17 @@ export default function EditData({
         open={isOpen}
         onClose={() => setIsOpen(false)}
         className="relative z-50"
+        
       >
         <div className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50">
-          <DialogPanel className="w-full max-w-2xl space-y-4 border bg-white p-8 rounded-lg">
+          {/* <DialogPanel   className=" w-full max-w-2xl space-y-4 border bg-white p-8 rounded-lg"> */}
+          <DialogPanel
+          
+        className={classNames(width ? 
+        width : 
+        'max-w-2xl',
+         'w-full space-y-4 border bg-white p-8 rounded-lg ')}
+          >
             <DialogTitle className="font-bold text-lg">{title ?? 'Data'}</DialogTitle>
             {content}
 
