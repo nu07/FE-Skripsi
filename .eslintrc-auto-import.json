@@ -77,6 +77,8 @@
     "UserAddIcon": true,
     "UserCircleIcon": true,
     "CurrencyDollarIcon": true,
-    "BriefcaseIcon": true
+    "BriefcaseIcon": true,
+    "UserRemoveIcon": true,
+    "EnvelopeIcon": true
   }
 }

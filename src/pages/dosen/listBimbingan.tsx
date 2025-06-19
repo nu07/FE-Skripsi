@@ -4,20 +4,18 @@ import { Button } from '@headlessui/react';
 import BaseModal from "@/components/modal/BaseModal";
 import DashboardPagination from '@/components/pagination/dashboardPagination';
 import { Bounce, toast } from "react-toastify";
-import { classNames } from "@/utils/classNames";
+import authStore from "@/store/loginStore";
 
 const defaultValue = {
-    catatanPembayaran: "",
-    status: "",
-    idSkripsi: "",
-    id_pembimbing1: "",
-    id_pembimbing2: "",
-    status_pembimbing1: "",
-    status_pembimbing2: "",
+    mahasiswaId: "",
+    status: true,
+    catatan_pembimbing1: "",
+    catatan_pembimbing2: ""
 }
 
-export default function Example() {
-    const [dataDosen, setDataDosen] = useState<any>([])
+export default function ListBimbingan() {
+    const { data } = authStore();
+    const [dataBimbingan, setDataBimbingan] = useState<any>([])
     const [isEditData, setIsEditData] = useState(false)
     const [pagination, setPagination] = useState({
         currentPages: 1,
@@ -26,17 +24,16 @@ export default function Example() {
         totalItems: 1,
         isLoading: true,
         showDeleted: true,
-        status: '',
+        status: "",
     });
-    const [detailData, setDatailData] = useState<any>(defaultValue)
+    const [detailData, setDetailData] = useState<any>(defaultValue)
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
-    const [allDosen, setAllDosen] = useState([])
 
-    const getAllDosen = async () => {
+    const getAlllistBimbingan = async () => {
         try {
-            const res = await Axios.get(`/skripsi?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}&status=${pagination.status}`)
-            setDataDosen(res.data.data)
+            const res = await Axios.get(`/dosen/bimbingan?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}&showDeleted=${pagination.showDeleted}&status=${[pagination.status]}`)
+            setDataBimbingan(res.data.data)
             setPagination((prev) => ({
                 ...prev,
                 totalPages: res.data.pagination.totalPages,
@@ -48,21 +45,16 @@ export default function Example() {
         }
     }
 
-    const getAllDataDosen = async () => {
-        try {
-            const res = await Axios.get('/dosen/dosen?page=1&limit=1000&search=a&showDeleted=true')
-            setAllDosen(res.data.data)
-        } catch (e: any) {
-            console.error(e)
-        }
-    }
-
     const SubmitEditData = async () => {
+        const payload = {
+            mahasiswaId: detailData.mahasiswa.id,
+            status: data?.id === detailData.pembimbing1.id ? detailData.status_pembimbing1 : detailData.status_pembimbing2,
+            catatan: data?.id === detailData.pembimbing1.id ? detailData.catatan_pembimbing1 : detailData.catatan_pembimbing2
+        }
         try {
-            await Axios.put(`/skripsi/${detailData?.id}`, { status: detailData.status, catatan: detailData.catatanPembayaran })
-            await Axios.post('/set-pembimbing', {idSkripsi : detailData.id, idPembimbing1: detailData.id_pembimbing1,idPembimbing2: detailData.id_pembimbing2 })
+            await Axios.post(`dosen/approve-skripsi`, payload)
             setIsEditData(false)
-            toast.success("Data Pembayaran berhasil Di Edit!", {
+            toast.success("Data Bimbingan Di Edit!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -73,10 +65,10 @@ export default function Example() {
                 theme: "colored",
                 transition: Bounce,
             });
-            getAllDosen()
+            getAlllistBimbingan()
         } catch (e: any) {
             console.error(e)
-            toast.error(e.response.data.message ?? "Data Pembayaran gagal Di Tambahkan!", {
+            toast.error(e.response.data.message ?? "Data Bimbingan gagal Di Tambahkan!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -99,23 +91,18 @@ export default function Example() {
     }, [searchQuery]);
 
     useEffect(() => {
-        getAllDosen()
-    }, [pagination.currentPages, debouncedSearch, pagination.showDeleted, pagination.status]);
-
-    useEffect(() => {
-        getAllDataDosen()
-    }, [])
-
+        getAlllistBimbingan()
+    }, [pagination.currentPages, debouncedSearch, pagination.status]);
 
     return (
         <>
             <BaseModal
                 isOpen={isEditData}
                 setIsOpen={setIsEditData}
-                title="Edit Data Pembayaran"
+                title="Edit Data Dosen"
                 mode="edit"
                 submitData={SubmitEditData}
-                content={<ModalEdit state={detailData} setState={setDatailData} allDosen={allDosen} />}
+                content={<ModalEdit state={detailData} setState={setDetailData} />}
             />
             <div className="my-2 flex justify-between gap-x-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
@@ -147,13 +134,11 @@ export default function Example() {
                             value={pagination.status}
                         >
                             <option value="">Semua Data</option>
-                            <option value="sukses">Sukses</option>
-                            <option value="pending">Pending</option>
-                            <option value="gagal">Gagal</option>
+                            <option value="progress">Progress</option>
+                            <option value="finish">Finish</option>
                         </select>
                     </div>
                 </div>
-
             </div>
             <div className="flex flex-col">
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -166,49 +151,49 @@ export default function Example() {
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Nama Mahasiswa
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        >
-                                            NIM
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        >
                                             Judul
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Status Pembayaran
+                                            Nama Mahasiswa
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Bukti Pembayaran
+                                            Pembimbing 1
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Skripsi
+                                            Pembimbing 2
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                            ACC Pembimbing 1
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Pembimbing
+                                            ACC  Pembimbing 2
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                            Catatan Pembimbing 1
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
-                                            Deleted
+                                            Catatan Pembimbing 2
                                         </th>
                                         <th scope="col" className="relative px-6 py-3 text-gray-500">
                                             <span className="">Edit</span>
@@ -216,47 +201,35 @@ export default function Example() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {dataDosen.map((person: any) => (
+                                    {dataBimbingan.map((person: any) => (
                                         <tr key={person.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person?.mahasiswa?.nama}>{person?.mahasiswa?.nama}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person?.mahasiswa?.nim}>{person?.mahasiswa?.nim}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person?.judul}>{person?.judul}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-14 truncate" title={person?.status}>
-                                                <button
-                                                    type="button"
-                                                    className={classNames(person?.status === 'sukses' ? 'text-white bg-green-600 hover:bg-green-700 focus:ring-green-500' : person?.status === 'pending' ? 'text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500' : 'text-white bg-red-600 hover:bg-red-700 focus:ring-red-500', 'inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 ')}
-                                                >
-                                                    {person?.status?.toUpperCase()}
-                                                </button>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-10 truncate" >
-                                                <div className="flex-shrink-0">
-                                                    <img className="h-12 w-12 rounded-full" src={import.meta.env.VITE_APP_URL + person.buktiPembayaran} alt="" />
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-5 truncate" title={person.deletedAt}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 w-24 truncate " title={person?.judul}>{person?.judul}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate " title={person?.mahasiswa?.nama}>{person?.mahasiswa?.nama}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-24 truncate" title={person?.pembimbing1.nama}>{person?.pembimbing1?.nama}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person?.pembimbing2?.nama}>{person?.pembimbing2?.nama}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-12 truncate text-center">
                                                 <input
                                                     type="checkbox"
                                                     readOnly
                                                     className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 disabled:opacity-100 disabled:bg-white disabled:text-indigo-600 disabled:cursor-default"
-                                                    checked={!!person.mahasiswa.isEligibleForSkripsi}
+                                                    checked={!!person?.status_pembimbing1}
                                                 />
+
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-40 truncate" title={person.deletedAt}>
-                                                <div>Pembimbing 1: {person?.pembimbing1?.nama}</div>
-                                                <div>Pembimbing 2: {person?.pembimbing2?.nama}</div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person.deletedAt}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-12 truncate text-center">
+
                                                 <input
                                                     type="checkbox"
                                                     readOnly
                                                     className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 disabled:opacity-100 disabled:bg-white disabled:text-indigo-600 disabled:cursor-default"
-                                                    checked={!!person.deletedAt}
+                                                    checked={!!person?.status_pembimbing2}
                                                 />
                                             </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person?.catatan_pembimbing1}>{person?.catatan_pembimbing1}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-36 truncate" title={person?.catatan_pembimbing2}>{person?.catatan_pembimbing2}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                                 <Button className="text-indigo-600 hover:text-indigo-900" onClick={() => {
-                                                    setDatailData(person)
+                                                    setDetailData(person)
                                                     setIsEditData(true)
                                                 }
                                                 }>
@@ -282,43 +255,29 @@ export default function Example() {
 
 
 
-const ModalEdit = ({ state, setState, allDosen }: any) => {
+const ModalEdit = ({ state, setState }: any) => {
+    const { data } = authStore();
+
     return (
         <>
             <div className="space-y-3">
-
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 text-center">
-                        Bukti Pembayaran
+                    <label className="block text-sm font-medium text-gray-700">
+                        Nama Mahasiswa
                     </label>
-                    <div className="flex-shrink-0 flex items-center justify-center">
-                        <img className="max-h-36 max-w-40 rounded-full" src={import.meta.env.VITE_APP_URL + state.buktiPembayaran} alt="" />
-                    </div>
-                </div>
-                <div>
                     <div className="mt-1">
-
-                        <div>
-                            <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-                                Location
-                            </label>
-                            <select
-                                id="location"
-                                name="location"
-                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
-                                defaultValue="sukses"
-                                onChange={(e: any) => setState((prev: any) => ({
-                                    ...prev,
-                                    status: e.target.value,
-                                }))}
-                                value={state.status}
-                            >
-                                <option value="sukses">Sukses</option>
-                                <option value="pending">Pending</option>
-                                <option value="gagal">Gagal</option>
-                            </select>
-                        </div>
-
+                        <input
+                            type="text"
+                            required
+                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            // onChange={(e: any) => setState((prev: any) => ({
+                            //     ...prev,
+                            //     mahasiswa: e.target.value,
+                            // }))}
+                            readOnly
+                            disabled
+                            value={state?.mahasiswa?.nama}
+                        />
                     </div>
                 </div>
 
@@ -331,83 +290,78 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             type="text"
                             required
                             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                catatanPembayaran: e.target.value,
-                            }))}
-                            value={state.catatanPembayaran}
+                            onChange={(e: any) => {
+                                if (data?.id === state?.pembimbing1?.id) {
+                                    setState((prev: any) => ({
+                                        ...prev,
+                                        catatan_pembimbing1: e.target.value,
+                                    }))
+                                } else {
+                                    setState((prev: any) => ({
+                                        ...prev,
+                                        catatan_pembimbing2: e.target.value,
+                                    }))
+                                }
+                            }
+
+
+
+                            }
+                            value={data?.id === state?.pembimbing1?.id ? state?.catatan_pembimbing1 : state?.catatan_pembimbing2}
                         />
                     </div>
                 </div>
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
-                        ID Skripsi
+                        Acc Skripsi ?
                     </label>
                     <div className="mt-1">
                         <input
-                            type="text"
-                            required
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                idSkripsi: e.target.value,
-                            }))}
-                            value={state.id}
-                            disabled
+                            type="checkbox"
+                            checked={data?.id === state?.pembimbing1?.id ? state?.status_pembimbing1 : state?.status_pembimbing2}
+                            onChange={(e) => {
+                                if (data?.id === state.pembimbing1.id) {
+                                    setState((prev: any) => ({
+                                        ...prev,
+                                        status_pembimbing1: e.target.checked,
+                                    }))
+                                } else {
+                                    setState((prev: any) => ({
+                                        ...prev,
+                                        status_pembimbing2: e.target.checked,
+                                    }))
+                                }
+                            }
+
+                            }
+                            className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 disabled:opacity-100 disabled:bg-white disabled:text-indigo-600 disabled:cursor-default"
                         />
                     </div>
                 </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Nama Pembimbing 1
-                    </label>
-                    <div className="mt-1">
-                        <select
-                            id="id_pembimbing1"
-                            name="id_pembimbing1"
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
-                            defaultValue=""
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                idPembimbing1: e.target.value,
-                                id_pembimbing1: e.target.value,
-                            }))}
-                            value={state.id_pembimbing1}
-                        >
-                            {allDosen.map((data: any)=> (
-                                <>
-                                <option key={data.id} value={data.id}>{data.nama}</option>
-                                </>
-                            ))}
-                        </select>
+
+
+                {state.deletedAt && (
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Pulihkan Data yang Dihapus?
+                        </label>
+                        <div className="mt-1 flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                checked={!!state.restore} // ✅ pastikan boolean
+                                onChange={(e) =>
+                                    setState((prev: any) => ({
+                                        ...prev,
+                                        restore: e.target.checked, // ✅ gunakan `checked`, bukan `value`
+                                    }))
+                                }
+                                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            />
+                            <span className="text-sm text-gray-600">Aktifkan untuk menghapus status deleted</span>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Nama Pembimbing 2
-                    </label>
-                    <div className="mt-1">
-                        <select
-                            id="id_pembimbing2"
-                            name="id_pembimbing2"
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
-                            defaultValue=""
-                            onChange={(e: any) => setState((prev: any) => ({
-                                ...prev,
-                                idPembimbing2: e.target.value,
-                                id_pembimbing2: e.target.value,
-                            }))}
-                            value={state.id_pembimbing2}
-                        >
-                            {allDosen.map((data: any)=> (
-                                <>
-                                <option key={data.id} value={data.id}>{data.nama}</option>
-                                </>
-                            ))}
-                        </select>
-                    </div>
-                </div>
+                )}
 
             </div>
         </>

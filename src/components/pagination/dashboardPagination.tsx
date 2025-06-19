@@ -1,23 +1,4 @@
-// interface Pagination {
-//   currentPages: number;
-//   totalPages: number;
-//   totalItems: number;
-// }
-
-interface DashboardPaginationProps {
-  pagination: Pagination;
-  setPagination: React.Dispatch<React.SetStateAction<Pagination>>;
-}
-
-export interface Pagination {
-  currentPages: number;
-  perPage: number;
-  totalPages: number;
-  totalItems: number;
-  isLoading: boolean;
-}
-
-function dashboardPagination({ pagination, setPagination }: DashboardPaginationProps) {
+function dashboardPagination({ pagination, setPagination }: any) {
   return (
     <div>
       <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
@@ -25,7 +6,7 @@ function dashboardPagination({ pagination, setPagination }: DashboardPaginationP
           <button
             disabled={pagination.currentPages === 1}
             onClick={() => {
-              setPagination(prev => ({
+              setPagination((prev: any) => ({
                 ...prev,
                 currentPages: prev.currentPages - 1,
               }));
@@ -36,7 +17,7 @@ function dashboardPagination({ pagination, setPagination }: DashboardPaginationP
           <button
             disabled={pagination.currentPages === pagination.totalPages}
             onClick={() => {
-              setPagination(prev => ({
+              setPagination((prev: any) => ({
                 ...prev,
                 currentPages: prev.currentPages + 1,
               }));
@@ -48,6 +29,8 @@ function dashboardPagination({ pagination, setPagination }: DashboardPaginationP
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-700">
+              {/* Showing <span className="font-medium">{pagination.perPage}</span>{" "}
+              to <span className="font-medium">{pagination.totalItems}</span> of{" "} */}
               <span className="font-medium">{pagination.totalItems}</span> Hasil
             </p>
           </div>
@@ -57,7 +40,7 @@ function dashboardPagination({ pagination, setPagination }: DashboardPaginationP
                 className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                 disabled={pagination.currentPages === 1}
                 onClick={() => {
-                  setPagination(prev => ({
+                  setPagination((prev: any) => ({
                     ...prev,
                     currentPages: prev.currentPages - 1,
                   }));
@@ -65,12 +48,13 @@ function dashboardPagination({ pagination, setPagination }: DashboardPaginationP
                 <span className="sr-only">Previous</span>
                 <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
               </button>
+              {/* Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" */}
 
               {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(page => (
                 <button
                   key={page}
                   onClick={() => {
-                    setPagination(prev => ({
+                    setPagination((prev: any) => ({
                       ...prev,
                       currentPages: page,
                     }));
@@ -80,8 +64,7 @@ function dashboardPagination({ pagination, setPagination }: DashboardPaginationP
                       ? "z-10 bg-indigo-50 border-indigo-500 text-indigo-600"
                       : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
                   } relative inline-flex items-center px-4 py-2 border text-sm font-medium`}>
-                  {" "}
-                  {page}{" "}
+                      {page} {" "}
                 </button>
               ))}
 
@@ -89,7 +72,7 @@ function dashboardPagination({ pagination, setPagination }: DashboardPaginationP
                 className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                 disabled={pagination.currentPages === pagination.totalPages}
                 onClick={() => {
-                  setPagination(prev => ({
+                  setPagination((prev: any) => ({
                     ...prev,
                     currentPages: prev.currentPages + 1,
                   }));

@@ -11,12 +11,13 @@ interface AppState {
   setIsLogin: (isLogin: boolean) => void;
   setLoadingHydration: (loadingHydration: boolean) => void;
   reset: () => void;
+  getEmail: () => string | null;
 }
 
 const authStore = create<AppState>()(
   devtools(
     persist(
-      (set) => ({
+      set => ({
         token: "",
         data: {},
         isLogin: null,
@@ -24,8 +25,7 @@ const authStore = create<AppState>()(
         setToken: (token: string): void => set({ token }),
         setData: (data: Record<string, any>): void => set({ data }),
         setIsLogin: (isLogin: boolean): void => set({ isLogin }),
-        setLoadingHydration: (loadingHydration: boolean) =>
-          set({ loadingHydration }), // Mengatur state loadingHydrat
+        setLoadingHydration: (loadingHydration: boolean) => set({ loadingHydration }), // Mengatur state loadingHydrat
         reset: () => {
           // authStore.getState().persist.clearStorage()
           localStorage.clear();
@@ -36,11 +36,15 @@ const authStore = create<AppState>()(
             // loadingHydration: true,
           });
         },
+        getEmail: () => {
+          const data = authStore.getState().data;
+          return data?.email || null;
+        },
       }),
       {
         name: "main",
         storage: createJSONStorage(() => localStorage),
-        partialize: (state) => ({
+        partialize: state => ({
           token: state.token,
           data: state.data,
           isLogin: state.isLogin,
