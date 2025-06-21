@@ -1,20 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Axios from "@/API/axios";
 
 import { Badge } from "@/components/ui/badge";
 import {
-  CloudUploadIcon,
+  // CloudUploadIcon,
   UsersIcon,
-  BadgeCheckIcon,
-  MailIcon,
+  // BadgeCheckIcon,
+  // MailIcon,
   DocumentTextIcon,
   CalendarIcon,
   ClockIcon,
   CheckCircleIcon,
 } from "@heroicons/react/outline";
-import Button from "../../components/ui/button";
+// import Button from "../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import Separator from "@/components/ui/separator";
 
