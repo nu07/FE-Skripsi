@@ -16,7 +16,7 @@ const defaultValue = {
     status_pembimbing2: "",
 }
 
-export default function Example() {
+export default function DataPembayaranSkripsi() {
     const [dataDosen, setDataDosen] = useState<any>([])
     const [isEditData, setIsEditData] = useState(false)
     const [pagination, setPagination] = useState({
@@ -50,7 +50,7 @@ export default function Example() {
 
     const getAllDataDosen = async () => {
         try {
-            const res = await Axios.get('/dosen/dosen?page=1&limit=1000&search=a&showDeleted=true')
+            const res = await Axios.get('/dosen/dosen?page=1&limit=1000&search=&showDeleted=true')
             setAllDosen(res.data.data)
         } catch (e: any) {
             console.error(e)
@@ -89,6 +89,39 @@ export default function Example() {
             });
         }
     }
+
+      const downloadReportPembayaranSkripsi = async () => {
+    try {
+      const res = await Axios.get("/report/allpembayaran", {
+        responseType: "blob", // penting: agar bisa terima file
+      });
+
+      const blob = new Blob([res.data], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "laporan-pembayaran-skripsi.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      // opsional: notifikasi
+      toast.success("File laporan berhasil diunduh!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } catch (e: any) {
+      console.error(e);
+      toast.error("Gagal mengunduh laporan mahasiswa", {
+        position: "top-right",
+      });
+    }
+  };
 
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -153,6 +186,15 @@ export default function Example() {
                         </select>
                     </div>
                 </div>
+                          <button
+            onClick={() => {
+              downloadReportPembayaranSkripsi()
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Download Report
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
 
             </div>
             <div className="flex flex-col">
@@ -300,7 +342,7 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
 
                         <div>
                             <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-                                Location
+                                Status Pembayaran
                             </label>
                             <select
                                 id="location"
@@ -367,13 +409,13 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             id="id_pembimbing1"
                             name="id_pembimbing1"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
-                            defaultValue=""
+                            defaultValue={allDosen[0]?.id}
                             onChange={(e: any) => setState((prev: any) => ({
                                 ...prev,
                                 idPembimbing1: e.target.value,
                                 id_pembimbing1: e.target.value,
                             }))}
-                            value={state.id_pembimbing1}
+                            value={state.id_pembimbing1 ?? ""}
                         >
                             {allDosen.map((data: any)=> (
                                 <>
@@ -392,7 +434,7 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             id="id_pembimbing2"
                             name="id_pembimbing2"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
-                            defaultValue=""
+                            defaultValue={allDosen[0]?.id ?? ""}
                             onChange={(e: any) => setState((prev: any) => ({
                                 ...prev,
                                 idPembimbing2: e.target.value,

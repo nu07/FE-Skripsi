@@ -48,7 +48,7 @@ export default function Example() {
 
   const getAllDataDosen = async () => {
     try {
-      const res = await Axios.get("/dosen/dosen?page=1&limit=1000&search=a&showDeleted=true");
+      const res = await Axios.get("/dosen/dosen?page=1&limit=1000&search=&showDeleted=true");
       setDataDosen(res.data.data);
     } catch (e: any) {
       console.error(e);
@@ -83,6 +83,39 @@ export default function Example() {
         progress: undefined,
         theme: "colored",
         transition: Bounce,
+      });
+    }
+  };
+
+    const downloadReportSidang = async () => {
+    try {
+      const res = await Axios.get("/report/allsidang", {
+        responseType: "blob", // penting: agar bisa terima file
+      });
+
+      const blob = new Blob([res.data], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "laporan-data-sidang.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      // opsional: notifikasi
+      toast.success("File laporan berhasil diunduh!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } catch (e: any) {
+      console.error(e);
+      toast.error("Gagal mengunduh laporan mahasiswa", {
+        position: "top-right",
       });
     }
   };
@@ -147,6 +180,18 @@ export default function Example() {
               Tampilkan Sidang yang Sudah Dihapus
             </label>
           </div>
+        </div>
+
+        <div>
+                    <button
+            onClick={() => {
+              downloadReportSidang()
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Download Report
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
         </div>
       </div>
       <div className="flex flex-col">
@@ -370,21 +415,6 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
                         </div>
                     </div>
                 )}
-
-            <div className="mt-1 flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={!!state.restore} // ✅ pastikan boolean
-                onChange={e =>
-                  setState((prev: any) => ({
-                    ...prev,
-                    restore: e.target.checked, // ✅ gunakan `checked`, bukan `value`
-                  }))
-                }
-                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-              />
-              <span className="text-sm text-gray-600">Aktifkan untuk menghapus status deleted</span>
-            </div>
       </div>
     </>
   );

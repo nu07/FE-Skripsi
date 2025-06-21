@@ -7,7 +7,6 @@ import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
 import * as XLSX from "xlsx";
 
-
 const defaultValue = {
   nim: "",
   nama: "",
@@ -48,7 +47,6 @@ export default function Example() {
         totalItems: res.data.pagination.total,
         isLoading: false,
       }));
-      console.log(res.data.data);
     } catch (e) {
       console.error(e);
     }
@@ -111,7 +109,6 @@ export default function Example() {
         setDataExcellMany([]);
         setModalUploadMahasiswa(false);
       }
-      console.log(skipped)
     } catch (e: any) {
       toast.error(e.response.data.message ?? "Mahasiswa gagal Di Tambahkan!", {
         position: "top-right",
@@ -185,6 +182,39 @@ export default function Example() {
         progress: undefined,
         theme: "colored",
         transition: Bounce,
+      });
+    }
+  };
+
+  const downloadReportAllMahasiswa = async () => {
+    try {
+      const res = await Axios.get("/report/allmahasiswa", {
+        responseType: "blob", // penting: agar bisa terima file
+      });
+
+      const blob = new Blob([res.data], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "laporan-mahasiswa.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      // opsional: notifikasi
+      toast.success("File laporan berhasil diunduh!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } catch (e: any) {
+      console.error(e);
+      toast.error("Gagal mengunduh laporan mahasiswa", {
+        position: "top-right",
       });
     }
   };
@@ -272,6 +302,16 @@ export default function Example() {
         </div>
 
         <div className="space-x-2">
+
+          <button
+            onClick={() => {
+              downloadReportAllMahasiswa()
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Download Report
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
 
           <button
             onClick={() => {
@@ -419,8 +459,35 @@ const ModalUploadMahasiswa = ({ state, setState }: any) => {
 
   return (
     <>
+      <a
+        target="_blank"
+        href="./template/template_mahasiswa.xlsx"
+        type="button"
+        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Download Template
+        <DownloadIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+      </a>
       <div className="p-4">
-        <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
+
+
+
+        {state.length < 1 ? (<>
+          <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
+        </>) :
+          (<div>
+            <button
+              onClick={() => {
+                setState([])
+              }}
+              type="button"
+              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Reset Data
+              <BanIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>)
+
+        }
+
 
         <div className="overflow-y-auto max-h-[400px] mt-4 border rounded">
 

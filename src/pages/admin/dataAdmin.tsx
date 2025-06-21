@@ -80,6 +80,40 @@ export default function Example() {
     }
   };
 
+  const downloadReportAllAdmin = async () => {
+    try {
+      const res = await Axios.get("/report/alladmin", {
+        responseType: "blob", // penting: agar bisa terima file
+      });
+
+      const blob = new Blob([res.data], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "laporan-admin.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      // opsional: notifikasi
+      toast.success("File laporan berhasil diunduh!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } catch (e: any) {
+      console.error(e);
+      toast.error("Gagal mengunduh laporan mahasiswa", {
+        position: "top-right",
+      });
+    }
+  };
+
+
   const createDosenData = async () => {
     try {
       await Axios.post("/admin", detailAdmin);
@@ -159,7 +193,7 @@ export default function Example() {
       <BaseModal
         isOpen={isEditData}
         setIsOpen={setIsEditData}
-        title="Edit Data Dosen"
+        title="Edit Data Admin"
         mode="edit"
         submitData={SubmitEditData}
         content={<ModalEdit state={detailAdmin} setState={setDetailAdmin} />}
@@ -167,7 +201,7 @@ export default function Example() {
       <BaseModal
         isOpen={isCreateData}
         setIsOpen={setIsCreateData}
-        title="Tambah Dosen"
+        title="Tambah Admin"
         mode="create"
         submitData={createDosenData}
         content={<ModalEdit state={detailAdmin} setState={setDetailAdmin} />}
@@ -177,7 +211,7 @@ export default function Example() {
         isOpen={isDeleteData}
         setIsOpen={setIsDeleteData}
         submitData={deletedataAdmin}
-        content={`Anda Akan Menghapus Dosen ${detailAdmin?.nama} ? `}
+        content={`Anda Akan Menghapus Admin ${detailAdmin?.nama} ? `}
       />
       <div className="my-2 flex justify-between gap-x-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
@@ -214,16 +248,27 @@ export default function Example() {
             </label>
           </div>
         </div>
+        <div className="space-x-2">
+          <button
+            onClick={() => {
+              downloadReportAllAdmin()
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Download Report
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
 
-        <button
-          onClick={() => {
-            setIsCreateData(true), setDetailAdmin(defaultValue);
-          }}
-          type="button"
-          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Tambah Admin
-          <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-        </button>
+          <button
+            onClick={() => {
+              setIsCreateData(true), setDetailAdmin(defaultValue);
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Tambah Admin
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
+        </div>
       </div>
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
