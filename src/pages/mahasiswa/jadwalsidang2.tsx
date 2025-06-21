@@ -55,8 +55,6 @@ export default function Page({ skripsi }: any) {
     getPembimbingStatus();
   }, []);
 
-  console.log(skripsi.pembimbing1);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
