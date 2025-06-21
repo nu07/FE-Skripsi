@@ -7,24 +7,6 @@ function NavbarHome() {
   const [isOpenNav, setIsOpenNav] = useState(false);
 
   const solutions = [
-    {
-      name: "Home",
-      description: "Home",
-      href: "/",
-      icon: UsersIcon,
-    },
-    {
-      name: "News",
-      description: "News",
-      href: "/news",
-      icon: CashIcon,
-    },
-    {
-      name: "About",
-      description: "About",
-      href: "/about",
-      icon: UserGroupIcon,
-    },
     ...(isLogin
       ? [
           {
@@ -34,7 +16,26 @@ function NavbarHome() {
             icon: AcademicCapIcon,
           },
         ]
-      : []),
+      : [
+          {
+            name: "Home",
+            description: "Home",
+            href: "/",
+            icon: UsersIcon,
+          },
+          {
+            name: "News",
+            description: "News",
+            href: "/news",
+            icon: CashIcon,
+          },
+          {
+            name: "About",
+            description: "About",
+            href: "/about",
+            icon: UserGroupIcon,
+          },
+        ]),
   ];
 
   return (
@@ -53,7 +54,10 @@ function NavbarHome() {
             </div>
             <div className="hidden space-x-10 md:flex">
               {solutions.map(data => (
-                <Link key={data.href} to={data.href} className="text-base font-medium text-gray-500 hover:text-gray-900">
+                <Link
+                  key={data.href}
+                  to={data.href}
+                  className="text-base font-medium text-gray-500 transition-colors duration-300 hover:text-gray-900 active:text-purple-600">
                   {data.name}
                 </Link>
               ))}
@@ -61,99 +65,25 @@ function NavbarHome() {
 
             <div className="-my-2 -mr-2 md:hidden">
               <Popover.Button
-                onClick={() => setIsOpenNav(true)}
+                onClick={(): void => setIsOpenNav(true)}
                 className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                 <span className="sr-only">Open menu</span>
                 <MenuIcon className="w-6 h-6" aria-hidden="true" />
               </Popover.Button>
             </div>
-            {/* <Popover.Group as="nav" className="hidden space-x-10 md:flex">
-              <Popover className="relative">
-                {({ open }) => (
-                  <>
-                    <Popover.Button
-                      className={classNames(
-                        open ? "text-gray-900" : "text-gray-500",
-                        "group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      )}
-                    >
-                      <span>Solutions</span>
-                      <ChevronDownIcon
-                        className={classNames(
-                          open ? "text-gray-600" : "text-gray-400",
-                          "ml-2 h-5 w-5 group-hover:text-gray-500"
-                        )}
-                        aria-hidden="true"
-                      />
-                    </Popover.Button>
-
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-200"
-                      enterFrom="opacity-0 translate-y-1"
-                      enterTo="opacity-100 translate-y-0"
-                      leave="transition ease-in duration-150"
-                      leaveFrom="opacity-100 translate-y-0"
-                      leaveTo="opacity-0 translate-y-1"
-                    >
-                      <Popover.Panel className="absolute z-10 w-screen max-w-md mt-3 -ml-4 transform lg:max-w-2xl lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
-                        <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                          <div className="relative grid gap-6 px-5 py-6 bg-white sm:gap-8 sm:p-8 lg:grid-cols-2">
-                            {solutions.map((item) => (
-                              <Link
-                                key={item.name}
-                                to={item.href}
-                                className="flex items-start p-3 -m-3 rounded-lg hover:bg-gray-50"
-                              >
-                                <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 sm:h-12 sm:w-12">
-                                  <item.icon
-                                    className="w-6 h-6"
-                                    aria-hidden="true"
-                                  />
-                                </div>
-                                <div className="ml-4">
-                                  <p className="text-base font-medium text-gray-900">
-                                    {item.name}
-                                  </p>
-                                  <p className="mt-1 text-sm text-gray-500">
-                                    {item.description}
-                                  </p>
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </Popover.Panel>
-                    </Transition>
-                  </>
-                )}
-              </Popover>
-
-              <Link
-                to="/lsp2"
-                className="text-base font-medium text-gray-500 hover:text-gray-900"
-              >
-                LSP part 2
-              </Link>
-            </Popover.Group> */}
             <div className="items-center justify-end hidden md:flex md:flex-1 lg:w-0">
               {isLogin ? (
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => reset()}
-                    className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white border border-transparent rounded-md shadow-sm whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700">
+                    onClick={(): void => reset()}
+                    className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white border border-transparent rounded-md shadow-sm whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border transition-transform duration-300 hover:from-purple-700 hover:to-indigo-700 active:scale-95">
                     Logout
                   </button>
-                  {/* <Link
-                    to="/dashboard"
-                    className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white border border-transparent rounded-md shadow-sm whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700">
-                    Dashboard
-                  </Link> */}
                 </div>
               ) : (
                 <Link
                   to="/login"
-                  className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white border border-transparent rounded-md shadow-sm whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700">
+                  className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white border border-transparent rounded-md shadow-sm whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border transition-transform duration-300 hover:from-purple-700 hover:to-indigo-700 active:scale-95">
                   Login
                 </Link>
               )}
@@ -192,7 +122,7 @@ function NavbarHome() {
                           key={item.name}
                           to={item.href}
                           className="flex items-center p-3 -m-3 rounded-lg hover:bg-gray-50"
-                          onClick={() => setIsOpenNav(false)}>
+                          onClick={(): void => setIsOpenNav(false)}>
                           <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white rounded-md bg-gradient-to-r from-purple-600 to-indigo-600">
                             <item.icon className="w-6 h-6" aria-hidden="true" />
                           </div>
@@ -206,9 +136,10 @@ function NavbarHome() {
                   <div className="mt-6" onClick={() => setIsOpenNav(false)}>
                     {isLogin ? (
                       <Link
-                        to="/dashboard"
+                        href="/"
+                        onClick={(): void => reset()}
                         className="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700">
-                        Dashboard
+                        Logout
                       </Link>
                     ) : (
                       <Link

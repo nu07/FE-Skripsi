@@ -79,6 +79,8 @@
     "CurrencyDollarIcon": true,
     "BriefcaseIcon": true,
     "UserRemoveIcon": true,
-    "EnvelopeIcon": true
+    "EnvelopeIcon": true,
+    "BookOpenIcon": true,
+    "XCircleIcon": true
   }
 }

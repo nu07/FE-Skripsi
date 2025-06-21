@@ -1,13 +1,16 @@
 import type React from "react";
 import { useState } from "react";
 import { CheckCircleIcon, DocumentTextIcon, UploadIcon, UserIcon, EnvelopeIcon } from "@heroicons/react/outline";
-import Button from "../../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import Button from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bounce, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "@/API/axios";
-import JadwalSidang from "./jadwalSidang2";
 import { Badge } from "@/components/ui/badge";
+
+import JadwalSidang from "./jadwalSidang2";
+import IsEligbleSidang from "./isEligbleSidang";
+import IsEligbleSkripsi from "./isEligbleSkripsi";
 
 interface FormData {
   judulSkripsi: string;
@@ -15,12 +18,13 @@ interface FormData {
 }
 
 export default function MahasiswaSkripsi() {
-  // const [loading, setLoading] = useState<boolean>(false);
   const [getMySkripsiData, setGetMySkripsiData] = useState({
     judul: "",
     status: "",
     catatanPembayaran: "",
     buktiPembayaran: "",
+    catatan_penguji1:"",
+    catatan_penguji2:"",
     pembimbing1: {
       nama: "",
       email: "",
@@ -30,6 +34,7 @@ export default function MahasiswaSkripsi() {
       email: "",
     },
   });
+  const [statusSidang, setStatusSidang] = useState<boolean>();
   const [formData, setFormData] = useState<FormData>({
     judulSkripsi: "",
     buktiPembayaran: null,
@@ -52,6 +57,19 @@ export default function MahasiswaSkripsi() {
     }
   };
 
+  const getMyStatusSidang = async () => {
+    try {
+      const response = await Axios.get("/status");
+      const test = await Axios.get("/skripsi-me");
+      // setStatusSidang(response.data);
+      // console.log(test.data)
+      // console.log("Response1: ", response.data.data.isEligibleForSidang);
+      // console.log("Response2: ", response.data.data.isEligibleForSkripsi);
+    } catch (error) {
+      console.error("Error fetching status sidang:", error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -69,7 +87,6 @@ export default function MahasiswaSkripsi() {
     formDataToSend.append("judul", formData.judulSkripsi);
     formDataToSend.append("buktiPembayaran", formData.buktiPembayaran);
 
-    // setLoading(true);
     try {
       const response = await Axios.post("/upload-pembayaran-skripsi", formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -96,9 +113,6 @@ export default function MahasiswaSkripsi() {
         transition: Bounce,
       });
     }
-    // finally {
-    //   setLoading(false);
-    // }
   };
 
   const handleDeleteFile = () => {
@@ -114,26 +128,16 @@ export default function MahasiswaSkripsi() {
 
   useEffect(() => {
     getMySkripsi();
+    getMyStatusSidang();
   }, []);
 
+  // const { isEligbleSidang, isEligbleSkripsi } = statusSidang;
+  // console.log(isEligbleSidang)
+  // console.log(isEligbleSkripsi)
+  // console.log("Skripsi : ", getMySkripsiData);
+
   if (getMySkripsiData?.status === "sukses") {
-    return (
-      <>
-        <section className="">
-          <div className="">
-             {/* <svg className="absolute top-0 left-0 z-10 w-full h-full" fill="none" viewBox="0 0 784 404" aria-hidden="true">
-              <defs>
-                <pattern id="e56e3f81-d9c1-4b83-a3ba-0d0ac8c32f32" x={0} y={0} width={20} height={20} patternUnits="userSpaceOnUse">
-                  <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#e56e3f81-d9c1-4b83-a3ba-0d0ac8c32f32)" />
-            </svg>  */}
-            <JadwalSidang />
-          </div>
-        </section>
-      </>
-    );
+    return <JadwalSidang skripsi={getMySkripsiData} />;
   } else if (getMySkripsiData?.status === "pending") {
     return (
       <div className="flex justify-center items-center h-96">
