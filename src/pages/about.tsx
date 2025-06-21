@@ -7,7 +7,7 @@ function About() {
           <div className="relative h-32 md:h-48 lg:h-52 xl:h-72 2xl:h-96 lg:col-span-1 lg:row-span-2">
             <img
               className="w-full h-full object-cover rounded-lg shadow-lg"
-              src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1080&auto=format&fit=crop"
+              src="./images/bg-ilkom.png"
               alt="About Universitas Pakuan"
             />
           </div>
