@@ -5,12 +5,8 @@ import Axios from "@/API/axios";
 
 import { Badge } from "@/components/ui/badge";
 import {
-  // CloudUploadIcon,
   UsersIcon,
-  // BadgeCheckIcon,
-  // MailIcon,
   DocumentTextIcon,
-  MailIcon,
   CalendarIcon,
   ClockIcon,
   CheckCircleIcon,
