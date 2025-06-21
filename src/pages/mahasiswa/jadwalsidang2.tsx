@@ -10,9 +10,11 @@ import {
   // BadgeCheckIcon,
   // MailIcon,
   DocumentTextIcon,
+  MailIcon,
   CalendarIcon,
   ClockIcon,
   CheckCircleIcon,
+  MailOpenIcon,
 } from "@heroicons/react/outline";
 // import Button from "../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
@@ -26,7 +28,7 @@ import Separator from "@/components/ui/separator";
 //   penguji2?: { nama: string };
 // }
 
-export default function Page({ skripsi } : any) {
+export default function Page({ skripsi }: any) {
   const [data, setData] = useState<any>({});
   const [status, setStatus] = useState<any>({});
 
@@ -53,6 +55,8 @@ export default function Page({ skripsi } : any) {
     getPembimbingStatus();
   }, []);
 
+  console.log(skripsi.pembimbing1);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -62,7 +66,7 @@ export default function Page({ skripsi } : any) {
           <p className="text-gray-600">Detail lengkap mengenai skripsi dan jadwal sidang</p>
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
-          <div className={`space-y-6 lg:col-span-2 {!data.tanggal_sidang ? "lg:col-span-3" : ""}`}>
+          <div className={`space-y-6 lg:col-span-2 ${!data.tanggal_sidang ? "lg:col-span-3" : ""}`}>
             <Card>
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
@@ -85,6 +89,47 @@ export default function Page({ skripsi } : any) {
                 </div>
               </CardContent>
             </Card>
+
+            {skripsi.pembimbing1 || skripsi.pembimbing1 ? (
+              <Card className="shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-xl text-gray-900 flex items-center gap-2">
+                    <UsersIcon className="h-5 w-5 text-blue-600" />
+                    Dosen Pembimbing
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="p-4 border border-gray-200 rounded-lg bg-gray-50/50">
+                      <h4 className="font-medium text-gray-900 mb-3">Pembimbing 1</h4>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm">
+                          <UsersIcon className="h-4 w-4 text-gray-500" />
+                          <span className="text-gray-700">{skripsi.pembimbing1.nama || "Belum ada nama pembimbing"}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <MailOpenIcon className="h-4 w-4 text-gray-500" />
+                          <span className="text-gray-600">{skripsi.pembimbing1.email || "Belum ada email pembimbing"}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4 border border-gray-200 rounded-lg bg-gray-50/50">
+                      <h4 className="font-medium text-gray-900 mb-3">Pembimbing 2</h4>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm">
+                          <UsersIcon className="h-4 w-4 text-gray-500" />
+                          <span className="text-gray-700">{skripsi.pembimbing2.nama || "Belum ada nama pembimbing"}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <MailOpenIcon className="h-4 w-4 text-gray-500" />
+                          <span className="text-gray-600">{skripsi.pembimbing2.email || "Belum ada email pembimbing"}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : null}
 
             {/* Hasil sidang */}
             {data.catatan_penguji1 || data.catatan_penguji2 ? (
