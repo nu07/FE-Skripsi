@@ -1,20 +1,20 @@
 import { create } from "zustand";
 import { createJSONStorage, persist, devtools } from "zustand/middleware";
 
-interface AppState {
-  token: string | null;
-  data: Record<string, any> | null;
-  isLogin: boolean | null;
-  loadingHydration: boolean;
-  setToken: (token: string) => void;
-  setData: (data: Record<string, any>) => void;
-  setIsLogin: (isLogin: boolean) => void;
-  setLoadingHydration: (loadingHydration: boolean) => void;
-  reset: () => void;
-  getEmail: () => string | null;
-}
+// interface AppState {
+//   token: string | null;
+//   data: Record<string, any> | null;
+//   isLogin: boolean | null;
+//   loadingHydration: boolean;
+//   setToken: (token: string) => void;
+//   setData: (data: Record<string, any>) => void;
+//   setIsLogin: (isLogin: boolean) => void;
+//   setLoadingHydration: (loadingHydration: boolean) => void;
+//   reset: () => void;
+//   getEmail: () => string | null;
+// }
 
-const authStore = create<AppState>()(
+const authStore = create<any>()(
   devtools(
     persist(
       set => ({

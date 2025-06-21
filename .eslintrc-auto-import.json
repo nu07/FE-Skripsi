@@ -78,15 +78,12 @@
     "UserCircleIcon": true,
     "CurrencyDollarIcon": true,
     "BriefcaseIcon": true,
-<<<<<<< HEAD
     "UserRemoveIcon": true,
     "EnvelopeIcon": true,
     "BookOpenIcon": true,
-    "XCircleIcon": true
-=======
+    "XCircleIcon": true,
     "FolderRemoveIcon": true,
     "BanIcon": true,
     "DownloadIcon": true
->>>>>>> a5608e93b4771365af6392588f9d5b302031925c
   }
 }

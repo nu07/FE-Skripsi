@@ -18,17 +18,17 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import Separator from "@/components/ui/separator";
 
-interface JadwalSidangData {
-  tanggal_sidang: "";
-  catatan_penguji1: "";
-  catatan_penguji2: "";
-  penguji1?: { nama: string };
-  penguji2?: { nama: string };
-}
+// interface JadwalSidangData {
+//   tanggal_sidang: "";
+//   catatan_penguji1: "";
+//   catatan_penguji2: "";
+//   penguji1?: { nama: string };
+//   penguji2?: { nama: string };
+// }
 
-export default function Page({ skripsi }) {
-  const [data, setData] = useState<JadwalSidangData>({});
-  const [status, setStatus] = useState({});
+export default function Page({ skripsi } : any) {
+  const [data, setData] = useState<any>({});
+  const [status, setStatus] = useState<any>({});
 
   const getStatusSidang = async () => {
     try {
@@ -187,7 +187,7 @@ export default function Page({ skripsi }) {
                       </div>
                     </>
                   ) : null}
-                  {!status.hasRegistered && status.keduaPembimbingAcc ? (
+                  {!status?.hasRegistered && status?.keduaPembimbingAcc ? (
                     <button className="mt-2 bg-blue-500 text-center w-full rounded-lg border-blue-700 py-2 font-medium">Daftar sidang</button>
                   ) : null}
                 </CardContent>

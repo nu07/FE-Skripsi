@@ -6,9 +6,9 @@ import { Card } from "@/components/ui/card";
 import { Bounce, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "@/API/axios";
+import JadwalSidang from "./jadwalsidang2";
 // import { Badge } from "@/components/ui/badge";
 
-import JadwalSidang from "./jadwalSidang2";
 
 interface FormData {
   judulSkripsi: string;

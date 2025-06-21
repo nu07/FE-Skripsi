@@ -136,7 +136,7 @@ function NavbarHome() {
                   <div className="mt-6" onClick={() => setIsOpenNav(false)}>
                     {isLogin ? (
                       <Link
-                        href="/"
+                        to="/"
                         onClick={(): void => reset()}
                         className="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700">
                         Logout
