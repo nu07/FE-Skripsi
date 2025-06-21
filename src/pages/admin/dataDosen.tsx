@@ -5,6 +5,7 @@ import BaseModal from "@/components/modal/BaseModal";
 import DashboardPagination from "@/components/pagination/dashboardPagination";
 import { Bounce, toast } from "react-toastify";
 import ModalDelete from "@/components/modal/ModalDelete";
+import * as XLSX from "xlsx";
 
 const defaultValue = {
   id: "",
@@ -20,6 +21,8 @@ export default function Example() {
   const [isEditData, setIsEditData] = useState(false);
   const [isCreateData, setIsCreateData] = useState(false);
   const [isDeleteData, setIsDeleteData] = useState(false);
+  const [modalDataDosen, setModalDataDosen] = useState(false)
+  const [uploadDosenMany, setUploadDosenMany] = useState([])
   const [pagination, setPagination] = useState({
     currentPages: 1,
     perPage: 10,
@@ -96,6 +99,8 @@ export default function Example() {
       });
       getAllDosen();
       setIsCreateData(false);
+
+      
     } catch (e: any) {
       toast.error(e.response.data.message ?? "Dosen gagal Di Tambahkan!", {
         position: "top-right",
@@ -110,6 +115,58 @@ export default function Example() {
       });
     }
   };
+
+  const createDosenDataMany = async () => {
+  try {
+    const res = await Axios.post("/dosen/dosen", uploadDosenMany);
+
+    const inserted = res.data.inserted ?? [];
+    const skipped = res.data.skipped ?? [];
+
+    console.log("inserted", inserted);
+    console.log("skipped", skipped);
+
+    if (inserted.length > 0) {
+      toast.success(`${inserted.length} Dosen berhasil ditambahkan!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }
+
+    if (skipped.length > 0) {
+      toast.warning(`${skipped.length} dosen gagal ditambahkan.`, {
+        position: "top-right",
+      });
+      setUploadDosenMany(skipped);
+    } else {
+      setUploadDosenMany([]);
+      setIsCreateData(false);
+    }
+
+    getAllDosen();
+  } catch (e: any) {
+    toast.error(e.response?.data?.message ?? "Dosen gagal ditambahkan!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
+  }
+};
+
+  
   const deleteDataDosen = async () => {
     try {
       await Axios.delete(`/dosen/dosen/${detailDosen.id}`);
@@ -138,6 +195,39 @@ export default function Example() {
         progress: undefined,
         theme: "colored",
         transition: Bounce,
+      });
+    }
+  };
+
+    const downloadReportDosen = async () => {
+    try {
+      const res = await Axios.get("/report/alldosen", {
+        responseType: "blob", // penting: agar bisa terima file
+      });
+
+      const blob = new Blob([res.data], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "laporan-dosen.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      // opsional: notifikasi
+      toast.success("File laporan berhasil diunduh!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } catch (e: any) {
+      console.error(e);
+      toast.error("Gagal mengunduh laporan mahasiswa", {
+        position: "top-right",
       });
     }
   };
@@ -171,6 +261,16 @@ export default function Example() {
         mode="create"
         submitData={createDosenData}
         content={<ModalEdit state={detailDosen} setState={setDetailDosen} />}
+      />
+
+      <BaseModal
+        isOpen={modalDataDosen}
+        setIsOpen={setModalDataDosen}
+        title="Upload XLSS Dosen"
+        mode="create"
+        submitData={createDosenDataMany}
+        content={<ModalUploadDosen state={uploadDosenMany} setState={setUploadDosenMany} />}
+        width="max-w-6xl"
       />
 
       <ModalDelete
@@ -215,15 +315,40 @@ export default function Example() {
           </div>
         </div>
 
-        <button
-          onClick={() => {
-            setIsCreateData(true), setDetailDosen(defaultValue);
-          }}
-          type="button"
-          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Tambah Dosen
-          <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-        </button>
+        <div className="space-x-2">
+
+            <button
+            onClick={() => {
+              downloadReportDosen()
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Download Report
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
+
+          <button
+            onClick={() => {
+              setModalDataDosen(true)
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Tambah Banyak Dosen
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
+
+          <button
+            onClick={() => {
+              setIsCreateData(true), setDetailDosen(defaultValue);
+            }}
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Tambah Dosen
+            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
+        </div>
+
+
       </div>
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -407,3 +532,121 @@ const ModalEdit = ({ state, setState }: any) => {
     </>
   );
 };
+
+
+const ModalUploadDosen = ({ state, setState }: any) => {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState([])
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const binaryStr = evt.target?.result;
+      const workbook = XLSX.read(binaryStr, { type: "binary" });
+
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(sheet);
+      setState(jsonData);
+    };
+    reader.readAsBinaryString(file);
+  };
+
+  const handleChange = (index: number, field: string, value: string | boolean) => {
+    const updated = [...state];
+    updated[index][field] = value;
+    setState(updated);
+  };
+  console.log(state)
+  return (
+    <>
+      <a
+        target="_blank"
+        href="./template/template_dosen.xlsx"
+        type="button"
+        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Download Template
+        <DownloadIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+      </a>
+      <div className="p-4">
+
+
+
+        {state.length < 1 ? (<>
+          <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
+        </>) :
+          (<div>
+            <button
+              onClick={() => {
+                setState([])
+              }}
+              type="button"
+              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Reset Data
+              <BanIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>)
+
+        }
+
+
+        <div className="overflow-y-auto max-h-[400px] mt-4 border rounded">
+
+          <table className="table-auto w-full border mt-4">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border px-2">NIDN</th>
+                <th className="border px-2">Nama</th>
+                <th className="border px-2">Email</th>
+                <th className="border px-2">Password</th>
+                <th className="border px-2">Alasan Gagal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {state?.map((mhs: any, index: any) => (
+                <tr key={index}>
+                  <td className="border px-2">
+                    <input
+                      type="text"
+                      value={mhs.nidn}
+                      onChange={(e) => handleChange(index, "nim", e.target.value)}
+                      className="w-full"
+                    />
+                  </td>
+                  <td className="border px-2">
+                    <input
+                      type="text"
+                      value={mhs.nama}
+                      onChange={(e) => handleChange(index, "nama", e.target.value)}
+                      className="w-full"
+                    />
+                  </td>
+                  <td className="border px-2">
+                    <input
+                      type="email"
+                      value={mhs.email}
+                      onChange={(e) => handleChange(index, "email", e.target.value)}
+                      className="w-full"
+                    />
+                  </td>
+                  <td className="border px-2">
+                    <input
+                      type="text"
+                      value={mhs.password}
+                      onChange={(e) => handleChange(index, "password", e.target.value)}
+                      className="w-full"
+                    />
+                  </td>
+                  <td className="border px-2 text-red-500 text-sm italic">
+                    {mhs.reason ?? "-"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+  )
+}
