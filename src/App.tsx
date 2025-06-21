@@ -57,7 +57,7 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="/news/?:slug"
+          path="/news/:slug"
           element={
             <DefaultTemplate>
               <NewsDetail />

@@ -85,7 +85,7 @@ function Index() {
                 </p>
                 <h3 className="mb-4 text-2xl font-bold text-gray-900">{news.title}</h3>
                 <p className="mb-6 text-gray-600" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news.content) }}></p>
-                <Link to="#" className="inline-flex items-center px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 w-fit">
+                <Link to={`/news/${news.id}`} className="inline-flex items-center px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 w-fit">
                   Baca Selengkapnya
                 </Link>
               </div>
