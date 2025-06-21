@@ -60,7 +60,7 @@ export default function DataPembayaranSkripsi() {
     const SubmitEditData = async () => {
         try {
             await Axios.put(`/skripsi/${detailData?.id}`, { status: detailData.status, catatan: detailData.catatanPembayaran })
-            await Axios.post('/set-pembimbing', {idSkripsi : detailData.id, idPembimbing1: detailData.id_pembimbing1,idPembimbing2: detailData.id_pembimbing2 })
+            await Axios.post('/set-pembimbing', { idSkripsi: detailData.id, idPembimbing1: detailData.id_pembimbing1, idPembimbing2: detailData.id_pembimbing2 })
             setIsEditData(false)
             toast.success("Data Pembayaran berhasil Di Edit!", {
                 position: "top-right",
@@ -90,38 +90,38 @@ export default function DataPembayaranSkripsi() {
         }
     }
 
-      const downloadReportPembayaranSkripsi = async () => {
-    try {
-      const res = await Axios.get("/report/allpembayaran", {
-        responseType: "blob", // penting: agar bisa terima file
-      });
+    const downloadReportPembayaranSkripsi = async () => {
+        try {
+            const res = await Axios.get("/report/allpembayaran", {
+                responseType: "blob", // penting: agar bisa terima file
+            });
 
-      const blob = new Blob([res.data], {
-        type:
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
+            const blob = new Blob([res.data], {
+                type:
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
 
-      const url = window.URL.createObjectURL(blob);
+            const url = window.URL.createObjectURL(blob);
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "laporan-pembayaran-skripsi.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "laporan-pembayaran-skripsi.xlsx");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
 
-      // opsional: notifikasi
-      toast.success("File laporan berhasil diunduh!", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-    } catch (e: any) {
-      console.error(e);
-      toast.error("Gagal mengunduh laporan mahasiswa", {
-        position: "top-right",
-      });
-    }
-  };
+            // opsional: notifikasi
+            toast.success("File laporan berhasil diunduh!", {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        } catch (e: any) {
+            console.error(e);
+            toast.error("Gagal mengunduh laporan mahasiswa", {
+                position: "top-right",
+            });
+        }
+    };
 
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -186,15 +186,15 @@ export default function DataPembayaranSkripsi() {
                         </select>
                     </div>
                 </div>
-                          <button
-            onClick={() => {
-              downloadReportPembayaranSkripsi()
-            }}
-            type="button"
-            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            Download Report
-            <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
-          </button>
+                <button
+                    onClick={() => {
+                        downloadReportPembayaranSkripsi()
+                    }}
+                    type="button"
+                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Download Report
+                    <DocumentAddIcon className="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+                </button>
 
             </div>
             <div className="flex flex-col">
@@ -272,9 +272,14 @@ export default function DataPembayaranSkripsi() {
                                                 </button>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-10 truncate" >
-                                                <div className="flex-shrink-0">
-                                                    <img className="h-12 w-12 rounded-full" src={import.meta.env.VITE_APP_URL + person.buktiPembayaran} alt="" />
-                                                </div>
+                                                <a
+                                                    target="_blank"
+                                                    href={import.meta.env.VITE_APP_URL + person.buktiPembayaran}
+                                                >
+                                                    <div className="flex-shrink-0">
+                                                        <img className="h-12 w-12 rounded-full" src={import.meta.env.VITE_APP_URL + person.buktiPembayaran} alt="" />
+                                                    </div>
+                                                </a>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-5 truncate" title={person.deletedAt}>
                                                 <input
@@ -333,9 +338,14 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                     <label className="block text-sm font-medium text-gray-700 text-center">
                         Bukti Pembayaran
                     </label>
+                     <a
+                                                    target="_blank"
+                                                    href={import.meta.env.VITE_APP_URL + state.buktiPembayaran}
+                                                >
                     <div className="flex-shrink-0 flex items-center justify-center">
                         <img className="max-h-36 max-w-40 rounded-full" src={import.meta.env.VITE_APP_URL + state.buktiPembayaran} alt="" />
                     </div>
+                    </a>
                 </div>
                 <div>
                     <div className="mt-1">
@@ -417,9 +427,9 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             }))}
                             value={state.id_pembimbing1 ?? ""}
                         >
-                            {allDosen.map((data: any)=> (
+                            {allDosen.map((data: any) => (
                                 <>
-                                <option key={data.id} value={data.id}>{data.nama}</option>
+                                    <option key={data.id} value={data.id}>{data.nama}</option>
                                 </>
                             ))}
                         </select>
@@ -442,9 +452,9 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             }))}
                             value={state.id_pembimbing2}
                         >
-                            {allDosen.map((data: any)=> (
+                            {allDosen.map((data: any) => (
                                 <>
-                                <option key={data.id} value={data.id}>{data.nama}</option>
+                                    <option key={data.id} value={data.id}>{data.nama}</option>
                                 </>
                             ))}
                         </select>
