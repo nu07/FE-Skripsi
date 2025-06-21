@@ -1,16 +1,14 @@
 import type React from "react";
 import { useState } from "react";
-import { CheckCircleIcon, DocumentTextIcon, UploadIcon, UserIcon, EnvelopeIcon } from "@heroicons/react/outline";
+import { CheckCircleIcon, DocumentTextIcon, UploadIcon } from "@heroicons/react/outline";
 import Button from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Bounce, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "@/API/axios";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 
 import JadwalSidang from "./jadwalSidang2";
-import IsEligbleSidang from "./isEligbleSidang";
-import IsEligbleSkripsi from "./isEligbleSkripsi";
 
 interface FormData {
   judulSkripsi: string;
@@ -34,7 +32,7 @@ export default function MahasiswaSkripsi() {
       email: "",
     },
   });
-  const [statusSidang, setStatusSidang] = useState<boolean>();
+  // const [statusSidang, setStatusSidang] = useState<boolean>();
   const [formData, setFormData] = useState<FormData>({
     judulSkripsi: "",
     buktiPembayaran: null,
@@ -54,19 +52,6 @@ export default function MahasiswaSkripsi() {
       });
     } catch (e) {
       console.log(e);
-    }
-  };
-
-  const getMyStatusSidang = async () => {
-    try {
-      const response = await Axios.get("/status");
-      const test = await Axios.get("/skripsi-me");
-      // setStatusSidang(response.data);
-      // console.log(test.data)
-      // console.log("Response1: ", response.data.data.isEligibleForSidang);
-      // console.log("Response2: ", response.data.data.isEligibleForSkripsi);
-    } catch (error) {
-      console.error("Error fetching status sidang:", error);
     }
   };
 
@@ -128,13 +113,7 @@ export default function MahasiswaSkripsi() {
 
   useEffect(() => {
     getMySkripsi();
-    getMyStatusSidang();
   }, []);
-
-  // const { isEligbleSidang, isEligbleSkripsi } = statusSidang;
-  // console.log(isEligbleSidang)
-  // console.log(isEligbleSkripsi)
-  // console.log("Skripsi : ", getMySkripsiData);
 
   if (getMySkripsiData?.status === "sukses") {
     return <JadwalSidang skripsi={getMySkripsiData} />;
