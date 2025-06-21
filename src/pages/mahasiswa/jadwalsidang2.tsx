@@ -26,9 +26,8 @@ import Separator from "@/components/ui/separator";
 //   penguji2?: { nama: string };
 // }
 
-export default function Page({ skripsi } : any) {
+export default function Page({ skripsi, daftarSidangMahasiswa } : any) {
   const [data, setData] = useState<any>({});
-  const [status, setStatus] = useState<any>({});
 
   const getStatusSidang = async () => {
     try {
@@ -39,18 +38,8 @@ export default function Page({ skripsi } : any) {
     }
   };
 
-  const getPembimbingStatus = async () => {
-    try {
-      const response = await Axios.get("/pembimbing-status");
-      setStatus(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     getStatusSidang();
-    getPembimbingStatus();
   }, []);
 
   return (
@@ -82,6 +71,20 @@ export default function Page({ skripsi } : any) {
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Catatan Pembayaran</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">{skripsi.catatanPembayaran || "Catatan tidak ditemukan"}</p>
+                </div>
+              </CardContent>
+              <CardContent className="space-y-4">
+                      <Separator orientation="horizontal" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Pembimbing 1</h3>
+                  <p className="text-gray-700 leading-relaxed">{skripsi.pembimbing1.nama}</p>
+                  <p className="text-gray-700 leading-relaxed">{skripsi.pembimbing1.email}</p>
+                </div>
+                <Separator orientation="horizontal" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Pembimbing 2</h3>
+                  <p className="text-gray-700 leading-relaxed">{skripsi.pembimbing2.nama}</p>
+                  <p className="text-gray-700 leading-relaxed">{skripsi.pembimbing2.email}</p>
                 </div>
               </CardContent>
             </Card>
@@ -127,7 +130,7 @@ export default function Page({ skripsi } : any) {
               </div>
             ) : null}
           </div>
-          {data.tanggal_sidang && (
+          {skripsi?.response?.keduaPembimbingAcc && (
             <div className="lg:row-span-1">
               <Card className="shadow-sm">
                 <CardHeader>
@@ -187,8 +190,9 @@ export default function Page({ skripsi } : any) {
                       </div>
                     </>
                   ) : null}
-                  {!status?.hasRegistered && status?.keduaPembimbingAcc ? (
-                    <button className="mt-2 bg-blue-500 text-center w-full rounded-lg border-blue-700 py-2 font-medium">Daftar sidang</button>
+                  
+                  {!skripsi?.response?.hasRegistered && skripsi?.response?.keduaPembimbingAcc ? (
+                    <button className="mt-2 bg-blue-500 text-center w-full rounded-lg border-blue-700 py-2 font-medium" onClick={()=>daftarSidangMahasiswa()}>Daftar sidang</button>
                   ) : null}
                 </CardContent>
               </Card>

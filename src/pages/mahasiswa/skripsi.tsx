@@ -16,22 +16,7 @@ interface FormData {
 }
 
 export default function MahasiswaSkripsi() {
-  const [getMySkripsiData, setGetMySkripsiData] = useState({
-    judul: "",
-    status: "",
-    catatanPembayaran: "",
-    buktiPembayaran: "",
-    catatan_penguji1:"",
-    catatan_penguji2:"",
-    pembimbing1: {
-      nama: "",
-      email: "",
-    },
-    pembimbing2: {
-      nama: "",
-      email: "",
-    },
-  });
+  const [getMySkripsiData, setGetMySkripsiData] = useState<any>({});
   // const [statusSidang, setStatusSidang] = useState<boolean>();
   const [formData, setFormData] = useState<FormData>({
     judulSkripsi: "",
@@ -44,12 +29,17 @@ export default function MahasiswaSkripsi() {
     try {
       const res = await Axios.get("/skripsi-me");
       const resPembimbing = await Axios.get("/pembimbing");
+        const response = await Axios.get("/pembimbing-status");
 
       setGetMySkripsiData({
         ...res.data,
+        response : response.data,
         pembimbing1: resPembimbing.data.pembimbing1,
         pembimbing2: resPembimbing.data.pembimbing2,
+        
       });
+   
+      console.log(getMySkripsiData)
     } catch (e) {
       console.log(e);
     }
@@ -100,6 +90,16 @@ export default function MahasiswaSkripsi() {
     }
   };
 
+    const daftarSidangMahasiswa = async() =>{
+   try{
+     await Axios.post('/daftar-sidang')
+     getMySkripsi()
+    //  TODO kasih toast disini
+   }catch(e){
+    console.error(e)
+   }
+  }
+
   const handleDeleteFile = () => {
     setFormData(prev => ({ ...prev, buktiPembayaran: null }));
   };
@@ -115,8 +115,8 @@ export default function MahasiswaSkripsi() {
     getMySkripsi();
   }, []);
 
-  if (getMySkripsiData?.status === "sukses") {
-    return <JadwalSidang skripsi={getMySkripsiData} />;
+  if (getMySkripsiData?.response?.keduaPembimbingAcc) {
+    return <JadwalSidang skripsi={getMySkripsiData}  daftarSidangMahasiswa={daftarSidangMahasiswa}/>;
   } else if (getMySkripsiData?.status === "pending") {
     return (
       <div className="flex justify-center items-center h-96">
