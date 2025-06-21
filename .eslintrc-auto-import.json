@@ -84,6 +84,7 @@
     "XCircleIcon": true,
     "FolderRemoveIcon": true,
     "BanIcon": true,
-    "DownloadIcon": true
+    "DownloadIcon": true,
+    "UploadIcon": true
   }
 }
