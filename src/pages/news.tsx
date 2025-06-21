@@ -35,10 +35,11 @@ export default function NewsPage() {
     try {
       const res = await Axios.get(`/news?page=${pagination.currentPages}&limit=${pagination.perPage}&search=${searchQuery}`);
       setDatanews(res.data.data);
+      console.log(res.data)
       setPagination(prev => ({
         ...prev,
-        totalPages: res.data.totalPages,
-        totalItems: res.data.totalItems,
+        totalPages: res.data.pagination.totalPages,
+        totalItems: res.data.pagination.total,
         isLoading: false,
       }));
     } catch (e) {
