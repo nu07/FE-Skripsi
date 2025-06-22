@@ -55,7 +55,7 @@ export default function Example() {
   const SubmitEditData = async () => {
     try {
       await Axios.put(`/mahasiswa${detailMahasiswa?.id}`, detailMahasiswa);
-      setIsEditData(false);
+
       toast.success("Mahasiswa berhasil Di Edit!", {
         position: "top-right",
         autoClose: 5000,
@@ -68,6 +68,7 @@ export default function Example() {
         transition: Bounce,
       });
       getAllMahasiswa();
+            setIsEditData(false);
     } catch (e: any) {
       console.error(e);
       toast.error(e.response.data.message ?? "Mahasiswa gagal Di Tambahkan!", {
@@ -126,8 +127,10 @@ export default function Example() {
 
   const createMahasiswaData = async () => {
     try {
-      await Axios.post("/mahasiswa", detailMahasiswa);
-      toast.success("Mahasiswa berhasil Di Tambahkan!", {
+      const res =await Axios.post("/mahasiswa", detailMahasiswa);
+
+      if(res.data.skipped.length > 0){
+        toast.error(res?.data?.skipped[0]?.reason ?? "Mahasiswa gagal Di Tambahkan!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -138,8 +141,21 @@ export default function Example() {
         theme: "colored",
         transition: Bounce,
       });
-      getAllMahasiswa();
+      }else{
+        toast.success("Mahasiswa berhasil Di Tambahkan!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
       setIsCreateData(false);
+      getAllMahasiswa();
+      }
     } catch (e: any) {
       toast.error(e.response.data.message ?? "Mahasiswa gagal Di Tambahkan!", {
         position: "top-right",

@@ -5,6 +5,7 @@ import BaseModal from "@/components/modal/BaseModal";
 import DashboardPagination from "@/components/pagination/dashboardPagination";
 import { Bounce, toast } from "react-toastify";
 import { classNames } from "@/utils/classNames";
+import { format, parseISO } from 'date-fns';
 
 const defaultValue = {
   status: "",
@@ -12,6 +13,10 @@ const defaultValue = {
   id_penguji2: "",
   tanggal_sidang: "",
 };
+
+function formatToDateTimeLocalInput(isoString: string) {
+  return format(parseISO(isoString), "yyyy-MM-dd'T'HH:mm");
+}
 
 export default function Example() {
   const [dataSidang, setDataSidang] = useState<any>([]);
@@ -28,6 +33,7 @@ export default function Example() {
   const [dataDosen, setDataDosen] = useState<any>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+
 
   const getAllDataSidang = async () => {
     try {
@@ -87,7 +93,7 @@ export default function Example() {
     }
   };
 
-    const downloadReportSidang = async () => {
+  const downloadReportSidang = async () => {
     try {
       const res = await Axios.get("/report/allsidang", {
         responseType: "blob", // penting: agar bisa terima file
@@ -183,7 +189,7 @@ export default function Example() {
         </div>
 
         <div>
-                    <button
+          <button
             onClick={() => {
               downloadReportSidang()
             }}
@@ -243,8 +249,8 @@ export default function Example() {
                             person?.status === "finished"
                               ? "text-white bg-green-600 hover:bg-green-700 focus:ring-green-500"
                               : person?.status === "ongoing"
-                              ? "text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
-                              : "text-white bg-red-600 hover:bg-red-700 focus:ring-red-500",
+                                ? "text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
+                                : "text-white bg-red-600 hover:bg-red-700 focus:ring-red-500",
                             "inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 "
                           )}>
                           {person?.status?.toUpperCase()}
@@ -333,6 +339,7 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
                 }))
               }
               value={state.id_penguji1}>
+                <option value="">Pilih Penguji 1 </option>
               {dataDosen.map((data: any) => (
                 <>
                   <option key={data.id} value={data.id}>
@@ -359,6 +366,7 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
                 }))
               }
               value={state.id_penguji2}>
+                 <option value="">Pilih Penguji 2 </option>
               {dataDosen.map((data: any) => (
                 <>
                   <option key={data.id} value={data.id}>
@@ -379,42 +387,46 @@ const ModalEdit = ({ state, setState, dataDosen }: any) => {
               name="tanggal_sidang"
               required
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              onChange={(e: any) => {
-                const localValue = e.target.value; // e.g., "2025-06-22T09:00"
-                const isoString = new Date(localValue).toISOString(); // e.g., "2025-06-22T09:00:00.000Z"
+              onChange={(e) => {
+                const localValue = e.target.value; // ex: "2025-06-23T09:00"
+                const isoString = new Date(localValue).toISOString(); // => UTC ISO format
                 setState((prev: any) => ({
                   ...prev,
                   tanggal_sidang: isoString,
                 }));
               }}
-              value={state.tanggal_sidang ? new Date(state.tanggal_sidang).toISOString().slice(0, 16) : ""}
+              value={
+                state.tanggal_sidang
+                  ? formatToDateTimeLocalInput(state.tanggal_sidang)
+                  : ''
+              }
             />
           </div>
         </div>
 
-                {state.deletedAt && (
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Pulihkan Data yang Dihapus?
-                        </label>
-                        
-                        <div className="mt-1 flex items-center space-x-2">
-                            
-                            <input
-                                type="checkbox"
-                                checked={!!state.restore} // ✅ pastikan boolean
-                                onChange={(e) =>
-                                    setState((prev: any) => ({
-                                        ...prev,
-                                        restore: e.target.checked, 
-                                    }))
-                                }
-                                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                            />
-                            <span className="text-sm text-gray-600">Aktifkan untuk menghapus status deleted</span>
-                        </div>
-                    </div>
-                )}
+        {state.deletedAt && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Pulihkan Data yang Dihapus?
+            </label>
+
+            <div className="mt-1 flex items-center space-x-2">
+
+              <input
+                type="checkbox"
+                checked={!!state.restore} // ✅ pastikan boolean
+                onChange={(e) =>
+                  setState((prev: any) => ({
+                    ...prev,
+                    restore: e.target.checked,
+                  }))
+                }
+                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              />
+              <span className="text-sm text-gray-600">Aktifkan untuk menghapus status deleted</span>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

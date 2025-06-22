@@ -78,7 +78,7 @@ export default function Page({ skripsi, daftarSidangMahasiswa }: any) {
                                                     </div>
                                                     <div className="flex items-center gap-2 text-sm">
                                                         <MailIcon className="h-4 w-4 text-gray-500" />
-                                                        <span className="text-gray-600">{skripsi?.pembimbing1?.emai || "Tidak ada email"}</span>
+                                                        <span className="text-gray-600">{skripsi?.pembimbing1?.email || "Tidak ada elmail"}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,7 +93,7 @@ export default function Page({ skripsi, daftarSidangMahasiswa }: any) {
                                                     </div>
                                                     <div className="flex items-center gap-2 text-sm">
                                                         <MailIcon className="h-4 w-4 text-gray-500" />
-                                                        <span className="text-gray-600">{skripsi?.pembimbing2?.emai || "Tidak ada email"}</span>
+                                                        <span className="text-gray-600">{skripsi?.pembimbing2?.email || "Tidak ada email"}</span>
                                                     </div>
                                                 </div>
                                             </div>

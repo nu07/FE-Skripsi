@@ -338,13 +338,13 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                     <label className="block text-sm font-medium text-gray-700 text-center">
                         Bukti Pembayaran
                     </label>
-                     <a
-                                                    target="_blank"
-                                                    href={import.meta.env.VITE_APP_URL + state.buktiPembayaran}
-                                                >
-                    <div className="flex-shrink-0 flex items-center justify-center">
-                        <img className="max-h-36 max-w-40 rounded-full" src={import.meta.env.VITE_APP_URL + state.buktiPembayaran} alt="" />
-                    </div>
+                    <a
+                        target="_blank"
+                        href={import.meta.env.VITE_APP_URL + state.buktiPembayaran}
+                    >
+                        <div className="flex-shrink-0 flex items-center justify-center">
+                            <img className="max-h-36 max-w-40 rounded-full" src={import.meta.env.VITE_APP_URL + state.buktiPembayaran} alt="" />
+                        </div>
                     </a>
                 </div>
                 <div>
@@ -419,7 +419,6 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             id="id_pembimbing1"
                             name="id_pembimbing1"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
-                            defaultValue={allDosen[0]?.id}
                             onChange={(e: any) => setState((prev: any) => ({
                                 ...prev,
                                 idPembimbing1: e.target.value,
@@ -427,6 +426,7 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             }))}
                             value={state.id_pembimbing1 ?? ""}
                         >
+                             <option value="">Pilih Pembimbing 1</option>
                             {allDosen.map((data: any) => (
                                 <>
                                     <option key={data.id} value={data.id}>{data.nama}</option>
@@ -444,7 +444,6 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             id="id_pembimbing2"
                             name="id_pembimbing2"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2"
-                            defaultValue={allDosen[0]?.id ?? ""}
                             onChange={(e: any) => setState((prev: any) => ({
                                 ...prev,
                                 idPembimbing2: e.target.value,
@@ -452,6 +451,7 @@ const ModalEdit = ({ state, setState, allDosen }: any) => {
                             }))}
                             value={state.id_pembimbing2}
                         >
+                             <option value="">Pilih Pembimbing 2</option>
                             {allDosen.map((data: any) => (
                                 <>
                                     <option key={data.id} value={data.id}>{data.nama}</option>

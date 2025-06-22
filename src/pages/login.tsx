@@ -27,7 +27,7 @@ export default function Login() {
       setIsLogin(true);
       localStorage.setItem("jwttoken", res.data.token);
       toast.success("Login Berhasil!", { theme: "colored", transition: Bounce });
-      navigate(res.data.data.role === "mahasiswa" ? "/" : "/dashboard");
+      navigate(res.data.data.role === "mahasiswa" ? "/skripsi" : "/dashboard");
     } catch (err: any) {
       toast.error(err?.response?.data?.message ?? "Login Gagal!", { theme: "colored", transition: Bounce });
     }

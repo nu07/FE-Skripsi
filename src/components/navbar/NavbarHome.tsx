@@ -1,42 +1,59 @@
 import authStore from "@/store/loginStore";
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
 function NavbarHome() {
-  const { isLogin, reset } = authStore();
   const [isOpenNav, setIsOpenNav] = useState(false);
+  const { isLogin, reset, data } = authStore();
+  const navigate = useNavigate();
 
-  const solutions = [
-    ...(isLogin
-      ? [
-          {
-            name: "Skripsi",
-            description: "Skripsi",
-            href: "/skripsi",
-            icon: AcademicCapIcon,
-          },
-        ]
-      : [
-          {
-            name: "Home",
-            description: "Home",
-            href: "/",
-            icon: UsersIcon,
-          },
-          {
-            name: "News",
-            description: "News",
-            href: "/news",
-            icon: CashIcon,
-          },
-          {
-            name: "About",
-            description: "About",
-            href: "/about",
-            icon: UserGroupIcon,
-          },
-        ]),
-  ];
+ const MenuNavbar = [
+  ...(!isLogin
+    ? [
+        {
+          name: "Home",
+          description: "Home",
+          href: "/",
+          icon: UsersIcon,
+        },
+        {
+          name: "News",
+          description: "News",
+          href: "/news",
+          icon: CashIcon,
+        },
+        {
+          name: "About",
+          description: "About",
+          href: "/about",
+          icon: UserGroupIcon,
+        },
+      ]
+    : data.role === "mahasiswa" && isLogin
+    ? [
+        {
+          name: "Skripsi",
+          description: "Skripsi",
+          href: "/skripsi",
+          icon: AcademicCapIcon,
+        },
+      ]
+    : (data.role === "admin" || data.role === "dosen" )&& isLogin
+    ? [
+        {
+          name: "Dashboard",
+          description: "Dashboard",
+          href: "/dashboard",
+          icon: AcademicCapIcon,
+        },
+      ]
+    : []),
+];
+
+const handleLogout = () =>{
+    reset();
+    navigate("/login");
+}
 
   return (
     <div className="sticky top-0 z-50 bg-white shadow">
@@ -53,7 +70,7 @@ function NavbarHome() {
               </Link>
             </div>
             <div className="hidden space-x-10 md:flex">
-              {solutions.map(data => (
+              {MenuNavbar.map(data => (
                 <Link
                   key={data.href}
                   to={data.href}
@@ -75,7 +92,7 @@ function NavbarHome() {
               {isLogin ? (
                 <div className="flex space-x-2">
                   <button
-                    onClick={(): void => reset()}
+                    onClick={(): void => handleLogout()}
                     className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white border border-transparent rounded-md shadow-sm whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border transition-transform duration-300 hover:from-purple-700 hover:to-indigo-700 active:scale-95">
                     Logout
                   </button>
@@ -117,7 +134,7 @@ function NavbarHome() {
                   </div>
                   <div className="mt-6">
                     <nav className="grid grid-cols-1 gap-7">
-                      {solutions.map(item => (
+                      {MenuNavbar.map(item => (
                         <Link
                           key={item.name}
                           to={item.href}
@@ -135,12 +152,12 @@ function NavbarHome() {
                 <div className="px-5 py-6">
                   <div className="mt-6" onClick={() => setIsOpenNav(false)}>
                     {isLogin ? (
-                      <Link
-                        to="/"
-                        onClick={(): void => reset()}
+                      <button
+                        // to="/"
+                        onClick={(): void => handleLogout()}
                         className="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border hover:from-purple-700 hover:to-indigo-700">
                         Logout
-                      </Link>
+                      </button>
                     ) : (
                       <Link
                         to="/login"
