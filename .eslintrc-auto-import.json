@@ -85,6 +85,7 @@
     "FolderRemoveIcon": true,
     "BanIcon": true,
     "DownloadIcon": true,
-    "UploadIcon": true
+    "UploadIcon": true,
+    "Icon": true
   }
 }

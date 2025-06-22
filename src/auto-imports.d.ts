@@ -45,6 +45,7 @@ declare global {
   const FolderRemoveIcon: typeof import("@heroicons/react/solid")["FolderRemoveIcon"]
   const HeartIcon: typeof import("@heroicons/react/solid")["HeartIcon"]
   const HomeIcon: typeof import("@heroicons/react/solid")["HomeIcon"]
+  const Icon: typeof import('@heroicons/react/solid')['Icon']
   const InboxIcon: typeof import("@heroicons/react/solid")["InboxIcon"]
   const LockClosedIcon: typeof import("@heroicons/react/solid")["LockClosedIcon"]
   const MailIcon: typeof import("@heroicons/react/solid")["MailIcon"]
