@@ -46,6 +46,7 @@ export default function MahasiswaSkripsi() {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+   e.preventDefault()
     setIsLoadingData(true)
     if (!formData.judulSkripsi || !formData.buktiPembayaran) {
       toast.error(`${!formData.judulSkripsi ? "Judul" : "File Pembayaran"} tidak boleh kosong!`, {
