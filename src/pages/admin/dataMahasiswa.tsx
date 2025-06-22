@@ -54,7 +54,7 @@ export default function Example() {
 
   const SubmitEditData = async () => {
     try {
-      await Axios.put(`/mahasiswa${detailMahasiswa?.id}`, detailMahasiswa);
+      await Axios.put(`/mahasiswa/${detailMahasiswa?.id}`, detailMahasiswa);
 
       toast.success("Mahasiswa berhasil Di Edit!", {
         position: "top-right",
