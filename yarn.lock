@@ -230,10 +230,10 @@
   resolved "https://registry.npmjs.org/@emotion/weak-memoize/-/weak-memoize-0.4.0.tgz"
   integrity sha512-snKqtPW01tN0ui7yu9rGv69aJXr/a/Ywvl11sUjNtEcRc+ng/mQriFL0wLXMef74iHa/EkftbDzU9F8iFbH+zg==
 
-"@esbuild/linux-x64@0.25.5":
+"@esbuild/win32-x64@0.25.5":
   version "0.25.5"
-  resolved "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.25.5.tgz"
-  integrity sha512-uhj8N2obKTE6pSZ+aMUbqq+1nXxNjZIIjCjGLfsWvVpy7gKCOL6rsY1MhRh9zLtUtAI7vpgLMK6DxjO8Qm9lJw==
+  resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.25.5.tgz"
+  integrity sha512-TXv6YnJ8ZMVdX+SXWVBo/0p8LTcrUYngpWjvm91TMjjBQii7Oz11Lw5lbDV5Y0TzuhSJHwiH4hEtC1I42mMS0g==
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.7.0":
   version "4.7.0"
@@ -636,15 +636,10 @@
     estree-walker "^2.0.2"
     picomatch "^4.0.2"
 
-"@rollup/rollup-linux-x64-gnu@4.41.2":
+"@rollup/rollup-win32-x64-msvc@4.41.2":
   version "4.41.2"
-  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.41.2.tgz"
-  integrity sha512-F3fxs7ajUNny4z1TsprdWB9gg8QRwSNSSILVfTmG8rXdeUFWuHEf3Uf5ltrdii8CkzZS3kD/VFPdNVdH3BOpIA==
-
-"@rollup/rollup-linux-x64-musl@4.41.2":
-  version "4.41.2"
-  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.41.2.tgz"
-  integrity sha512-2S74RTJ1lJeiX+HSCxlLD/6Z6ndu9/+Huf8kYrI2XTCztFosOWsjPt+aD4cxBG1JTWjoiRYtutc8HABruppFQQ==
+  resolved "https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.41.2.tgz"
+  integrity sha512-AQ5GvrrLYw6dfkfT/bgYg1NU54exCKDrO9JKOE87zy2mdf2CyI6Vayy41r8Vo+kNDpqacaVQppwvYl30YGJu/Q==
 
 "@swc/helpers@^0.5.0":
   version "0.5.17"
