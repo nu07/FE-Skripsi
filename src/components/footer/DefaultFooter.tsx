@@ -1,5 +1,3 @@
-import { getYear } from 'date-fns';
-
 function defaultFooter() {
   return (
     <footer className="bg-gray-50" aria-labelledby="footer-heading">
