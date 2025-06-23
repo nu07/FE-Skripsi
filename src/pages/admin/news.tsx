@@ -10,7 +10,6 @@ import ModalDelete from "@/components/modal/ModalDelete";
 import createDOMPurify from 'dompurify';
 import {
   DocumentAddIcon,
-  TrashIcon,
   SwitchHorizontalIcon,
   DotsVerticalIcon,
   DocumentIcon,
@@ -117,17 +116,17 @@ function NewsAdmin() {
     }
   };
 
-  const handleDeleteAll = async () => {
-    try {
-      await Promise.all(selectedNews.map(id => Axios.delete(`/news/${id}`)));
-      toast.success("Berita yang dipilih berhasil dihapus!", { theme: "colored", transition: Bounce });
-      setSelectedNews([]);
-      getAllNews();
-    } catch (e) {
-      console.error(e);
-      toast.error("Gagal menghapus berita yang dipilih!", { theme: "colored", transition: Bounce });
-    }
-  };
+  // const handleDeleteAll = async () => {
+  //   try {
+  //     await Promise.all(selectedNews.map(id => Axios.delete(`/news/${id}`)));
+  //     toast.success("Berita yang dipilih berhasil dihapus!", { theme: "colored", transition: Bounce });
+  //     setSelectedNews([]);
+  //     getAllNews();
+  //   } catch (e) {
+  //     console.error(e);
+  //     toast.error("Gagal menghapus berita yang dipilih!", { theme: "colored", transition: Bounce });
+  //   }
+  // };
 
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(searchQuery), 1000);
