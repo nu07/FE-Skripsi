@@ -169,7 +169,7 @@ function NewsAdmin() {
           <ModalDelete
             isOpen={isOpenDeleteNews}
             setIsOpen={setIsOpenDeleteNews}
-            title="Hapus Data News"
+            title="Hapus Data Berita"
             content={`Anda akan menghapus data ${isDetailData.title}`}
             submitData={handleDeleteNews}
           />

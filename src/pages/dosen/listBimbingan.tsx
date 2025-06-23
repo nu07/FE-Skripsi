@@ -133,7 +133,7 @@ export default function ListBimbingan() {
             <BaseModal
                 isOpen={isEditData}
                 setIsOpen={setIsEditData}
-                title="Edit Data Dosen"
+                title="Edit Data Bimbingan"
                 mode="edit"
                 submitData={SubmitEditData}
                 content={<ModalEdit state={detailData} setState={setDetailData} />}
