@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import authStore from "@/store/loginStore";
+import BaseModal from '@/components/modal/BaseModal';
 import {
   HomeIcon,
   NewspaperIcon,
@@ -32,6 +33,7 @@ export default function Navbar({ customContent }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { data, reset } = authStore();
+  const [modalLogout, setModalLogout] = useState(false)
 
   const navigationAdmin: NavigationItem[] = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
@@ -68,6 +70,14 @@ export default function Navbar({ customContent }: NavbarProps) {
 
   return (
     <>
+         <BaseModal
+        isOpen={modalLogout}
+        setIsOpen={setModalLogout}
+        title="Logout"
+        mode="logout"
+        submitData={handleLogout}
+        content={"Apakah Anda Akan Melakukan Log out?"}
+      />
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="fixed inset-0 flex z-40 md:hidden" onClose={setSidebarOpen}>
@@ -127,11 +137,11 @@ export default function Navbar({ customContent }: NavbarProps) {
                   </nav>
                 </div>
                 <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
-                  <div className="flex items-center" onClick={handleLogout}>
+                  <div className="flex items-center" onClick={()=>setModalLogout(true)}>
                     <img className="inline-block h-10 w-10 rounded-full" src="./images/logo.png" alt="" />
                     <div className="ml-3">
                       <p className="text-base font-medium text-gray-100 group-hover:text-gray-900">{data?.nama}</p>
-                      <p className="text-sm font-medium text-gray-100 group-hover:text-gray-700">Logout Sementara</p>
+                      <p className="text-sm font-medium text-gray-100 group-hover:text-gray-700">Logout</p>
                     </div>
                   </div>
                 </div>
@@ -171,11 +181,11 @@ export default function Navbar({ customContent }: NavbarProps) {
               </nav>
             </div>
             <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
-              <div className="flex items-center" onClick={handleLogout}>
+              <div className="flex items-center" onClick={()=>setModalLogout(true)}>
                 <img className="inline-block h-9 w-9 rounded-full" src="./images/logo.png" alt="" />
                 <div className="ml-3">
                   <p className="text-sm font-medium text-gray-100 group-hover:text-gray-900">{data?.nama}</p>
-                  <p className="text-xs font-medium text-gray-100 group-hover:text-gray-700">Logout Sementara</p>
+                  <p className="text-xs font-medium text-gray-100 group-hover:text-gray-700">Logout</p>
                 </div>
               </div>
             </div>

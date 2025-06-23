@@ -43,7 +43,7 @@ export default function EditData({
                   "w-full inline-flex justify-center rounded-md shadow-sm px-4 py-2 border border-gray-300  text-base font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2  sm:ml-3 sm:w-auto sm:text-sm")}
                 onClick={submitData}
               >
-                {mode === 'edit' ? "Edit" : mode === 'create' ? "Create" : 'Delete'}
+                {mode === 'edit' ? "Edit" : mode === 'create' ? "Create" : mode ==='logout'? 'Logout' :  'Delete'}
               </button>
               <button
                 type="button"
