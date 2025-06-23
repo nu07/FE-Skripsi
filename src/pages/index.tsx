@@ -71,7 +71,7 @@ function Index() {
           <div className="grid grid-cols-1 gap-8 mb-16 overflow-hidden border shadow-lg lg:grid-cols-2 rounded-xl p-2">
             {datanews.map(news => (
               <div
-                className="flex flex-col justify-center p-6 border-2 hover:cursor-pointer transition-shadow duration-300 hover:shadow-lg"
+                className="flex flex-col justify-center p-6 border-2 hover:cursor-pointer transition-shadow duration-300 hover:shadow-lg "
                 key={news.id}>
                 <p className="mb-2 text-sm font-medium text-gray-500">
                   {new Date(news.updatedAt).toLocaleString("id-ID", {
@@ -84,7 +84,10 @@ function Index() {
                   })}
                 </p>
                 <h3 className="mb-4 text-2xl font-bold text-gray-900">{news.title}</h3>
-                <p className="mb-6 text-gray-600" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news.content) }}></p>
+                <p
+                  className="mb-6 text-gray-600 max-h-[500px] overflow-hidden"
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news.content) }}
+                ></p>
                 <Link to={`/news/${news.id}`} className="inline-flex items-center px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 w-fit">
                   Baca Selengkapnya
                 </Link>
