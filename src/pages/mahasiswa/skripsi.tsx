@@ -88,6 +88,7 @@ export default function MahasiswaSkripsi() {
         theme: "colored",
         transition: Bounce,
       });
+      getMySkripsi();
       setIsLoadingData(false)
     }
   };
