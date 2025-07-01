@@ -83,9 +83,14 @@ const App: React.FC = () => {
         <Route
           path="/skripsi"
           element={
-            <DefaultTemplate>
-              <Skripsi />
-            </DefaultTemplate>
+            isLogin ? (
+              <DefaultTemplate>
+                <Skripsi />
+              </DefaultTemplate>
+            ) :
+              (
+                <Navigate to="/login" />
+              )
           }
         />
 
