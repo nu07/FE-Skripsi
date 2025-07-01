@@ -1,6 +1,6 @@
 import axios from "axios";
 import authStore from "@/store/loginStore";
-
+import { useNavigate } from 'react-router-dom';
 const Axios = axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND,
   // headers: {
@@ -33,14 +33,16 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log(error)
+    console.log('err login: ', error)
+    const navigate = useNavigate();
+    const { reset } = authStore();
     if (error.response && error.response.status === 403) {
-      const { reset } = authStore.getState();
       reset();
+      navigate("/login");
     }
-    else if (error.response && error.response.data.status === 403) {
-      const { reset } = authStore.getState();
+    else if (error.response && Number(error.response.data.status) === 403) {
       reset();
+      navigate("/login");
     }
     return Promise.reject(error);
   }
