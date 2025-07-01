@@ -33,8 +33,11 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Reset state jika error 401
+    if (error.response && error.response.status === 403) {
+      const { reset } = authStore.getState();
+      reset();
+    }
+    else if (error.response && error.response.data.status === 403) {
       const { reset } = authStore.getState();
       reset();
     }
