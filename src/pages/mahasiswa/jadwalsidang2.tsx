@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import Separator from "@/components/ui/separator";
 import { MapIcon } from "@heroicons/react/solid";
 
-export default function Page({ skripsi, daftarSidangMahasiswa }: any) {
+export default function JadwalSidang({ skripsi, daftarSidangMahasiswa }: any) {
   const [data, setData] = useState<any>({});
 
   const getStatusSidang = async () => {

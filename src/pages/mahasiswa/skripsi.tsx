@@ -31,6 +31,7 @@ export default function MahasiswaSkripsi() {
       const res = await Axios.get("/skripsi-me");
       const resPembimbing = await Axios.get("/pembimbing");
       const response = await Axios.get("/pembimbing-status");
+      setIsLoadingData(false)
 
       setGetMySkripsiData({
         ...res.data,
@@ -38,9 +39,10 @@ export default function MahasiswaSkripsi() {
         pembimbing1: resPembimbing.data.pembimbing1,
         pembimbing2: resPembimbing.data.pembimbing2,
       });
-      setIsLoadingData(false)
     } catch (e) {
       console.log(e);
+      setIsLoadingData(false)
+    }finally{
       setIsLoadingData(false)
     }
   };
@@ -55,6 +57,7 @@ export default function MahasiswaSkripsi() {
         theme: "colored",
         transition: Bounce,
       });
+       setIsLoadingData(false)
       return;
     }
 
@@ -78,7 +81,6 @@ export default function MahasiswaSkripsi() {
         transition: Bounce,
       });
       getMySkripsi();
-      setIsLoadingData(false)
       setTimeout(() => navigate("/"), 10000);
     } catch (error) {
       console.error("Error saving data:", error);
@@ -89,14 +91,16 @@ export default function MahasiswaSkripsi() {
         transition: Bounce,
       });
       getMySkripsi();
-      setIsLoadingData(false)
-    }
+    } finally {
+  setIsLoadingData(false);
+}
   };
 
   const daftarSidangMahasiswa = async () => {
     setIsLoadingData(true)
     try {
       await Axios.post("/daftar-sidang");
+      setIsLoadingData(false)
       getMySkripsi();
       //  TODO kasih toast disini
       toast.success("Berhasil daftar sidang!", {
@@ -105,16 +109,15 @@ export default function MahasiswaSkripsi() {
         theme: "colored",
         transition: Bounce,
       });
-      setIsLoadingData(false)
     } catch (e) {
       console.error(e);
+      setIsLoadingData(false)
       toast.error("Gagal daftar sidang!", {
         position: "top-right",
         autoClose: 5000,
         theme: "colored",
         transition: Bounce,
       });
-      setIsLoadingData(false)
     }
   };
 
